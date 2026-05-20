@@ -6,84 +6,88 @@
 <title>WDC Copy Engine</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-:root {
-  --navy: #0C1D5B;
-  --deep: #0A1645;
-  --card: #0f2266;
-  --lime: #CDE954;
-  --white: #FFFFFF;
-  --mid: #6B7699;
-  --off: #F2F2F2;
-  --warn: #ffb84d;
-  --err: #ff7070;
-  --green: #7fe89a;
-}
+:root{--navy:#0C1D5B;--deep:#0A1645;--card:#0f2266;--card2:#091852;--lime:#CDE954;--white:#FFFFFF;--mid:#6B7699;--off:#F2F2F2;--warn:#ffb84d;--err:#ff7070;--green:#7fe89a}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--deep);color:var(--white);font-family:'Segoe UI',Calibri,system-ui,sans-serif;min-height:100vh}
-/* HEADER */
-.hdr{background:var(--navy);border-bottom:1px solid rgba(107,118,153,.2);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
-.logo{display:flex;align-items:center;gap:11px;cursor:pointer;text-decoration:none}
-.mark{width:32px;height:32px;background:var(--lime);border-radius:3px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:900;font-size:15px;font-family:Georgia,serif;flex-shrink:0}
-.logo-name{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700;color:var(--white)}
+.hdr{background:var(--navy);border-bottom:1px solid rgba(107,118,153,.2);padding:13px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.logo{display:flex;align-items:center;gap:11px;cursor:pointer}
+.mark{width:30px;height:30px;background:var(--lime);border-radius:3px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:900;font-size:14px;font-family:Georgia,serif;flex-shrink:0}
+.logo-name{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:700}
 .logo-sub{font-size:9px;letter-spacing:1.5px;color:var(--mid);text-transform:uppercase;margin-top:1px}
-.hdr-right{display:flex;align-items:center;gap:8px}
-.hdr-btn{background:transparent;border:1px solid rgba(107,118,153,.3);color:var(--mid);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:6px 13px;border-radius:3px;cursor:pointer;transition:all .15s}
+.hdr-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.hdr-btn{background:transparent;border:1px solid rgba(107,118,153,.28);color:var(--mid);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:6px 12px;border-radius:3px;cursor:pointer;transition:all .15s}
 .hdr-btn:hover,.hdr-btn.on{border-color:var(--lime);color:var(--lime)}
-.badge{background:rgba(205,233,84,.1);border:1px solid rgba(205,233,84,.3);color:var(--lime);font-size:9px;letter-spacing:1.5px;padding:4px 9px;border-radius:2px;text-transform:uppercase;font-weight:700}
-/* MAIN */
-.main{max-width:1060px;margin:0 auto;padding:44px 28px}
-/* SECTION HEADER */
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.badge{background:rgba(205,233,84,.1);border:1px solid rgba(205,233,84,.28);color:var(--lime);font-size:9px;letter-spacing:1.5px;padding:4px 9px;border-radius:2px;text-transform:uppercase;font-weight:700}
+.main{max-width:1060px;margin:0 auto;padding:40px 28px}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .sec-label{font-size:9px;letter-spacing:3px;color:var(--lime);text-transform:uppercase;font-weight:700;margin-bottom:4px}
-.sec-title{font-family:Georgia,serif;font-size:24px;color:var(--white)}
-.pill{background:rgba(205,233,84,.1);border:1px solid rgba(205,233,84,.25);color:var(--lime);font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;white-space:nowrap}
-.pill-warn{background:rgba(255,184,77,.1);border:1px solid rgba(255,184,77,.25);color:var(--warn)}
-/* SETUP */
-.setup-box{background:var(--card);border:1px solid rgba(107,118,153,.2);border-radius:6px;padding:40px;max-width:520px;margin:60px auto}
-.setup-title{font-family:Georgia,serif;font-size:24px;color:var(--white);margin-bottom:8px}
-.setup-sub{font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:28px}
-.field label{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);font-weight:700;margin-bottom:7px}
-.field input,.field textarea{width:100%;background:rgba(12,29,91,.6);border:1px solid rgba(107,118,153,.25);border-radius:4px;color:var(--white);font-family:inherit;font-size:13px;padding:9px 12px;outline:none;transition:border-color .15s}
-.field input:focus,.field textarea:focus{border-color:rgba(205,233,84,.4)}
+.sec-title{font-family:Georgia,serif;font-size:24px}
+.pill{background:rgba(205,233,84,.1);border:1px solid rgba(205,233,84,.24);color:var(--lime);font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;white-space:nowrap}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,22,69,.92);display:none;align-items:center;justify-content:center;z-index:500}
+.modal-overlay.on{display:flex}
+.modal{background:var(--card);border:1px solid rgba(107,118,153,.25);border-radius:8px;padding:30px;max-width:440px;width:90%}
+.modal-title{font-family:Georgia,serif;font-size:19px;margin-bottom:7px}
+.modal-sub{font-size:12px;color:var(--mid);line-height:1.6;margin-bottom:20px}
+/* FIELDS */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);font-weight:700;margin-bottom:6px}
+.field input,.field textarea,.field select{width:100%;background:rgba(12,29,91,.6);border:1px solid rgba(107,118,153,.25);border-radius:4px;color:var(--white);font-family:inherit;font-size:13px;padding:9px 12px;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(205,233,84,.4)}
 .field input::placeholder,.field textarea::placeholder{color:rgba(107,118,153,.5)}
-.field{margin-bottom:18px}
-.key-note{font-size:11px;color:var(--mid);margin-top:7px;line-height:1.5}
+.field select option{background:var(--navy);color:var(--white)}
 /* BUTTONS */
-.btn-primary{background:var(--lime);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:13px 26px;border-radius:3px;cursor:pointer;border:none;transition:all .15s}
+.btn-primary{background:var(--lime);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:12px 24px;border-radius:3px;cursor:pointer;border:none;transition:all .15s}
 .btn-primary:hover{opacity:.88}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed}
 .btn-ghost{background:transparent;color:var(--mid);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px 16px;border-radius:3px;cursor:pointer;border:1px solid rgba(107,118,153,.28);transition:all .15s}
 .btn-ghost:hover{border-color:var(--mid);color:var(--white)}
 .btn-row{display:flex;align-items:center;gap:10px}
-/* DROPZONE */
-.hero{text-align:center;margin-bottom:44px}
-.hero-label{font-size:9px;letter-spacing:3px;color:var(--lime);text-transform:uppercase;font-weight:700;margin-bottom:14px}
-.hero-title{font-family:Georgia,serif;font-size:34px;color:var(--white);line-height:1.2;margin-bottom:10px}
+/* HERO + DROPZONE */
+.hero{text-align:center;margin-bottom:40px}
+.hero-label{font-size:9px;letter-spacing:3px;color:var(--lime);text-transform:uppercase;font-weight:700;margin-bottom:13px}
+.hero-title{font-family:Georgia,serif;font-size:32px;line-height:1.2;margin-bottom:10px}
 .hero-title em{font-style:italic;color:var(--lime)}
 .hero-sub{font-size:13px;color:var(--mid);max-width:460px;margin:0 auto;line-height:1.7}
-.dropzone{border:2px dashed rgba(107,118,153,.35);border-radius:6px;padding:56px 40px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(12,29,91,.2)}
+/* MODE TABS */
+.mode-tabs{display:flex;gap:0;margin-bottom:32px;border:1px solid rgba(107,118,153,.25);border-radius:5px;overflow:hidden}
+.mode-tab{flex:1;padding:12px;text-align:center;cursor:pointer;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--mid);background:transparent;border:none;transition:all .15s;border-right:1px solid rgba(107,118,153,.2)}
+.mode-tab:last-child{border-right:none}
+.mode-tab.on{background:var(--navy);color:var(--lime)}
+.mode-tab:hover:not(.on){color:var(--white);background:rgba(12,29,91,.4)}
+/* UPLOAD mode */
+.dropzone{border:2px dashed rgba(107,118,153,.32);border-radius:6px;padding:52px 40px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(12,29,91,.2)}
 .dropzone:hover,.dropzone.drag{border-color:var(--lime);background:rgba(205,233,84,.04)}
-.dz-icon{width:46px;height:46px;margin:0 auto 16px;background:rgba(205,233,84,.08);border:1px solid rgba(205,233,84,.2);border-radius:4px;display:flex;align-items:center;justify-content:center}
-.dz-title{font-size:16px;font-weight:600;color:var(--white);margin-bottom:6px}
-.dz-sub{font-size:12px;color:var(--mid);margin-bottom:16px}
+.dz-icon{width:44px;height:44px;margin:0 auto 14px;background:rgba(205,233,84,.08);border:1px solid rgba(205,233,84,.2);border-radius:4px;display:flex;align-items:center;justify-content:center}
+.dz-title{font-size:15px;font-weight:600;margin-bottom:5px}
+.dz-sub{font-size:12px;color:var(--mid);margin-bottom:14px}
+/* QUICK BRIEF mode */
+.qb-form{background:var(--card);border:1px solid rgba(107,118,153,.18);border-radius:6px;padding:28px}
+.qb-title{font-family:Georgia,serif;font-size:18px;margin-bottom:6px}
+.qb-sub{font-size:12px;color:var(--mid);margin-bottom:22px;line-height:1.6}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.qb-actions{display:flex;align-items:center;gap:10px;margin-top:20px;flex-wrap:wrap}
+.qb-note{font-size:11px;color:var(--mid);margin-top:10px;line-height:1.5}
 /* ALERTS */
-.alert-err{background:rgba(255,112,112,.07);border:1px solid rgba(255,112,112,.22);color:#ff9999;font-size:13px;padding:11px 15px;border-radius:4px;margin-top:14px}
-.alert-warn{background:rgba(255,184,77,.07);border:1px solid rgba(255,184,77,.22);color:var(--warn);font-size:12px;padding:10px 14px;border-radius:4px;margin-bottom:18px;line-height:1.6}
-.alert-warn a{color:var(--lime);cursor:pointer;font-weight:700;text-decoration:none}
+.alert-err{background:rgba(255,112,112,.07);border:1px solid rgba(255,112,112,.2);color:#ff9999;font-size:13px;padding:11px 14px;border-radius:4px;margin-top:12px}
+.alert-warn{background:rgba(255,184,77,.07);border:1px solid rgba(255,184,77,.2);color:var(--warn);font-size:12px;padding:10px 14px;border-radius:4px;margin-bottom:16px;line-height:1.6}
+.alert-warn a{color:var(--lime);cursor:pointer;font-weight:700}
 /* TABLE */
-.tbl-wrap{background:var(--card);border:1px solid rgba(107,118,153,.18);border-radius:6px;overflow:hidden;margin-bottom:24px;overflow-x:auto}
+.tbl-wrap{background:var(--card);border:1px solid rgba(107,118,153,.18);border-radius:6px;overflow:hidden;margin-bottom:22px;overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12px}
 thead tr{background:var(--navy);border-bottom:2px solid var(--lime)}
-th{padding:10px 12px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);font-weight:700;white-space:nowrap}
-td{padding:9px 12px;border-bottom:1px solid rgba(107,118,153,.1);color:var(--white)}
+th{padding:9px 11px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);font-weight:700;white-space:nowrap}
+td{padding:8px 11px;border-bottom:1px solid rgba(107,118,153,.1)}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(205,233,84,.025)}
 .td-brand{font-weight:700;color:var(--lime);white-space:nowrap}
 .td-dim{color:var(--mid);font-size:11px}
-.td-trunc{color:rgba(255,255,255,.7);font-size:11px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.td-trunc{color:rgba(255,255,255,.7);font-size:11px;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .td-ok{color:var(--green);font-size:9px;letter-spacing:1px;font-weight:700;text-transform:uppercase}
 .td-miss{color:var(--warn);font-size:9px;letter-spacing:1px;font-weight:700;text-transform:uppercase}
 /* PROGRESS */
-.prog-wrap{background:var(--card);border:1px solid rgba(107,118,153,.18);border-radius:6px;padding:20px;margin-bottom:24px}
+.prog-wrap{background:var(--card);border:1px solid rgba(107,118,153,.18);border-radius:6px;padding:20px;margin-bottom:22px}
 .prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
 .prog-label{font-size:10px;color:var(--mid);letter-spacing:1.5px;text-transform:uppercase}
 .prog-num{font-size:20px;font-weight:800;color:var(--lime);font-family:Georgia,serif}
@@ -91,91 +95,83 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .prog-fill{height:100%;background:var(--lime);transition:width .4s ease}
 .prog-brand{font-size:11px;color:var(--mid);margin-top:9px}
 .prog-brand span{color:var(--white)}
-/* RESULT CARDS */
-.results-stack{display:flex;flex-direction:column;gap:12px}
+/* CARDS */
+.results-stack{display:flex;flex-direction:column;gap:11px}
 .res-card{background:var(--card);border:1px solid rgba(107,118,153,.18);border-radius:6px;overflow:hidden;transition:border-color .15s}
 .res-card:hover{border-color:rgba(205,233,84,.2)}
 .res-card.card-err{border-color:rgba(255,112,112,.2)}
-.card-hdr{padding:14px 17px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
-.card-meta{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.card-num{width:25px;height:25px;background:rgba(205,233,84,.08);border:1px solid rgba(205,233,84,.2);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--lime);flex-shrink:0}
-.card-brand{font-size:14px;font-weight:700;color:var(--white)}
+.card-hdr{padding:13px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.card-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card-num{width:24px;height:24px;background:rgba(205,233,84,.08);border:1px solid rgba(205,233,84,.2);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--lime);flex-shrink:0}
+.card-brand{font-size:14px;font-weight:700}
 .card-tags{display:flex;gap:4px;flex-wrap:wrap}
 .tag{font-size:9px;padding:2px 6px;border-radius:2px;background:rgba(107,118,153,.15);color:var(--mid);text-transform:uppercase;font-weight:600;letter-spacing:.5px}
 .card-status{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
-.s-ok{color:var(--lime)}
-.s-err{color:var(--err)}
+.s-ok{color:var(--lime)}.s-err{color:var(--err)}
 .chevron{font-size:10px;color:var(--mid);transition:transform .2s;margin-left:8px}
 .chevron.open{transform:rotate(180deg)}
 .card-body{border-top:1px solid rgba(107,118,153,.12)}
 .tabs{display:flex;border-bottom:1px solid rgba(107,118,153,.12)}
-.tab{padding:8px 15px;font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:700;cursor:pointer;color:var(--mid);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.tab{padding:8px 14px;font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:700;cursor:pointer;color:var(--mid);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
 .tab.on{color:var(--lime);border-bottom-color:var(--lime)}
 .tab:hover:not(.on){color:var(--white)}
 .tab-panel{display:none}
 .tab-panel.on{display:block}
-.copy-wrap{padding:16px;position:relative}
-.copy-pre{font-family:'Courier New',monospace;font-size:12px;line-height:1.75;color:rgba(255,255,255,.85);white-space:pre-wrap;word-break:break-word;min-height:40px}
-.copy-btn{position:absolute;top:11px;right:11px;background:rgba(205,233,84,.07);border:1px solid rgba(205,233,84,.18);color:var(--lime);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border-radius:2px;cursor:pointer;font-weight:700;transition:all .15s;font-family:inherit}
+.copy-wrap{padding:15px;position:relative}
+.copy-pre{font-family:'Courier New',monospace;font-size:12px;line-height:1.75;color:rgba(255,255,255,.85);white-space:pre-wrap;word-break:break-word;min-height:30px}
+.copy-btn{position:absolute;top:10px;right:10px;background:rgba(205,233,84,.07);border:1px solid rgba(205,233,84,.17);color:var(--lime);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:2px;cursor:pointer;font-weight:700;transition:all .15s;font-family:inherit}
 .copy-btn:hover,.copy-btn.copied{background:rgba(205,233,84,.15)}
 /* REVISE PANEL */
-.revise-toggle{background:transparent;border:1px solid rgba(107,118,153,.25);color:var(--mid);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:5px 12px;border-radius:3px;cursor:pointer;margin:0 16px 14px;transition:all .15s}
+.revise-toggle{background:transparent;border:1px solid rgba(107,118,153,.22);color:var(--mid);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:5px 11px;border-radius:3px;cursor:pointer;margin:0 15px 13px;transition:all .15s}
 .revise-toggle:hover,.revise-toggle.on{border-color:var(--warn);color:var(--warn)}
 .revise-panel{border-top:1px solid rgba(107,118,153,.12);padding:16px;background:rgba(10,22,69,.4);display:none}
 .revise-panel.on{display:block}
-.revise-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--warn);font-weight:700;margin-bottom:14px}
-.revise-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.revise-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);font-weight:700;margin-bottom:6px}
-.revise-textarea{width:100%;background:rgba(12,29,91,.7);border:1px solid rgba(107,118,153,.25);border-radius:4px;color:var(--white);font-family:'Courier New',monospace;font-size:11px;padding:10px 12px;outline:none;resize:vertical;line-height:1.6;transition:border-color .15s;min-height:120px}
-.revise-textarea:focus{border-color:rgba(205,233,84,.35)}
-.revise-actions{display:flex;align-items:center;gap:10px}
-.btn-revise{background:transparent;border:1px solid var(--warn);color:var(--warn);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px 18px;border-radius:3px;cursor:pointer;transition:all .15s}
+.revise-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--warn);font-weight:700;margin-bottom:13px}
+.rev-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px}
+.rev-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mid);font-weight:700;margin-bottom:5px}
+.rev-textarea{width:100%;background:rgba(12,29,91,.7);border:1px solid rgba(107,118,153,.22);border-radius:4px;color:var(--white);font-family:'Courier New',monospace;font-size:11px;padding:10px;outline:none;resize:vertical;line-height:1.6;transition:border-color .15s;min-height:110px}
+.rev-textarea:focus{border-color:rgba(205,233,84,.35)}
+.rev-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.btn-revise{background:transparent;border:1px solid var(--warn);color:var(--warn);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:3px;cursor:pointer;transition:all .15s}
 .btn-revise:hover{background:rgba(255,184,77,.1)}
 .btn-revise:disabled{opacity:.4;cursor:not-allowed}
-.revise-output{margin-top:14px;background:rgba(12,29,91,.5);border:1px solid rgba(205,233,84,.15);border-radius:4px;padding:14px;display:none}
-.revise-output.on{display:block}
-.revise-output-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:10px}
-.revise-output-text{font-family:'Courier New',monospace;font-size:12px;line-height:1.75;color:rgba(255,255,255,.88);white-space:pre-wrap;word-break:break-word}
-.btn-use{background:var(--lime);color:var(--navy);font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border-radius:2px;cursor:pointer;border:none;margin-top:10px;transition:opacity .15s}
+.rev-out{margin-top:13px;background:rgba(12,29,91,.5);border:1px solid rgba(205,233,84,.14);border-radius:4px;padding:13px;display:none}
+.rev-out.on{display:block}
+.rev-out-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--lime);font-weight:700;margin-bottom:9px}
+.rev-out-text{font-family:'Courier New',monospace;font-size:12px;line-height:1.75;color:rgba(255,255,255,.88);white-space:pre-wrap;word-break:break-word}
+.btn-use{background:var(--lime);color:var(--navy);font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:6px 13px;border-radius:2px;cursor:pointer;border:none;margin-top:9px;transition:opacity .15s}
 .btn-use:hover{opacity:.85}
 .spinner{display:inline-block;width:11px;height:11px;border:2px solid rgba(205,233,84,.18);border-top-color:var(--lime);border-radius:50%;animation:spin .6s linear infinite;margin-right:6px;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* COMPLETE BAR */
-.complete-bar{background:rgba(205,233,84,.05);border:1px solid rgba(205,233,84,.18);border-radius:6px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:12px;flex-wrap:wrap}
-.complete-text{font-size:13px;color:var(--white)}
+/* COMPLETE */
+.complete-bar{background:rgba(205,233,84,.05);border:1px solid rgba(205,233,84,.17);border-radius:6px;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap}
+.complete-text{font-size:13px}
 .complete-text strong{color:var(--lime)}
-/* INTEL PANEL */
-.intel-note{background:rgba(205,233,84,.04);border:1px solid rgba(205,233,84,.14);border-radius:4px;padding:12px 15px;font-size:12px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:24px}
+/* INTEL */
+.intel-note{background:rgba(205,233,84,.04);border:1px solid rgba(205,233,84,.13);border-radius:4px;padding:11px 14px;font-size:12px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:22px}
 .intel-note strong{color:var(--lime)}
-.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:28px}
-.brand-card{background:var(--card);border:1px solid rgba(107,118,153,.18);border-radius:6px;padding:16px;cursor:pointer;transition:all .15s}
+.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:24px}
+.brand-card{background:var(--card);border:1px solid rgba(107,118,153,.18);border-radius:5px;padding:15px;cursor:pointer;transition:all .15s}
 .brand-card:hover{border-color:rgba(205,233,84,.3)}
 .brand-card.sel{border-color:var(--lime)}
-.bc-name{font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px}
-.bc-ind{font-size:11px;color:var(--mid);margin-bottom:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bc-name{font-size:14px;font-weight:700;margin-bottom:3px}
+.bc-ind{font-size:11px;color:var(--mid);margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bc-status{font-size:9px;letter-spacing:1.5px;font-weight:700;text-transform:uppercase}
-.s-ready{color:var(--lime)}
-.s-setup{color:var(--warn)}
-.brand-edit{background:rgba(10,22,69,.5);border:1px solid rgba(107,118,153,.2);border-radius:6px;padding:26px}
-.be-title{font-family:Georgia,serif;font-size:20px;color:var(--white);margin-bottom:22px}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.s-ready{color:var(--lime)}.s-setup{color:var(--warn)}
+.brand-edit{background:rgba(10,22,69,.5);border:1px solid rgba(107,118,153,.2);border-radius:6px;padding:24px}
+.be-title{font-family:Georgia,serif;font-size:19px;margin-bottom:20px}
 .msg-list{display:flex;flex-direction:column;gap:6px}
 .msg-row{display:flex;gap:6px;align-items:center}
 .msg-row input{flex:1}
-.btn-remove{background:transparent;border:1px solid rgba(255,112,112,.22);color:rgba(255,112,112,.55);width:26px;height:26px;border-radius:3px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;transition:all .15s}
+.btn-remove{background:transparent;border:1px solid rgba(255,112,112,.2);color:rgba(255,112,112,.55);width:26px;height:26px;border-radius:3px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
 .btn-remove:hover{border-color:var(--err);color:var(--err)}
-.btn-add-msg{background:transparent;border:1px dashed rgba(205,233,84,.22);color:var(--lime);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px;border-radius:3px;cursor:pointer;font-weight:700;width:100%;margin-top:4px;transition:all .15s}
+.btn-add-msg{background:transparent;border:1px dashed rgba(205,233,84,.2);color:var(--lime);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px;border-radius:3px;cursor:pointer;font-weight:700;width:100%;margin-top:4px;transition:all .15s}
 .btn-add-msg:hover{border-color:rgba(205,233,84,.4);background:rgba(205,233,84,.04)}
-.save-row{display:flex;align-items:center;gap:10px;margin-top:22px}
+.save-row{display:flex;align-items:center;gap:10px;margin-top:20px}
 .save-fb{font-size:11px;color:var(--lime)}
-.btn-add-brand{background:transparent;border:1px dashed rgba(107,118,153,.28);color:var(--mid);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:9px 16px;border-radius:4px;cursor:pointer;font-weight:700;transition:all .15s;margin-bottom:20px}
+.btn-add-brand{background:transparent;border:1px dashed rgba(107,118,153,.26);color:var(--mid);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 15px;border-radius:4px;cursor:pointer;font-weight:700;transition:all .15s;margin-bottom:18px}
 .btn-add-brand:hover{border-color:var(--lime);color:var(--lime)}
-/* KEY SETUP MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(10,22,69,.9);display:flex;align-items:center;justify-content:center;z-index:500;display:none}
-.modal-overlay.on{display:flex}
-.modal{background:var(--card);border:1px solid rgba(107,118,153,.25);border-radius:8px;padding:32px;max-width:460px;width:90%}
-.modal-title{font-family:Georgia,serif;font-size:20px;color:var(--white);margin-bottom:8px}
-.modal-sub{font-size:12px;color:var(--mid);line-height:1.6;margin-bottom:22px}
+@media(max-width:640px){.main{padding:24px 16px}.two-col,.three-col,.rev-grid{grid-template-columns:1fr}.hdr{padding:11px 16px}.hdr-right{gap:5px}}
 </style>
 </head>
 <body>
@@ -184,28 +180,25 @@ tr:hover td{background:rgba(205,233,84,.025)}
 <div class="modal-overlay" id="keyModal">
   <div class="modal">
     <div class="modal-title">Anthropic API Key</div>
-    <div class="modal-sub">Your key is stored locally in your browser and never sent anywhere except directly to Anthropic. Starts with <code style="color:var(--lime)">sk-ant-</code></div>
-    <div class="field">
-      <label>API Key</label>
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." />
-    </div>
-    <div class="key-note">Get your key at console.anthropic.com. This tool uses Claude Sonnet — usage is billed to your Anthropic account.</div>
-    <div style="margin-top:20px;display:flex;gap:10px">
+    <div class="modal-sub">Stored locally in your browser. Never sent anywhere except directly to Anthropic. Starts with <code style="color:var(--lime)">sk-ant-</code></div>
+    <div class="field"><label>API Key</label><input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..."/></div>
+    <div style="font-size:11px;color:var(--mid);line-height:1.5;margin-bottom:16px">Get your key at <strong>console.anthropic.com</strong>. Usage billed to your Anthropic account.</div>
+    <div style="display:flex;gap:10px">
       <button class="btn-primary" onclick="saveApiKey()">Save Key</button>
-      <button class="btn-ghost" id="closeKeyModal" onclick="closeModal()">Cancel</button>
+      <button class="btn-ghost" id="closeKeyModalBtn" onclick="closeModal()">Cancel</button>
     </div>
   </div>
 </div>
 
 <!-- HEADER -->
 <header class="hdr">
-  <a class="logo" onclick="goHome()">
+  <div class="logo" onclick="goHome()">
     <div class="mark">W</div>
     <div>
       <div class="logo-name">White Digital Canvas</div>
       <div class="logo-sub">Content Operating System</div>
     </div>
-  </a>
+  </div>
   <div class="hdr-right">
     <button class="hdr-btn" id="intelBtn" onclick="toggleIntel()">Brand Intelligence</button>
     <button class="hdr-btn" onclick="showKeyModal()">API Key</button>
@@ -216,42 +209,168 @@ tr:hover td{background:rgba(205,233,84,.025)}
 <!-- VIEWS -->
 <div id="app">
 
-<!-- VIEW: UPLOAD -->
-<div class="main" id="viewUpload">
+<!-- UPLOAD / QUICK BRIEF home view -->
+<div class="main" id="viewHome">
   <div class="hero">
     <div class="hero-label">WDC Content OS</div>
     <h1 class="hero-title">Brief in. <em>All copies out.</em></h1>
     <p class="hero-sub">Brand voice, positioning, and key messages are locked in this system. Fill the brief with what to communicate. The engine handles the rest.</p>
   </div>
-  <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave()" ondrop="onDrop(event)">
-    <div class="dz-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#CDE954" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-    </div>
-    <div class="dz-title">Drop WDC_Content_OS.xlsx here</div>
-    <div class="dz-sub">Upload the filled monthly brief</div>
-    <button class="btn-primary" onclick="event.stopPropagation();document.getElementById('fileInput').click()">Select File</button>
-    <input type="file" id="fileInput" accept=".xlsx,.xlsm" style="display:none" onchange="handleFileSelect(event)" />
+
+  <!-- Mode selector -->
+  <div class="mode-tabs">
+    <button class="mode-tab on" id="modeTabBulk" onclick="setMode('bulk')">Monthly Brief Upload</button>
+    <button class="mode-tab" id="modeTabQuick" onclick="setMode('quick')">Quick Brief — 1 to 2 Copies</button>
   </div>
-  <div id="uploadError"></div>
+
+  <!-- BULK UPLOAD panel -->
+  <div id="panelBulk">
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave()" ondrop="onDrop(event)">
+      <div class="dz-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#CDE954" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <div class="dz-title">Drop WDC_Monthly_Content_Brief.xlsx here</div>
+      <div class="dz-sub">Upload the filled monthly brief</div>
+      <button class="btn-primary" onclick="event.stopPropagation();document.getElementById('fileInput').click()">Select File</button>
+      <input type="file" id="fileInput" accept=".xlsx,.xlsm" style="display:none" onchange="handleFileSelect(event)"/>
+    </div>
+    <div id="uploadError"></div>
+  </div>
+
+  <!-- QUICK BRIEF panel -->
+  <div id="panelQuick" style="display:none">
+    <div class="qb-form">
+      <div class="qb-title">Quick Brief</div>
+      <div class="qb-sub">For 1–2 urgent copies. Brand intelligence is pulled automatically. Fill what to say — not how.</div>
+
+      <div class="two-col">
+        <div class="field">
+          <label>Brand Name *</label>
+          <select id="qb-brand" onchange="updateQbBrandNote()">
+            <option value="">Select brand</option>
+          </select>
+          <div id="qb-brand-note" style="font-size:10px;color:var(--mid);margin-top:5px;min-height:14px"></div>
+        </div>
+        <div class="field">
+          <label>Platform *</label>
+          <select id="qb-platform">
+            <option value="">Select platform</option>
+            <option>Instagram</option>
+            <option>LinkedIn</option>
+            <option>Facebook</option>
+            <option>Instagram + Facebook</option>
+            <option>Twitter / X</option>
+            <option>All Platforms</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="field">
+          <label>Content Format *</label>
+          <select id="qb-format">
+            <option value="">Select format</option>
+            <option>Carousel</option>
+            <option>Static Post</option>
+            <option>Reel</option>
+            <option>Video Script</option>
+            <option>Story</option>
+            <option>Strip</option>
+            <option>Wheel</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Content Bucket *</label>
+          <select id="qb-bucket">
+            <option value="">Select bucket</option>
+            <option>Education</option>
+            <option>Promotion</option>
+            <option>Testimonial</option>
+            <option>Brand Story</option>
+            <option>Culture</option>
+            <option>Product Showcase</option>
+            <option>Seasonal</option>
+            <option>Engagement</option>
+            <option>Announcement</option>
+            <option>Behind the Scenes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Talking Points * — what this post must COMMUNICATE (3–5 points minimum)</label>
+        <textarea id="qb-points" rows="4" placeholder="e.g.&#10;- We just hit 10,000 customers&#10;- Journey started 3 years ago with 2 people&#10;- Thank you to the community&#10;- What is next for the brand"></textarea>
+      </div>
+
+      <div class="two-col">
+        <div class="field">
+          <label>Primary CTA *</label>
+          <input type="text" id="qb-cta" placeholder="e.g. DM us / Visit link in bio / Comment below"/>
+        </div>
+        <div class="field">
+          <label>No. of Slides (carousels only)</label>
+          <input type="text" id="qb-slides" placeholder="e.g. 8"/>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="field">
+          <label>Campaign / Theme (optional)</label>
+          <input type="text" id="qb-campaign" placeholder="e.g. Festive Season / Product Launch"/>
+        </div>
+        <div class="field">
+          <label>Tone Override (optional)</label>
+          <input type="text" id="qb-tone" placeholder="e.g. Celebratory / Emotional — campaign-specific only"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Additional Notes (optional)</label>
+        <textarea id="qb-notes" rows="2" placeholder="Anything specific the copywriter needs to know for this piece"></textarea>
+      </div>
+
+      <!-- Second piece (optional) -->
+      <div style="border-top:1px solid rgba(107,118,153,.15);padding-top:18px;margin-top:4px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);font-weight:700">Second Piece (Optional)</span>
+          <button class="btn-ghost" id="addSecondBtn" onclick="toggleSecond()" style="font-size:9px;padding:5px 10px">+ Add Second Brief</button>
+        </div>
+        <div id="secondBriefArea" style="display:none">
+          <div class="two-col">
+            <div class="field"><label>Brand Name</label><select id="qb2-brand" onchange="updateQb2BrandNote()"><option value="">Select brand</option></select><div id="qb2-brand-note" style="font-size:10px;color:var(--mid);margin-top:5px;min-height:14px"></div></div>
+            <div class="field"><label>Platform</label><select id="qb2-platform"><option value="">Select platform</option><option>Instagram</option><option>LinkedIn</option><option>Facebook</option><option>Instagram + Facebook</option><option>Twitter / X</option><option>All Platforms</option></select></div>
+          </div>
+          <div class="two-col">
+            <div class="field"><label>Content Format</label><select id="qb2-format"><option value="">Select format</option><option>Carousel</option><option>Static Post</option><option>Reel</option><option>Video Script</option><option>Story</option><option>Strip</option><option>Wheel</option></select></div>
+            <div class="field"><label>Content Bucket</label><select id="qb2-bucket"><option value="">Select bucket</option><option>Education</option><option>Promotion</option><option>Testimonial</option><option>Brand Story</option><option>Culture</option><option>Product Showcase</option><option>Seasonal</option><option>Engagement</option><option>Announcement</option><option>Behind the Scenes</option></select></div>
+          </div>
+          <div class="field"><label>Talking Points</label><textarea id="qb2-points" rows="3" placeholder="What this post must communicate"></textarea></div>
+          <div class="two-col">
+            <div class="field"><label>Primary CTA</label><input type="text" id="qb2-cta" placeholder="e.g. DM us"/></div>
+            <div class="field"><label>No. of Slides</label><input type="text" id="qb2-slides" placeholder="e.g. 8"/></div>
+          </div>
+          <div class="field"><label>Additional Notes (optional)</label><textarea id="qb2-notes" rows="2" placeholder="Anything specific"></textarea></div>
+        </div>
+      </div>
+
+      <div class="qb-actions">
+        <button class="btn-primary" id="qbGenerateBtn" onclick="runQuickBrief()">Generate Copy</button>
+      </div>
+      <div id="qbError"></div>
+    </div>
+  </div>
 </div>
 
-<!-- VIEW: REVIEW -->
+<!-- REVIEW view (bulk only) -->
 <div class="main" id="viewReview" style="display:none">
   <div class="sec-hdr">
-    <div>
-      <div class="sec-label">Brief Review</div>
-      <div class="sec-title">Ready to generate</div>
-    </div>
+    <div><div class="sec-label">Brief Review</div><div class="sec-title">Ready to generate</div></div>
     <div class="pill" id="reviewCount"></div>
   </div>
   <div id="missingIntelWarn"></div>
   <div class="tbl-wrap">
     <table>
-      <thead>
-        <tr>
-          <th>#</th><th>Brand</th><th>Platform</th><th>Format</th><th>Talking Points</th><th>CTA</th><th>Intel</th>
-        </tr>
-      </thead>
+      <thead><tr><th>#</th><th>Brand</th><th>Platform</th><th>Format</th><th>Talking Points</th><th>CTA</th><th>Intel</th></tr></thead>
       <tbody id="reviewTable"></tbody>
     </table>
   </div>
@@ -261,372 +380,248 @@ tr:hover td{background:rgba(205,233,84,.025)}
   </div>
 </div>
 
-<!-- VIEW: GENERATING -->
+<!-- GENERATING view -->
 <div class="main" id="viewGenerating" style="display:none">
   <div class="sec-hdr">
-    <div>
-      <div class="sec-label">Generating</div>
-      <div class="sec-title">Writing copy...</div>
-    </div>
+    <div><div class="sec-label">Generating</div><div class="sec-title">Writing copy...</div></div>
     <div class="pill" id="genCount"></div>
   </div>
   <div class="prog-wrap">
-    <div class="prog-top">
-      <span class="prog-label">Progress</span>
-      <span class="prog-num" id="progNum">0%</span>
-    </div>
+    <div class="prog-top"><span class="prog-label">Progress</span><span class="prog-num" id="progNum">0%</span></div>
     <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
     <div class="prog-brand" id="progBrand"></div>
   </div>
   <div class="results-stack" id="liveResults"></div>
 </div>
 
-<!-- VIEW: COMPLETE -->
+<!-- COMPLETE view -->
 <div class="main" id="viewComplete" style="display:none">
   <div class="complete-bar">
     <div class="complete-text" id="completeText"></div>
     <button class="btn-primary" onclick="exportExcel()">Export WDC_Copy_Output.xlsx</button>
   </div>
   <div class="results-stack" id="allResults"></div>
-  <div class="btn-row" style="margin-top:24px">
+  <div class="btn-row" style="margin-top:22px">
     <button class="btn-ghost" onclick="goHome()">New brief</button>
     <button class="btn-primary" style="flex:1" onclick="exportExcel()">Export WDC_Copy_Output.xlsx</button>
   </div>
 </div>
 
-<!-- VIEW: BRAND INTEL -->
+<!-- INTEL view -->
 <div class="main" id="viewIntel" style="display:none">
   <div class="sec-hdr">
-    <div>
-      <div class="sec-label">Brand Intelligence</div>
-      <div class="sec-title">Locked voice and positioning</div>
-    </div>
+    <div><div class="sec-label">Brand Intelligence</div><div class="sec-title">Locked voice and positioning</div></div>
   </div>
-  <div class="intel-note">
-    <strong>This panel is not for the team.</strong> Brand voice, positioning, audience intelligence, and message pillars are set here and fed directly into every generation. AMs fill the brief — what to communicate. This is how it gets communicated.
-  </div>
+  <div class="intel-note"><strong>Not for the team.</strong> Brand voice, positioning, audience intelligence, and message pillars are set here and fed silently into every generation. AMs fill the brief — WHAT to communicate. This defines HOW.</div>
   <button class="btn-add-brand" onclick="addBrand()">+ Add brand</button>
   <div class="brand-grid" id="brandGrid"></div>
   <div id="brandEditArea"></div>
 </div>
 
-</div><!-- #app -->
+</div>
 
 <script>
-// ── BRAND INTELLIGENCE (LOCKED DEFAULTS) ───────────────────────────────────
-const BRAND_DEFAULTS = {
-  "superup": {
-    name:"SuperUp", industry:"EdTech / Upskilling / Career Growth",
-    audience:"Ambitious Indians aged 22–35. Working professionals who feel stuck. Aspirational achievers who want to move up in life, not just on paper.",
-    voice:"Bold, direct, human, anti-corporate, slightly provocative. Short sentences. No fluff. Earns every word. Speaks like a mentor who has done it.",
-    positioning:"Everyone is selling learning. Nobody is selling progress. SuperUp is a belief system for people who want to move up in life. The product is progress, not certificates.",
-    keyMessages:["Karke Dekh — try it, do it, prove it to yourself.","Upgrade Zindagi — not just your resume, your whole life.","Progress is the product. Certificates are a side effect.","For the achiever in every Indian, not just the privileged few."],
-    platformNotes:"Instagram: bold hooks, relatable struggles, punchy 3–5 line captions. LinkedIn: career narrative, slightly longer. Reels: real transformation stories.",
-    avoidWords:"learnings, upskill, empower, synergy, holistic, seamless, innovative, best-in-class, leverage, unlock your potential",
-    avoidTopics:"Generic motivational quotes without substance. Corporate speak. Promises without specificity."
-  },
-  "raj petro": {
-    name:"Raj Petro", industry:"Fuel Distribution / Energy / Shell Partnership",
-    audience:"Corporate stakeholders, fleet operators, B2B decision-makers, internal teams. People who value reliability and long-term relationships.",
-    voice:"Professional, legacy-grounded, trustworthy, calm authority. 80+ years of earned credibility. Measured, institutional. Never casual, never trendy.",
-    positioning:"Eight decades of fuel distribution. Shell partnership is a proof point, not the identity. The identity is reliability built across generations.",
-    keyMessages:["80+ years of trust, built one delivery at a time.","Everyday Forward — reliable operations power reliable businesses.","Shell partnership as quality. Raj Petro as the relationship.","Partner to business growth, not just a fuel supplier."],
-    platformNotes:"LinkedIn: primary. Corporate thought leadership, B2B content, milestones. Instagram: internal culture, employee pride, events.",
-    avoidWords:"trendy, viral, disruptive, innovative, game-changing, hustle, crushing it",
-    avoidTopics:"Price wars. Casual tone. Anything undermining institutional legacy and trust."
-  },
-  "enzo": {
-    name:"Enzo", industry:"FMCG / Detergent / RCPL",
-    audience:"Households in Tier 3/4 India. Rural and semi-urban. West Bengal and Assam primary markets. Value-conscious homemakers who do more with less.",
-    voice:"Warm, community-rooted, aspirational for everyday people. Practical and relatable. Hinglish works. Speaks to people, not at them.",
-    positioning:"All-in-one detergent for the real India. Ek mein sab. Built for the Bharat that is smart with its money.",
-    keyMessages:["Ek mein sab — one product, multiple uses, real savings.","Value for real families, not convenience for rich ones.","Roshni Gaon — the brand that shows up in your community.","Smart choice for the smart household."],
-    platformNotes:"Facebook: primary. Community-first content. Instagram: aspirational rural India aesthetic. Hinglish works well.",
-    avoidWords:"premium, luxury, elite, sophisticated, urban, metropolitan, cutting-edge",
-    avoidTopics:"Condescending to rural audiences. Comparison with MNC brands that sounds defensive. Urban lifestyle imagery."
-  },
-  "automatorr": {
-    name:"Automatorr", industry:"SaaS / Business Automation",
-    audience:"SMB owners, operations managers, founders aged 28–45. People drowning in manual work. They want systems, not more software.",
-    voice:"Clear, confident, practical, growth-oriented. Jargon-light. Results-first. Speaks in problems solved and time recovered.",
-    positioning:"Automation for businesses that want to scale without chaos. The operational upgrade every growing business needs.",
-    keyMessages:["Stop doing manually what can run itself.","Scale without hiring more people for the same tasks.","From chaos to system — without a three-month implementation.","Your best people should not be doing repetitive work."],
-    platformNotes:"LinkedIn: primary. ROI-focused content, before/after stories, founder pain points. Instagram: product explainers, testimonials.",
-    avoidWords:"robust, seamless, cutting-edge, next-generation, synergy, leverage, paradigm, holistic",
-    avoidTopics:"Overly technical feature dumps without business context."
-  },
-  "keysoul": {
-    name:"KeySoul", industry:"Business / RCM / Digital Services",
-    audience:"Business owners, aspiring entrepreneurs, professionals exploring structured income and business-building opportunities.",
-    voice:"Aspirational, community-first, opportunity-focused. Warm but credible. Purpose-driven more than profit-driven.",
-    positioning:"Where business meets purpose. KeySoul is for people who want to build something real — a network, a business, a reputation.",
-    keyMessages:["Business that grows with the people around you.","The right system changes everything.","Your network is your net worth — built with integrity.","Community over commission. Legacy over quick wins."],
-    platformNotes:"Instagram: lifestyle and business intersection. Success stories with real people. Facebook: community updates, events, announcements.",
-    avoidWords:"passive income, get rich, overnight success, MLM-adjacent phrasing",
-    avoidTopics:"Anything that sounds like a scheme. Promise-heavy content without substance."
-  },
-  "casa":  {name:"CASA",  industry:"",audience:"",voice:"",positioning:"",keyMessages:[""],platformNotes:"",avoidWords:"",avoidTopics:"",needsSetup:true},
-  "seic":  {name:"SEIC",  industry:"",audience:"",voice:"",positioning:"",keyMessages:[""],platformNotes:"",avoidWords:"",avoidTopics:"",needsSetup:true},
-  "gff":   {name:"GFF",   industry:"",audience:"",voice:"",positioning:"",keyMessages:[""],platformNotes:"",avoidWords:"",avoidTopics:"",needsSetup:true},
-  "hfs":   {name:"HFS",   industry:"",audience:"",voice:"",positioning:"",keyMessages:[""],platformNotes:"",avoidWords:"",avoidTopics:"",needsSetup:true}
+// ── LOCKED BRAND DEFAULTS ──────────────────────────────────────────────────
+const BRAND_DEFAULTS={
+  "superup":{name:"SuperUp",industry:"EdTech / Upskilling / Career Growth",audience:"Ambitious Indians aged 22–35. Working professionals who feel stuck. Aspirational achievers who want to move up in life, not just on paper.",voice:"Bold, direct, human, anti-corporate, slightly provocative. Short sentences. No fluff. Earns every word. Speaks like a mentor who has done it.",positioning:"Everyone is selling learning. Nobody is selling progress. SuperUp is a belief system for people who want to move up in life. The product is progress, not certificates.",keyMessages:["Karke Dekh — try it, do it, prove it to yourself.","Upgrade Zindagi — not just your resume, your whole life.","Progress is the product. Certificates are a side effect.","For the achiever in every Indian, not just the privileged few."],platformNotes:"Instagram: bold hooks, relatable struggles, punchy 3–5 line captions. LinkedIn: career narrative, slightly longer. Reels: real transformation stories.",avoidWords:"learnings, upskill, empower, synergy, holistic, seamless, innovative, best-in-class, leverage, unlock your potential",avoidTopics:"Generic motivational quotes without substance. Corporate speak. Promises without specificity."},
+  "raj petro":{name:"Raj Petro",industry:"Fuel Distribution / Energy / Shell Partnership",audience:"Corporate stakeholders, fleet operators, B2B decision-makers, internal teams. People who value reliability and long-term relationships.",voice:"Professional, legacy-grounded, trustworthy, calm authority. 80+ years of earned credibility. Measured, institutional. Never casual, never trendy.",positioning:"Eight decades of fuel distribution. Shell partnership is a proof point, not the identity. The identity is reliability built across generations.",keyMessages:["80+ years of trust, built one delivery at a time.","Everyday Forward — reliable operations power reliable businesses.","Shell partnership as quality. Raj Petro as the relationship.","Partner to business growth, not just a fuel supplier."],platformNotes:"LinkedIn: primary. Corporate thought leadership, B2B content, milestones. Instagram: internal culture, employee pride, events.",avoidWords:"trendy, viral, disruptive, innovative, game-changing, hustle, crushing it",avoidTopics:"Price wars. Casual tone. Anything undermining institutional legacy and trust."},
+  "enzo":{name:"Enzo",industry:"FMCG / Detergent / RCPL",audience:"Households in Tier 3/4 India. Rural and semi-urban. West Bengal and Assam primary markets. Value-conscious homemakers who do more with less.",voice:"Warm, community-rooted, aspirational for everyday people. Practical and relatable. Hinglish works. Speaks to people, not at them.",positioning:"All-in-one detergent for the real India. Ek mein sab. Built for the Bharat that is smart with its money.",keyMessages:["Ek mein sab — one product, multiple uses, real savings.","Value for real families, not convenience for rich ones.","Roshni Gaon — the brand that shows up in your community.","Smart choice for the smart household."],platformNotes:"Facebook: primary. Community-first content. Instagram: aspirational rural India aesthetic. Hinglish works well.",avoidWords:"premium, luxury, elite, sophisticated, urban, metropolitan, cutting-edge",avoidTopics:"Condescending to rural audiences. Comparison with MNC brands that sounds defensive. Urban lifestyle imagery."},
+  "automatorr":{name:"Automatorr",industry:"SaaS / Business Automation",audience:"SMB owners, operations managers, founders aged 28–45. People drowning in manual work. They want systems, not more software.",voice:"Clear, confident, practical, growth-oriented. Jargon-light. Results-first. Speaks in problems solved and time recovered.",positioning:"Automation for businesses that want to scale without chaos. The operational upgrade every growing business needs.",keyMessages:["Stop doing manually what can run itself.","Scale without hiring more people for the same tasks.","From chaos to system — without a three-month implementation.","Your best people should not be doing repetitive work."],platformNotes:"LinkedIn: primary. ROI-focused content, before/after stories, founder pain points. Instagram: product explainers, testimonials.",avoidWords:"robust, seamless, cutting-edge, next-generation, synergy, leverage, paradigm, holistic",avoidTopics:"Overly technical feature dumps without business context."},
+  "keysoul":{name:"KeySoul",industry:"Business / RCM / Digital Services",audience:"Business owners, aspiring entrepreneurs, professionals exploring structured income and business-building opportunities.",voice:"Aspirational, community-first, opportunity-focused. Warm but credible. Purpose-driven more than profit-driven.",positioning:"Where business meets purpose. KeySoul is for people who want to build something real — a network, a business, a reputation.",keyMessages:["Business that grows with the people around you.","The right system changes everything.","Your network is your net worth — built with integrity.","Community over commission. Legacy over quick wins."],platformNotes:"Instagram: lifestyle and business intersection. Success stories with real people. Facebook: community updates, events, announcements.",avoidWords:"passive income, get rich, overnight success, MLM-adjacent phrasing",avoidTopics:"Anything that sounds like a scheme. Promise-heavy content without substance."},
+  "casa":{name:"CASA",industry:"",audience:"",voice:"",positioning:"",keyMessages:[""],platformNotes:"",avoidWords:"",avoidTopics:"",needsSetup:true},
+  "seic":{name:"SEIC",industry:"",audience:"",voice:"",positioning:"",keyMessages:[""],platformNotes:"",avoidWords:"",avoidTopics:"",needsSetup:true},
+  "gff":{name:"GFF",industry:"",audience:"",voice:"",positioning:"",keyMessages:[""],platformNotes:"",avoidWords:"",avoidTopics:"",needsSetup:true},
+  "hfs":{name:"HFS",industry:"",audience:"",voice:"",positioning:"",keyMessages:[""],platformNotes:"",avoidWords:"",avoidTopics:"",needsSetup:true}
 };
 
-// ── STATE ───────────────────────────────────────────────────────────────────
-let state = {
-  briefRows: [],
-  results: [],
-  brandIntel: {},
-  showingIntel: false,
-  selectedBrand: null,
-  editForm: null
-};
+// ── STATE ──────────────────────────────────────────────────────────────────
+const S={briefRows:[],results:[],brandIntel:{},showIntel:false,selectedBrand:null,editForm:null,mode:'bulk',showSecond:false};
 
-// ── INIT ────────────────────────────────────────────────────────────────────
-function init() {
-  // Load brand intelligence
-  const saved = localStorage.getItem('wdc_brand_intel');
-  const savedProfiles = saved ? JSON.parse(saved) : {};
-  state.brandIntel = { ...BRAND_DEFAULTS, ...savedProfiles };
-
-  // Check API key
-  const key = localStorage.getItem('wdc_api_key');
-  if (!key) showKeyModal();
+function init(){
+  const saved=localStorage.getItem('wdc_brand_intel');
+  S.brandIntel={...BRAND_DEFAULTS,...(saved?JSON.parse(saved):{})};
+  populateBrandDropdowns();
+  if(!localStorage.getItem('wdc_api_key'))showKeyModal();
 }
 
-// ── API KEY ─────────────────────────────────────────────────────────────────
-function showKeyModal() {
-  const key = localStorage.getItem('wdc_api_key') || '';
-  document.getElementById('apiKeyInput').value = key;
-  document.getElementById('keyModal').classList.add('on');
-  document.getElementById('closeKeyModal').style.display = key ? '' : 'none';
-}
-function closeModal() { document.getElementById('keyModal').classList.remove('on'); }
-function saveApiKey() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  if (!key) return alert('Enter your API key');
-  localStorage.setItem('wdc_api_key', key);
-  closeModal();
-}
-function getApiKey() { return localStorage.getItem('wdc_api_key') || ''; }
+// ── API KEY ────────────────────────────────────────────────────────────────
+function showKeyModal(){const k=localStorage.getItem('wdc_api_key')||'';document.getElementById('apiKeyInput').value=k;document.getElementById('keyModal').classList.add('on');document.getElementById('closeKeyModalBtn').style.display=k?'':'none';}
+function closeModal(){document.getElementById('keyModal').classList.remove('on');}
+function saveApiKey(){const k=document.getElementById('apiKeyInput').value.trim();if(!k)return alert('Enter your API key');localStorage.setItem('wdc_api_key',k);closeModal();}
+function getApiKey(){return localStorage.getItem('wdc_api_key')||'';}
 
-// ── NAVIGATION ──────────────────────────────────────────────────────────────
-function showView(id) {
-  ['viewUpload','viewReview','viewGenerating','viewComplete','viewIntel']
-    .forEach(v => document.getElementById(v).style.display = v === id ? '' : 'none');
-}
-function goHome() {
-  state.briefRows = [];
-  state.results = [];
-  state.showingIntel = false;
-  document.getElementById('intelBtn').classList.remove('on');
-  showView('viewUpload');
-}
-function toggleIntel() {
-  state.showingIntel = !state.showingIntel;
-  document.getElementById('intelBtn').classList.toggle('on', state.showingIntel);
-  if (state.showingIntel) {
-    renderBrandGrid();
-    showView('viewIntel');
-  } else {
-    if (state.results.length > 0) showView('viewComplete');
-    else showView('viewUpload');
-  }
+// ── VIEWS ──────────────────────────────────────────────────────────────────
+function showView(id){['viewHome','viewReview','viewGenerating','viewComplete','viewIntel'].forEach(v=>document.getElementById(v).style.display=v===id?'':'none');}
+function goHome(){S.briefRows=[];S.results=[];S.showIntel=false;document.getElementById('intelBtn').classList.remove('on');showView('viewHome');}
+function toggleIntel(){S.showIntel=!S.showIntel;document.getElementById('intelBtn').classList.toggle('on',S.showIntel);if(S.showIntel){renderBrandGrid();showView('viewIntel');}else{showView(S.results.length>0?'viewComplete':'viewHome');}}
+
+// ── MODE ───────────────────────────────────────────────────────────────────
+function setMode(m){S.mode=m;document.getElementById('modeTabBulk').classList.toggle('on',m==='bulk');document.getElementById('modeTabQuick').classList.toggle('on',m==='quick');document.getElementById('panelBulk').style.display=m==='bulk'?'':'none';document.getElementById('panelQuick').style.display=m==='quick'?'':'none';}
+
+function toggleSecond(){S.showSecond=!S.showSecond;document.getElementById('secondBriefArea').style.display=S.showSecond?'':'none';document.getElementById('addSecondBtn').textContent=S.showSecond?'— Remove Second Brief':'+ Add Second Brief';}
+
+function populateBrandDropdowns(){
+  const brands=Object.keys(S.brandIntel).sort();
+  ['qb-brand','qb2-brand'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const cur=el.value;
+    el.innerHTML='<option value="">Select brand</option>'+brands.map(k=>`<option value="${k}">${esc(S.brandIntel[k].name||k)}</option>`).join('');
+    if(cur)el.value=cur;
+  });
 }
 
-// ── FILE HANDLING ───────────────────────────────────────────────────────────
-function onDragOver(e) { e.preventDefault(); document.getElementById('dropzone').classList.add('drag'); }
-function onDragLeave() { document.getElementById('dropzone').classList.remove('drag'); }
-function onDrop(e) { e.preventDefault(); document.getElementById('dropzone').classList.remove('drag'); processFile(e.dataTransfer.files[0]); }
-function handleFileSelect(e) { processFile(e.target.files[0]); }
+function updateQbBrandNote(){
+  const k=document.getElementById('qb-brand').value;
+  const p=k?S.brandIntel[k]:null;
+  document.getElementById('qb-brand-note').textContent=p&&p.voice?'Intelligence ready — voice and positioning loaded':k?'No intelligence set — set up in Brand Intelligence panel':'';
+  document.getElementById('qb-brand-note').style.color=p&&p.voice?'var(--green)':'var(--warn)';
+}
+function updateQb2BrandNote(){
+  const k=document.getElementById('qb2-brand').value;
+  const p=k?S.brandIntel[k]:null;
+  document.getElementById('qb2-brand-note').textContent=p&&p.voice?'Intelligence ready — voice and positioning loaded':k?'No intelligence set':'';
+  document.getElementById('qb2-brand-note').style.color=p&&p.voice?'var(--green)':'var(--warn)';
+}
 
-function processFile(file) {
-  setError('');
-  if (!file || !file.name.match(/\.xlsx?$/i)) { setError('Please upload a .xlsx file.'); return; }
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const rows = parseExcel(e.target.result);
-      if (!rows.length) { setError('No filled rows found. Make sure you have filled in at least the BRAND NAME and TALKING POINTS columns in the CONTENT BRIEF INPUT sheet.'); return; }
-      state.briefRows = rows;
-      renderReview();
-    } catch(err) { setError('Parse error: ' + err.message); }
+// ── QUICK BRIEF RUNNER ─────────────────────────────────────────────────────
+async function runQuickBrief(){
+  if(!getApiKey()){showKeyModal();return;}
+  const rows=[];
+  const r1=getQbRow(1);
+  if(!r1){document.getElementById('qbError').innerHTML='<div class="alert-err">Fill in Brand, Platform, Format, Bucket, Talking Points and CTA.</div>';return;}
+  rows.push(r1);
+  if(S.showSecond){const r2=getQbRow(2);if(r2)rows.push(r2);}
+  document.getElementById('qbError').innerHTML='';
+  S.briefRows=rows; S.results=[];
+  document.getElementById('liveResults').innerHTML='';
+  document.getElementById('genCount').textContent=`0 / ${rows.length}`;
+  showView('viewGenerating');
+  await runGeneration(rows);
+}
+
+function getQbRow(n){
+  const p=n===1?'qb':'qb2';
+  const brand=document.getElementById(`${p}-brand`)?.value||'';
+  const platform=document.getElementById(`${p}-platform`)?.value||'';
+  const format=document.getElementById(`${p}-format`)?.value||'';
+  const bucket=document.getElementById(`${p}-bucket`)?.value||'';
+  const points=document.getElementById(`${p}-points`)?.value?.trim()||'';
+  const cta=document.getElementById(`${p}-cta`)?.value?.trim()||'';
+  if(!brand||!platform||!format||!bucket||!points||!cta)return null;
+  return{
+    BRAND:S.brandIntel[brand]?.name||brand, MONTH:'', PLATFORM:platform, FORMAT:format,
+    BUCKET:bucket, POINTS:points, CTA:cta,
+    SLIDES:document.getElementById(`${p}-slides`)?.value||'',
+    CAMPAIGN:n===1?document.getElementById('qb-campaign')?.value||'':'',
+    TONE:n===1?document.getElementById('qb-tone')?.value||'':'',
+    NOTES:document.getElementById(`${p}-notes`)?.value||'',
+    DATE:'', AUDIENCE:'', ROW_ID:'QK-'+Date.now(),
+  };
+}
+
+// ── FILE HANDLING ─────────────────────────────────────────────────────────
+function onDragOver(e){e.preventDefault();document.getElementById('dropzone').classList.add('drag');}
+function onDragLeave(){document.getElementById('dropzone').classList.remove('drag');}
+function onDrop(e){e.preventDefault();document.getElementById('dropzone').classList.remove('drag');processFile(e.dataTransfer.files[0]);}
+function handleFileSelect(e){processFile(e.target.files[0]);}
+
+function processFile(file){
+  setErr('');
+  if(!file||!file.name.match(/\.xlsx?$/i)){setErr('Upload a .xlsx file.');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{const rows=parseExcel(e.target.result);if(!rows.length){setErr('No filled rows found. Check the CONTENT BRIEF INPUT sheet has data under the header row.');return;}S.briefRows=rows;renderReview();}
+    catch(err){setErr('Parse error: '+err.message);}
   };
   reader.readAsArrayBuffer(file);
 }
+function setErr(msg){document.getElementById('uploadError').innerHTML=msg?`<div class="alert-err">${msg}</div>`:'';}
 
-function setError(msg) {
-  const el = document.getElementById('uploadError');
-  el.innerHTML = msg ? `<div class="alert-err">${msg}</div>` : '';
+function parseExcel(buf){
+  const wb=XLSX.read(buf,{type:'array'});
+  let sn=wb.SheetNames.find(n=>n.toLowerCase().includes('content brief input'))||wb.SheetNames.find(n=>n.toLowerCase().includes('brief'))||wb.SheetNames[0];
+  const raw=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:'',raw:false});
+  let hIdx=-1;
+  for(let i=0;i<raw.length;i++){for(let j=0;j<raw[i].length;j++){if(String(raw[i][j]).trim().toUpperCase()==='BRAND NAME'){hIdx=i;break;}}if(hIdx!==-1)break;}
+  if(hIdx===-1)throw new Error('Cannot find BRAND NAME column. Check the CONTENT BRIEF INPUT sheet.');
+  const headers=raw[hIdx].map(h=>String(h).trim().toUpperCase());
+  const col={};headers.forEach((h,i)=>col[h]=i);
+  const g=(r,key,...aliases)=>{if(col[key]!==undefined)return String(r[col[key]]||'').trim();for(const a of aliases)if(col[a]!==undefined)return String(r[col[a]]||'').trim();return '';};
+  return raw.slice(hIdx+1).map(r=>({
+    BRAND:String(r[col['BRAND NAME']]||'').trim(),MONTH:g(r,'MONTH'),PLATFORM:g(r,'PLATFORM'),
+    FORMAT:g(r,'CONTENT FORMAT','FORMAT'),BUCKET:g(r,'CONTENT BUCKET','BUCKET'),
+    POINTS:g(r,'TALKING POINTS','POINTS'),CTA:g(r,'PRIMARY CTA','CTA'),
+    CAMPAIGN:g(r,'CAMPAIGN / THEME','CAMPAIGN/THEME','CAMPAIGN'),DATE:g(r,'POST DATE','DATE'),
+    SLIDES:g(r,'NO. OF SLIDES','SLIDES'),AUDIENCE:g(r,'AUDIENCE FOCUS','TARGET AUDIENCE','AUDIENCE'),
+    TONE:g(r,'CAMPAIGN TONE OVERRIDE','TONE / MOOD','TONE'),REF:g(r,'REFERENCE / INSPO','REFERENCE'),
+    NOTES:g(r,'ADDITIONAL NOTES','NOTES'),ROW_ID:g(r,'ROW ID','ROWID'),
+  })).filter(r=>r.BRAND&&r.BRAND.toUpperCase()!=='BRAND NAME');
 }
 
-// ── EXCEL PARSING (ROBUST) ──────────────────────────────────────────────────
-function parseExcel(buffer) {
-  const wb = XLSX.read(buffer, {type:'array'});
-  
-  // Find the brief input sheet — try multiple name patterns
-  let sheetName = wb.SheetNames.find(n => n.toLowerCase().includes('content brief input'));
-  if (!sheetName) sheetName = wb.SheetNames.find(n => n.toLowerCase().includes('brief input'));
-  if (!sheetName) sheetName = wb.SheetNames.find(n => n.toLowerCase().includes('brief'));
-  if (!sheetName) sheetName = wb.SheetNames.find(n => !n.toLowerCase().includes('how') && !n.toLowerCase().includes('prompt') && !n.toLowerCase().includes('output') && !n.toLowerCase().includes('brand'));
-  if (!sheetName) sheetName = wb.SheetNames[0];
-
-  const sheet = wb.Sheets[sheetName];
-  // Get raw 2D array — header:1 preserves all rows including title rows
-  const raw = XLSX.utils.sheet_to_json(sheet, {header:1, defval:'', raw:false});
-
-  // Find the actual header row by scanning for a cell that matches "BRAND NAME"
-  let hIdx = -1;
-  for (let i = 0; i < raw.length; i++) {
-    for (let j = 0; j < raw[i].length; j++) {
-      if (String(raw[i][j]).trim().toUpperCase() === 'BRAND NAME') {
-        hIdx = i;
-        break;
-      }
-    }
-    if (hIdx !== -1) break;
-  }
-  if (hIdx === -1) throw new Error('Cannot find the BRAND NAME column header. Check that the CONTENT BRIEF INPUT sheet is filled correctly.');
-
-  // Build column index map from header row
-  const headers = raw[hIdx].map(h => String(h).trim().toUpperCase());
-  const col = {};
-  headers.forEach((h, i) => { col[h] = i; });
-
-  // Extract data rows
-  const rows = [];
-  for (let i = hIdx + 1; i < raw.length; i++) {
-    const r = raw[i];
-    const brand = String(r[col['BRAND NAME']] || '').trim();
-    if (!brand || brand.toUpperCase() === 'BRAND NAME') continue;
-
-    const get = (key, ...aliases) => {
-      if (col[key] !== undefined) return String(r[col[key]] || '').trim();
-      for (const a of aliases) if (col[a] !== undefined) return String(r[col[a]] || '').trim();
-      return '';
-    };
-
-    rows.push({
-      BRAND:    brand,
-      MONTH:    get('MONTH'),
-      PLATFORM: get('PLATFORM'),
-      FORMAT:   get('CONTENT FORMAT', 'FORMAT'),
-      BUCKET:   get('CONTENT BUCKET', 'BUCKET'),
-      POINTS:   get('TALKING POINTS', 'POINTS'),
-      CTA:      get('PRIMARY CTA', 'CTA'),
-      CAMPAIGN: get('CAMPAIGN / THEME', 'CAMPAIGN/THEME', 'CAMPAIGN'),
-      DATE:     get('POST DATE', 'DATE'),
-      SLIDES:   get('NO. OF SLIDES', 'SLIDES'),
-      AUDIENCE: get('AUDIENCE FOCUS', 'TARGET AUDIENCE', 'AUDIENCE'),
-      TONE:     get('CAMPAIGN TONE OVERRIDE', 'TONE / MOOD', 'TONE'),
-      REF:      get('REFERENCE / INSPO', 'REFERENCE'),
-      NOTES:    get('ADDITIONAL NOTES', 'NOTES'),
-      ROW_ID:   get('ROW ID', 'ROWID'),
-    });
-  }
-  return rows;
-}
-
-// ── REVIEW ───────────────────────────────────────────────────────────────────
-function renderReview() {
-  const rows = state.briefRows;
-  document.getElementById('reviewCount').textContent = rows.length + ' rows';
-  document.getElementById('generateBtn').textContent = `Generate all ${rows.length} pieces`;
-
-  // Missing intel warning
-  const missing = [...new Set(rows.filter(r => !hasIntel(r.BRAND)).map(r => r.BRAND))];
-  const warnEl = document.getElementById('missingIntelWarn');
-  warnEl.innerHTML = missing.length
-    ? `<div class="alert-warn">No brand intelligence for: <strong>${missing.join(', ')}</strong>. Copy will generate without brand anchoring. <a onclick="toggleIntel()">Set up brand intelligence →</a></div>`
-    : '';
-
-  const tbody = document.getElementById('reviewTable');
-  tbody.innerHTML = rows.map((r, i) => `
-    <tr>
-      <td class="td-dim">${i+1}</td>
-      <td class="td-brand">${esc(r.BRAND)}</td>
-      <td class="td-dim">${esc(r.PLATFORM)||'<span style="color:#6B7699">—</span>'}</td>
-      <td class="td-dim">${esc(r.FORMAT)||'<span style="color:#6B7699">—</span>'}</td>
-      <td class="td-trunc">${esc(r.POINTS)}</td>
-      <td class="td-dim">${esc(r.CTA)||'<span style="color:#6B7699">—</span>'}</td>
-      <td class="${hasIntel(r.BRAND)?'td-ok':'td-miss'}">${hasIntel(r.BRAND)?'Ready':'Missing'}</td>
-    </tr>`).join('');
-
+// ── REVIEW ─────────────────────────────────────────────────────────────────
+function renderReview(){
+  const rows=S.briefRows;
+  document.getElementById('reviewCount').textContent=rows.length+' rows';
+  document.getElementById('generateBtn').textContent=`Generate all ${rows.length} pieces`;
+  const missing=[...new Set(rows.filter(r=>!hasIntel(r.BRAND)).map(r=>r.BRAND))];
+  document.getElementById('missingIntelWarn').innerHTML=missing.length?`<div class="alert-warn">No brand intelligence for: <strong>${missing.join(', ')}</strong>. <a onclick="toggleIntel()">Set up →</a></div>`:'';
+  document.getElementById('reviewTable').innerHTML=rows.map((r,i)=>`
+    <tr><td class="td-dim">${i+1}</td><td class="td-brand">${esc(r.BRAND)}</td><td class="td-dim">${esc(r.PLATFORM)||'—'}</td><td class="td-dim">${esc(r.FORMAT)||'—'}</td><td class="td-trunc">${esc(r.POINTS)}</td><td class="td-dim">${esc(r.CTA)||'—'}</td><td class="${hasIntel(r.BRAND)?'td-ok':'td-miss'}">${hasIntel(r.BRAND)?'Ready':'Missing'}</td></tr>`).join('');
   showView('viewReview');
 }
 
-// ── GENERATION ───────────────────────────────────────────────────────────────
-async function startGeneration() {
-  if (!getApiKey()) { showKeyModal(); return; }
-  const rows = state.briefRows;
-  state.results = [];
-  document.getElementById('liveResults').innerHTML = '';
-  document.getElementById('genCount').textContent = `0 / ${rows.length}`;
+// ── GENERATION ─────────────────────────────────────────────────────────────
+async function startGeneration(){
+  if(!getApiKey()){showKeyModal();return;}
+  S.results=[];
+  document.getElementById('liveResults').innerHTML='';
+  document.getElementById('genCount').textContent=`0 / ${S.briefRows.length}`;
   showView('viewGenerating');
+  await runGeneration(S.briefRows);
+}
 
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-    updateProgress(i + 1, rows.length, row.BRAND);
-
+async function runGeneration(rows){
+  for(let i=0;i<rows.length;i++){
+    const row=rows[i];
+    updateProgress(i+1,rows.length,row.BRAND);
     let result;
-    try {
-      const output = await callClaude(buildPrompt(row));
-      result = {row, output: parseOutput(output), status:'ok'};
-    } catch(e) {
-      result = {row, output:null, status:'err', error: e.message};
-    }
-    state.results.push(result);
-    appendLiveCard(result, i);
+    try{const out=await callClaude(buildPrompt(row));result={row,output:parseOutput(out),status:'ok'};}
+    catch(e){result={row,output:null,status:'err',error:e.message};}
+    S.results.push(result);
+    document.getElementById('liveResults').appendChild(buildCard(result,S.results.length-1));
   }
-
   renderComplete();
 }
 
-function updateProgress(current, total, brand) {
-  const pct = Math.round((current / total) * 100);
-  document.getElementById('progNum').textContent = pct + '%';
-  document.getElementById('progFill').style.width = pct + '%';
-  document.getElementById('genCount').textContent = `${current} / ${total}`;
-  document.getElementById('progBrand').innerHTML = `<span class="spinner"></span> Writing for <span>${esc(brand)}</span>`;
+function updateProgress(cur,total,brand){
+  const pct=Math.round((cur/total)*100);
+  document.getElementById('progNum').textContent=pct+'%';
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('genCount').textContent=`${cur} / ${total}`;
+  document.getElementById('progBrand').innerHTML=`<span class="spinner"></span> Writing for <span>${esc(brand)}</span>`;
 }
 
-function renderComplete() {
-  const ok = state.results.filter(r => r.status === 'ok').length;
-  document.getElementById('completeText').innerHTML = `<strong>${ok} pieces generated</strong> from ${state.results.length} brief rows. Writer does one tone-check pass. Calendar out by the 1st.`;
-  document.getElementById('allResults').innerHTML = '';
-  state.results.forEach((r, i) => {
-    document.getElementById('allResults').appendChild(buildCard(r, i));
-  });
+function renderComplete(){
+  const ok=S.results.filter(r=>r.status==='ok').length;
+  document.getElementById('completeText').innerHTML=`<strong>${ok} piece${ok!==1?'s':''} generated</strong> from ${S.results.length} brief row${S.results.length!==1?'s':''}. Writer does one tone-check pass. Calendar out by the 1st.`;
+  const cont=document.getElementById('allResults');cont.innerHTML='';
+  S.results.forEach((r,i)=>cont.appendChild(buildCard(r,i)));
   showView('viewComplete');
 }
 
-function appendLiveCard(result, index) {
-  const container = document.getElementById('liveResults');
-  container.appendChild(buildCard(result, index));
-}
-
-// ── CARD BUILDER ──────────────────────────────────────────────────────────────
-function buildCard(result, index) {
-  const {row, output, status, error: err} = result;
-  const id = `card-${index}`;
-
-  const el = document.createElement('div');
-  el.className = `res-card${status==='err'?' card-err':''}`;
-  el.id = id;
-
-  // Card HTML
-  el.innerHTML = `
+// ── CARD ───────────────────────────────────────────────────────────────────
+function buildCard(result,index){
+  const{row,output,status,error:err}=result;
+  const id=`c${index}`;
+  const el=document.createElement('div');
+  el.className=`res-card${status==='err'?' card-err':''}`;el.id=id;
+  el.innerHTML=`
     <div class="card-hdr" onclick="toggleCard('${id}')">
       <div class="card-meta">
         <div class="card-num">${index+1}</div>
-        <div>
-          <div class="card-brand">${esc(row.BRAND)}</div>
-          ${row.ROW_ID ? `<div style="font-size:10px;color:var(--mid);margin-top:1px">${esc(row.ROW_ID)}</div>` : ''}
-        </div>
-        <div class="card-tags">
-          ${row.PLATFORM?`<span class="tag">${esc(row.PLATFORM)}</span>`:''}
-          ${row.FORMAT?`<span class="tag">${esc(row.FORMAT)}</span>`:''}
-          ${row.BUCKET?`<span class="tag">${esc(row.BUCKET)}</span>`:''}
-        </div>
+        <div><div class="card-brand">${esc(row.BRAND)}</div>${row.ROW_ID?`<div style="font-size:9px;color:var(--mid);margin-top:1px">${esc(row.ROW_ID)}</div>`:''}</div>
+        <div class="card-tags">${row.PLATFORM?`<span class="tag">${esc(row.PLATFORM)}</span>`:''} ${row.FORMAT?`<span class="tag">${esc(row.FORMAT)}</span>`:''} ${row.BUCKET?`<span class="tag">${esc(row.BUCKET)}</span>`:''}</div>
       </div>
       <div style="display:flex;align-items:center">
         <span class="card-status ${status==='ok'?'s-ok':'s-err'}">${status==='ok'?'Done':'Error'}</span>
@@ -634,179 +629,119 @@ function buildCard(result, index) {
       </div>
     </div>
     <div class="card-body" id="body-${id}" style="display:none">
-      ${status==='err'
-        ? `<div style="padding:14px 17px;color:var(--err);font-size:13px">Generation failed: ${esc(err)}</div>`
-        : buildCardBody(result, index)
-      }
+      ${status==='err'?`<div style="padding:14px 16px;color:var(--err);font-size:13px">Generation failed: ${esc(err)}</div>`:buildCardBody(result,index)}
     </div>`;
-
   return el;
 }
 
-function buildCardBody(result, index) {
-  const {output} = result;
-  const id = `card-${index}`;
+function buildCardBody(result,index){
+  const{output}=result;const id=`c${index}`;
   return `
     <div class="tabs" id="tabs-${id}">
-      <div class="tab on" id="tab-${id}-caption" onclick="switchTab('${id}','caption')">Caption</div>
-      <div class="tab" id="tab-${id}-slides" onclick="switchTab('${id}','slides')">Slides</div>
-      <div class="tab" id="tab-${id}-hashtags" onclick="switchTab('${id}','hashtags')">Hashtags</div>
-      <div class="tab" id="tab-${id}-variation" onclick="switchTab('${id}','variation')">Alt</div>
+      <div class="tab on" onclick="switchTab('${id}','caption')">Caption</div>
+      <div class="tab" onclick="switchTab('${id}','slides')">Slides</div>
+      <div class="tab" onclick="switchTab('${id}','hashtags')">Hashtags</div>
+      <div class="tab" onclick="switchTab('${id}','variation')">Alt</div>
     </div>
-    ${['caption','slides','hashtags','variation'].map(k => `
-      <div class="tab-panel${k==='caption'?' on':''}" id="panel-${id}-${k}">
+    ${['caption','slides','hashtags','variation'].map(k=>`
+      <div class="tab-panel${k==='caption'?' on':''}" id="pnl-${id}-${k}">
         <div class="copy-wrap">
-          <pre class="copy-pre" id="copy-${id}-${k}">${esc(output[k]||'(empty)')}</pre>
-          <button class="copy-btn" onclick="copyText('${id}','${k}',this)">Copy</button>
+          <pre class="copy-pre" id="cp-${id}-${k}">${esc(output[k]||'(empty)')}</pre>
+          <button class="copy-btn" onclick="doCopy('${id}','${k}',this)">Copy</button>
         </div>
       </div>`).join('')}
-    <button class="revise-toggle" id="rev-toggle-${id}" onclick="toggleRevise('${id}',${index})">Revise / Client Feedback</button>
-    <div class="revise-panel" id="rev-panel-${id}">
+    <button class="revise-toggle" id="rev-tog-${id}" onclick="toggleRevise('${id}',${index})">Revise / Client Feedback</button>
+    <div class="revise-panel" id="rev-pnl-${id}">
       <div class="revise-title">Revision</div>
-      <div class="revise-row">
+      <div class="rev-grid">
         <div>
-          <div class="revise-label">Current copy to revise</div>
-          <textarea class="revise-textarea" id="rev-orig-${id}" placeholder="Paste or edit the copy you want to revise..."></textarea>
+          <div class="rev-label">Current copy to revise</div>
+          <textarea class="rev-textarea" id="rev-orig-${id}" placeholder="Paste or edit the copy you want to revise. Pre-filled from the active tab."></textarea>
         </div>
         <div>
-          <div class="revise-label">Client feedback / what needs to change</div>
-          <textarea class="revise-textarea" id="rev-feedback-${id}" placeholder="e.g. Make it shorter. Client wants more energy in the hook. Avoid the word 'growth'. Shift to a more aspirational tone."></textarea>
+          <div class="rev-label">Client feedback / what to change</div>
+          <textarea class="rev-textarea" id="rev-fb-${id}" placeholder="e.g.&#10;Make it shorter.&#10;Client wants more energy in the hook.&#10;Avoid the word growth.&#10;Shift to a more aspirational tone.&#10;CTA needs to be softer."></textarea>
         </div>
       </div>
-      <div class="revise-actions">
+      <div class="rev-actions">
         <button class="btn-revise" id="rev-btn-${id}" onclick="generateRevision('${id}',${index})">Generate Revision</button>
-        <span style="font-size:11px;color:var(--mid)">Revised copy replaces the tab content when you click Use This</span>
+        <span style="font-size:10px;color:var(--mid)">Revised copy replaces the active tab when you click Use This</span>
       </div>
-      <div class="revise-output" id="rev-out-${id}">
-        <div class="revise-output-label">Revised Copy</div>
-        <pre class="revise-output-text" id="rev-out-text-${id}"></pre>
-        <button class="btn-use" onclick="useRevision('${id}',${index})">Use This</button>
+      <div class="rev-out" id="rev-out-${id}">
+        <div class="rev-out-label">Revised Copy</div>
+        <pre class="rev-out-text" id="rev-out-txt-${id}"></pre>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <button class="btn-use" onclick="useRevision('${id}',${index})">Use This — Replace Active Tab</button>
+          <button class="copy-btn" style="position:static" onclick="navigator.clipboard.writeText(document.getElementById('rev-out-txt-${id}').textContent)">Copy</button>
+        </div>
       </div>
     </div>`;
 }
 
-function toggleCard(id) {
-  const body = document.getElementById(`body-${id}`);
-  const chev = document.getElementById(`chev-${id}`);
-  const open = body.style.display === '';
-  body.style.display = open ? 'none' : '';
-  chev.classList.toggle('open', !open);
-}
+function toggleCard(id){const b=document.getElementById(`body-${id}`);const c=document.getElementById(`chev-${id}`);const open=b.style.display==='';b.style.display=open?'none':'';c.classList.toggle('open',!open);}
+function switchTab(cardId,tab){['caption','slides','hashtags','variation'].forEach(k=>{document.getElementById(`pnl-${cardId}-${k}`)?.classList.toggle('on',k===tab);const tabs=document.querySelectorAll(`#tabs-${cardId} .tab`);tabs.forEach((t,i)=>{const keys=['caption','slides','hashtags','variation'];t.classList.toggle('on',keys[i]===tab);});});}
+function doCopy(cardId,tab,btn){const t=document.getElementById(`cp-${cardId}-${tab}`)?.textContent||'';navigator.clipboard.writeText(t).then(()=>{btn.textContent='Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});}
 
-function switchTab(cardId, tab) {
-  ['caption','slides','hashtags','variation'].forEach(k => {
-    document.getElementById(`tab-${cardId}-${k}`)?.classList.toggle('on', k===tab);
-    document.getElementById(`panel-${cardId}-${k}`)?.classList.toggle('on', k===tab);
-  });
-}
-
-function copyText(cardId, tab, btn) {
-  const text = document.getElementById(`copy-${cardId}-${tab}`)?.textContent || '';
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = 'Copied';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
-  });
-}
-
-// ── REVISE ────────────────────────────────────────────────────────────────────
-function toggleRevise(cardId, index) {
-  const panel = document.getElementById(`rev-panel-${cardId}`);
-  const btn = document.getElementById(`rev-toggle-${cardId}`);
-  const isOpen = panel.classList.toggle('on');
-  btn.classList.toggle('on', isOpen);
-
-  // Pre-fill the orig textarea with active tab's copy
-  if (isOpen) {
-    const result = state.results[index];
-    if (result?.output) {
-      const activeTab = document.querySelector(`#tabs-${cardId} .tab.on`)?.id?.split('-').pop() || 'caption';
-      document.getElementById(`rev-orig-${cardId}`).value = result.output[activeTab] || '';
+// ── REVISE ─────────────────────────────────────────────────────────────────
+function toggleRevise(cardId,index){
+  const pnl=document.getElementById(`rev-pnl-${cardId}`);
+  const btn=document.getElementById(`rev-tog-${cardId}`);
+  const isOpen=pnl.classList.toggle('on');
+  btn.classList.toggle('on',isOpen);
+  if(isOpen){
+    const result=S.results[index];
+    if(result?.output){
+      const tabs=document.querySelectorAll(`#tabs-${cardId} .tab`);
+      const keys=['caption','slides','hashtags','variation'];
+      let activeKey='caption';
+      tabs.forEach((t,i)=>{if(t.classList.contains('on'))activeKey=keys[i];});
+      document.getElementById(`rev-orig-${cardId}`).value=result.output[activeKey]||'';
     }
   }
 }
 
-async function generateRevision(cardId, index) {
-  if (!getApiKey()) { showKeyModal(); return; }
-  const result = state.results[index];
-  const origText = document.getElementById(`rev-orig-${cardId}`).value.trim();
-  const feedback = document.getElementById(`rev-feedback-${cardId}`).value.trim();
-
-  if (!feedback) { alert('Add feedback or revision notes first.'); return; }
-
-  const btn = document.getElementById(`rev-btn-${cardId}`);
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Revising...';
-
-  try {
-    const prompt = buildRevisionPrompt(result.row, origText, feedback);
-    const revised = await callClaude(prompt);
-    document.getElementById(`rev-out-text-${cardId}`).textContent = revised.trim();
+async function generateRevision(cardId,index){
+  if(!getApiKey()){showKeyModal();return;}
+  const result=S.results[index];
+  const origText=document.getElementById(`rev-orig-${cardId}`).value.trim();
+  const feedback=document.getElementById(`rev-fb-${cardId}`).value.trim();
+  if(!feedback){alert('Add feedback or revision notes first.');return;}
+  const btn=document.getElementById(`rev-btn-${cardId}`);
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Revising...';
+  try{
+    const revised=await callClaude(buildRevisionPrompt(result.row,origText,feedback));
+    document.getElementById(`rev-out-txt-${cardId}`).textContent=revised.trim();
     document.getElementById(`rev-out-${cardId}`).classList.add('on');
-  } catch(e) {
-    alert('Revision failed: ' + e.message);
-  }
-
-  btn.disabled = false;
-  btn.textContent = 'Generate Revision';
+  }catch(e){alert('Revision failed: '+e.message);}
+  btn.disabled=false;btn.textContent='Generate Revision';
 }
 
-function useRevision(cardId, index) {
-  const revised = document.getElementById(`rev-out-text-${cardId}`)?.textContent || '';
-  if (!revised) return;
-
-  // Figure out which tab was active when the user opened the revise panel
-  // Put the revised copy in the active tab
-  const activeTab = document.querySelector(`#tabs-${cardId} .tab.on`)?.id?.split('-').pop() || 'caption';
-  
-  // Update displayed copy
-  const copyEl = document.getElementById(`copy-${cardId}-${activeTab}`);
-  if (copyEl) copyEl.textContent = revised;
-
-  // Update state
-  if (state.results[index]?.output) {
-    state.results[index].output[activeTab] = revised;
-  }
-
-  // Close revise panel
-  document.getElementById(`rev-panel-${cardId}`)?.classList.remove('on');
-  document.getElementById(`rev-toggle-${cardId}`)?.classList.remove('on');
+function useRevision(cardId,index){
+  const revised=document.getElementById(`rev-out-txt-${cardId}`)?.textContent||'';if(!revised)return;
+  const tabs=document.querySelectorAll(`#tabs-${cardId} .tab`);
+  const keys=['caption','slides','hashtags','variation'];
+  let activeKey='caption';
+  tabs.forEach((t,i)=>{if(t.classList.contains('on'))activeKey=keys[i];});
+  const cpEl=document.getElementById(`cp-${cardId}-${activeKey}`);
+  if(cpEl)cpEl.textContent=revised;
+  if(S.results[index]?.output)S.results[index].output[activeKey]=revised;
+  document.getElementById(`rev-pnl-${cardId}`)?.classList.remove('on');
+  document.getElementById(`rev-tog-${cardId}`)?.classList.remove('on');
   document.getElementById(`rev-out-${cardId}`)?.classList.remove('on');
 }
 
-// ── PROMPT BUILDERS ───────────────────────────────────────────────────────────
-function hasIntel(brandName) {
-  const p = getProfile(brandName);
-  return !!(p && p.voice && p.positioning);
-}
+// ── PROMPT BUILDERS ────────────────────────────────────────────────────────
+function hasIntel(brandName){const p=getProfile(brandName);return!!(p&&p.voice&&p.positioning);}
+function getProfile(brandName){return S.brandIntel[brandName.toLowerCase().trim()]||null;}
 
-function getProfile(brandName) {
-  return state.brandIntel[brandName.toLowerCase().trim()] || null;
-}
-
-function buildPrompt(row) {
-  const p = getProfile(row.BRAND);
-  const brandBlock = p && p.voice ? `
-BRAND INTELLIGENCE — LOCKED. Do not deviate from this framework.
-Brand: ${p.name}
-Industry: ${p.industry}
-Target Audience: ${p.audience}
-Brand Voice: ${p.voice}
-Positioning: ${p.positioning}
-Key Messages (weave naturally, do not list literally):
-${(p.keyMessages||[]).filter(m=>m.trim()).map((m,i)=>`  ${i+1}. ${m}`).join('\n')}
-${p.platformNotes?`Platform Notes: ${p.platformNotes}`:''}
-Words NEVER to use: ${p.avoidWords}
-Topics/Tones NEVER to adopt: ${p.avoidTopics}
-` : `// No brand profile set for "${row.BRAND}". Use professional copywriter judgment.\n`;
-
-  const toneOverride = row.TONE ? `\nCAMPAIGN TONE OVERRIDE: ${row.TONE} (apply on top of brand voice)` : '';
-
+function buildPrompt(row){
+  const p=getProfile(row.BRAND);
+  const brandBlock=p&&p.voice?`\nBRAND INTELLIGENCE — LOCKED. Do not deviate.\nBrand: ${p.name}\nIndustry: ${p.industry}\nTarget Audience: ${p.audience}\nBrand Voice: ${p.voice}\nPositioning: ${p.positioning}\nKey Messages (weave naturally, do not list literally):\n${(p.keyMessages||[]).filter(m=>m.trim()).map((m,i)=>`  ${i+1}. ${m}`).join('\n')}${p.platformNotes?`\nPlatform Notes: ${p.platformNotes}`:''}\nWords NEVER to use: ${p.avoidWords}\nTopics/Tones NEVER to adopt: ${p.avoidTopics}\n`:`\n// No brand profile for "${row.BRAND}". Use professional senior copywriter judgment.\n`;
   return `You are a senior social media copywriter at White Digital CANVAS. Writing for ${row.BRAND}.
 ${brandBlock}
 BRIEF:
 Platform: ${row.PLATFORM}
-Format: ${row.FORMAT}${row.BUCKET?`\nContent Bucket: ${row.BUCKET}`:''}${toneOverride}${row.CTA?`\nCTA: ${row.CTA}`:''}${row.SLIDES?`\nSlides: ${row.SLIDES}`:''}${row.CAMPAIGN?`\nCampaign Theme: ${row.CAMPAIGN}`:''}${row.AUDIENCE?`\nAudience Focus: ${row.AUDIENCE}`:''}
+Format: ${row.FORMAT}${row.BUCKET?`\nContent Bucket: ${row.BUCKET}`:''}${row.TONE?`\nCampaign Tone Override: ${row.TONE}`:''}${row.CTA?`\nCTA: ${row.CTA}`:''}${row.SLIDES?`\nSlides: ${row.SLIDES}`:''}${row.CAMPAIGN?`\nCampaign Theme: ${row.CAMPAIGN}`:''}${row.AUDIENCE?`\nAudience Focus: ${row.AUDIENCE}`:''}
 
 TALKING POINTS:
 ${row.POINTS}${row.NOTES?`\n\nAdditional Context: ${row.NOTES}`:''}
@@ -838,202 +773,81 @@ Respond EXACTLY:
 [variation]`;
 }
 
-function buildRevisionPrompt(row, originalCopy, feedback) {
-  const p = getProfile(row.BRAND);
-  const brandCtx = p && p.voice ? `Brand voice: ${p.voice}\nPositioning: ${p.positioning}\nAvoid: ${p.avoidWords}` : '';
-
-  return `You wrote the following copy for ${row.BRAND}${brandCtx?` (${p.industry})`:''}:
-
-${brandCtx ? `BRAND CONTEXT:\n${brandCtx}\n\n` : ''}ORIGINAL COPY:
-${originalCopy}
-
-FEEDBACK / WHAT NEEDS TO CHANGE:
-${feedback}
-
-Please revise the copy based on the feedback. Stay within the brand voice and positioning. Return ONLY the revised copy — no explanation, no preamble, no labels.`;
+function buildRevisionPrompt(row,originalCopy,feedback){
+  const p=getProfile(row.BRAND);
+  const ctx=p&&p.voice?`Brand voice: ${p.voice}\nPositioning: ${p.positioning}\nWords to avoid: ${p.avoidWords}`:'';
+  return `You wrote the following copy for ${row.BRAND}:\n\n${ctx?`BRAND CONTEXT:\n${ctx}\n\n`:''}ORIGINAL COPY:\n${originalCopy}\n\nFEEDBACK / WHAT NEEDS TO CHANGE:\n${feedback}\n\nRevise based on feedback. Stay within brand voice. Return ONLY the revised copy — no explanation, no labels.`;
 }
 
-function parseOutput(text) {
-  const get = (re) => { const m = text.match(re); return m ? m[1].trim() : ''; };
-  return {
-    caption:   get(/## 1\. MAIN CAPTION\n([\s\S]*?)(?=## 2\.|$)/),
-    slides:    get(/## 2\. SLIDE COPY\n([\s\S]*?)(?=## 3\.|$)/),
-    hashtags:  get(/## 3\. HASHTAGS\n([\s\S]*?)(?=## 4\.|$)/),
-    variation: get(/## 4\. ALTERNATIVE CAPTION\n([\s\S]*?)$/),
-    raw: text,
-  };
+function parseOutput(text){
+  const g=re=>{const m=text.match(re);return m?m[1].trim():'';};
+  return{caption:g(/## 1\. MAIN CAPTION\n([\s\S]*?)(?=## 2\.|$)/),slides:g(/## 2\. SLIDE COPY\n([\s\S]*?)(?=## 3\.|$)/),hashtags:g(/## 3\. HASHTAGS\n([\s\S]*?)(?=## 4\.|$)/),variation:g(/## 4\. ALTERNATIVE CAPTION\n([\s\S]*?)$/),raw:text};
 }
 
-// ── CLAUDE API CALL ───────────────────────────────────────────────────────────
-async function callClaude(prompt) {
-  const key = getApiKey();
-  if (!key) throw new Error('No API key set. Click API Key in the header.');
-
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': key,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1500,
-      messages: [{role:'user', content: prompt}]
-    })
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(()=>({}));
-    throw new Error(err.error?.message || `API error ${res.status}`);
-  }
-  const data = await res.json();
-  return data.content.map(b => b.text || '').join('\n');
+// ── API CALL ───────────────────────────────────────────────────────────────
+async function callClaude(prompt){
+  const key=getApiKey();if(!key)throw new Error('No API key. Click API Key in the header.');
+  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
+  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||`API error ${res.status}`);}
+  const data=await res.json();return data.content.map(b=>b.text||'').join('\n');
 }
 
-// ── EXPORT ────────────────────────────────────────────────────────────────────
-function exportExcel() {
-  const wb = XLSX.utils.book_new();
-  const data = state.results.map((r,i) => ({
-    '#': i+1,
-    'ROW ID': r.row.ROW_ID || '',
-    'BRAND': r.row.BRAND,
-    'FORMAT': r.row.FORMAT,
-    'PLATFORM': r.row.PLATFORM,
-    'POST DATE': r.row.DATE || '',
-    'STATUS': r.status.toUpperCase(),
-    'MAIN CAPTION': r.output?.caption || '',
-    'SLIDE COPY': r.output?.slides || '',
-    'HASHTAGS': r.output?.hashtags || '',
-    'ALTERNATIVE CAPTION': r.output?.variation || '',
-  }));
-  const ws = XLSX.utils.json_to_sheet(data);
-  ws['!cols'] = [4,12,20,14,14,12,10,60,60,40,60].map(w=>({wch:w}));
-  XLSX.utils.book_append_sheet(wb, ws, 'COPY OUTPUT');
-  XLSX.writeFile(wb, 'WDC_Copy_Output.xlsx');
+// ── EXPORT ─────────────────────────────────────────────────────────────────
+function exportExcel(){
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.json_to_sheet(S.results.map((r,i)=>({'#':i+1,'ROW ID':r.row.ROW_ID||'','BRAND':r.row.BRAND,'FORMAT':r.row.FORMAT,'PLATFORM':r.row.PLATFORM,'POST DATE':r.row.DATE||'','STATUS':r.status.toUpperCase(),'MAIN CAPTION':r.output?.caption||'','SLIDE COPY':r.output?.slides||'','HASHTAGS':r.output?.hashtags||'','ALTERNATIVE CAPTION':r.output?.variation||''})));
+  ws['!cols']=[4,12,20,14,14,12,10,60,60,40,60].map(w=>({wch:w}));
+  XLSX.utils.book_append_sheet(wb,ws,'COPY OUTPUT');
+  XLSX.writeFile(wb,'WDC_Copy_Output.xlsx');
 }
 
-// ── BRAND INTEL PANEL ─────────────────────────────────────────────────────────
-function saveBrandIntel(key, profile) {
-  state.brandIntel[key] = profile;
-  // Persist all non-default profiles
-  const toSave = {};
-  Object.keys(state.brandIntel).forEach(k => { toSave[k] = state.brandIntel[k]; });
-  localStorage.setItem('wdc_brand_intel', JSON.stringify(toSave));
+// ── BRAND INTEL PANEL ──────────────────────────────────────────────────────
+function saveBrandIntel(key,profile){S.brandIntel[key]=profile;const s={};Object.keys(S.brandIntel).forEach(k=>s[k]=S.brandIntel[k]);localStorage.setItem('wdc_brand_intel',JSON.stringify(s));populateBrandDropdowns();}
+function isReady(key){const p=S.brandIntel[key];return!!(p&&p.voice&&p.positioning&&!p.needsSetup);}
+
+function renderBrandGrid(){
+  const grid=document.getElementById('brandGrid');
+  const keys=Object.keys(S.brandIntel).sort();
+  grid.innerHTML=keys.map(k=>{const p=S.brandIntel[k];const ready=isReady(k);return`<div class="brand-card${S.selectedBrand===k?' sel':''}" onclick="selectBrand('${k}')"><div class="bc-name">${esc(p.name||k)}</div><div class="bc-ind">${esc(p.industry||'Industry not set')}</div><div class="bc-status ${ready?'s-ready':'s-setup'}">${ready?'Intelligence ready':'Needs setup'}</div></div>`;}).join('')+`<div class="brand-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center" onclick="addBrand()"><span style="font-size:11px;color:var(--mid);letter-spacing:1px">+ Add brand</span></div>`;
+  if(S.selectedBrand)renderBrandEdit(S.selectedBrand);else document.getElementById('brandEditArea').innerHTML='';
 }
 
-function isReady(key) {
-  const p = state.brandIntel[key];
-  return !!(p && p.voice && p.positioning && !p.needsSetup);
-}
+function selectBrand(key){S.selectedBrand=key;const p=S.brandIntel[key];S.editForm={name:p.name||'',industry:p.industry||'',audience:p.audience||'',voice:p.voice||'',positioning:p.positioning||'',keyMessages:p.keyMessages?.length?[...p.keyMessages]:[''],platformNotes:p.platformNotes||'',avoidWords:p.avoidWords||'',avoidTopics:p.avoidTopics||''};renderBrandGrid();}
+function addBrand(){const name=prompt('Brand name (as it appears in briefs):');if(!name?.trim())return;const key=name.trim().toLowerCase();saveBrandIntel(key,{name:name.trim(),industry:'',audience:'',voice:'',positioning:'',keyMessages:[''],platformNotes:'',avoidWords:'',avoidTopics:'',needsSetup:true});S.selectedBrand=key;renderBrandGrid();}
 
-function renderBrandGrid() {
-  const grid = document.getElementById('brandGrid');
-  const keys = Object.keys(state.brandIntel).sort();
-  grid.innerHTML = keys.map(k => {
-    const p = state.brandIntel[k];
-    const ready = isReady(k);
-    return `
-      <div class="brand-card${state.selectedBrand===k?' sel':''}" onclick="selectBrand('${k}')">
-        <div class="bc-name">${esc(p.name||k)}</div>
-        <div class="bc-ind">${esc(p.industry||'Industry not set')}</div>
-        <div class="bc-status ${ready?'s-ready':'s-setup'}">${ready?'Intelligence ready':'Needs setup'}</div>
-      </div>`;
-  }).join('') + `<div class="brand-card" style="border-style:dashed;display:flex;align-items:center;justify-content:center" onclick="addBrand()">
-    <span style="font-size:12px;color:var(--mid);letter-spacing:1px">+ Add brand</span>
-  </div>`;
-
-  if (state.selectedBrand) renderBrandEdit(state.selectedBrand);
-  else document.getElementById('brandEditArea').innerHTML = '';
-}
-
-function selectBrand(key) {
-  state.selectedBrand = key;
-  const p = state.brandIntel[key];
-  state.editForm = {
-    name: p.name||'', industry: p.industry||'', audience: p.audience||'',
-    voice: p.voice||'', positioning: p.positioning||'',
-    keyMessages: p.keyMessages?.length ? [...p.keyMessages] : [''],
-    platformNotes: p.platformNotes||'', avoidWords: p.avoidWords||'',
-    avoidTopics: p.avoidTopics||''
-  };
-  renderBrandGrid();
-}
-
-function addBrand() {
-  const name = prompt('Brand name (as it appears in briefs):');
-  if (!name?.trim()) return;
-  const key = name.trim().toLowerCase();
-  saveBrandIntel(key, {name:name.trim(),industry:'',audience:'',voice:'',positioning:'',keyMessages:[''],platformNotes:'',avoidWords:'',avoidTopics:'',needsSetup:true});
-  state.selectedBrand = key;
-  renderBrandGrid();
-}
-
-function renderBrandEdit(key) {
-  const f = state.editForm;
-  if (!f) return;
-  const ea = document.getElementById('brandEditArea');
-  ea.innerHTML = `
+function renderBrandEdit(key){
+  const f=S.editForm;if(!f)return;
+  document.getElementById('brandEditArea').innerHTML=`
     <div class="brand-edit">
       <div class="be-title">${esc(f.name||key)}</div>
       <div class="two-col">
-        <div class="field"><label>Brand Name</label><input id="be-name" value="${esc(f.name)}" placeholder="As it appears in briefs" oninput="updateForm('name',this.value)"/></div>
-        <div class="field"><label>Industry / Category</label><input id="be-industry" value="${esc(f.industry)}" placeholder="e.g. SaaS / Business Automation" oninput="updateForm('industry',this.value)"/></div>
+        <div class="field"><label>Brand Name</label><input value="${esc(f.name)}" placeholder="As it appears in briefs" oninput="S.editForm.name=this.value"/></div>
+        <div class="field"><label>Industry / Category</label><input value="${esc(f.industry)}" placeholder="e.g. SaaS / Business Automation" oninput="S.editForm.industry=this.value"/></div>
       </div>
-      <div class="field"><label>Target Audience</label><textarea rows="2" oninput="updateForm('audience',this.value)" placeholder="Who they are — age, mindset, situation.">${esc(f.audience)}</textarea></div>
-      <div class="field"><label>Brand Voice</label><textarea rows="2" oninput="updateForm('voice',this.value)" placeholder="Adjectives and behavioral description of how this brand speaks.">${esc(f.voice)}</textarea></div>
-      <div class="field"><label>Positioning / What This Brand Owns</label><textarea rows="3" oninput="updateForm('positioning',this.value)" placeholder="The truth that makes this brand different.">${esc(f.positioning)}</textarea></div>
+      <div class="field"><label>Target Audience</label><textarea rows="2" oninput="S.editForm.audience=this.value" placeholder="Who they are — age, mindset, situation.">${esc(f.audience)}</textarea></div>
+      <div class="field"><label>Brand Voice</label><textarea rows="2" oninput="S.editForm.voice=this.value" placeholder="How this brand speaks — adjectives and behavioral description.">${esc(f.voice)}</textarea></div>
+      <div class="field"><label>Positioning</label><textarea rows="3" oninput="S.editForm.positioning=this.value" placeholder="What this brand owns in the mind. The truth that makes it different.">${esc(f.positioning)}</textarea></div>
       <div class="field">
-        <label>Key Messages (always reinforce)</label>
-        <div class="msg-list" id="msgList">
-          ${f.keyMessages.map((m,i) => `
-            <div class="msg-row" id="msg-row-${i}">
-              <input value="${esc(m)}" placeholder="Message ${i+1}" oninput="updateMsg(${i},this.value)"/>
-              ${f.keyMessages.length>1?`<button class="btn-remove" onclick="removeMsg(${i})">×</button>`:''}
-            </div>`).join('')}
-        </div>
+        <label>Key Messages</label>
+        <div class="msg-list" id="msgList">${f.keyMessages.map((m,i)=>`<div class="msg-row"><input value="${esc(m)}" placeholder="Message ${i+1}" oninput="S.editForm.keyMessages[${i}]=this.value"/>${f.keyMessages.length>1?`<button class="btn-remove" onclick="removeMsg(${i})">×</button>`:''}</div>`).join('')}</div>
         <button class="btn-add-msg" onclick="addMsg()">+ Add message</button>
       </div>
-      <div class="field"><label>Platform Notes</label><textarea rows="2" oninput="updateForm('platformNotes',this.value)" placeholder="Per-platform nuances, if any.">${esc(f.platformNotes)}</textarea></div>
+      <div class="field"><label>Platform Notes</label><textarea rows="2" oninput="S.editForm.platformNotes=this.value" placeholder="Per-platform nuances, if any.">${esc(f.platformNotes)}</textarea></div>
       <div class="two-col">
-        <div class="field"><label>Words / Phrases to Avoid</label><textarea rows="2" oninput="updateForm('avoidWords',this.value)" placeholder="Comma-separated">${esc(f.avoidWords)}</textarea></div>
-        <div class="field"><label>Topics / Tones to Avoid</label><textarea rows="2" oninput="updateForm('avoidTopics',this.value)" placeholder="What this brand should never sound like">${esc(f.avoidTopics)}</textarea></div>
+        <div class="field"><label>Words / Phrases to Avoid</label><textarea rows="2" oninput="S.editForm.avoidWords=this.value" placeholder="Comma-separated">${esc(f.avoidWords)}</textarea></div>
+        <div class="field"><label>Topics / Tones to Avoid</label><textarea rows="2" oninput="S.editForm.avoidTopics=this.value" placeholder="What this brand should never sound like">${esc(f.avoidTopics)}</textarea></div>
       </div>
-      <div class="save-row">
-        <button class="btn-primary" onclick="saveCurrentBrand()">Save Intelligence</button>
-        <span class="save-fb" id="saveFb"></span>
-      </div>
+      <div class="save-row"><button class="btn-primary" onclick="saveCurrentBrand()">Save Intelligence</button><span class="save-fb" id="saveFb"></span></div>
     </div>`;
 }
 
-function updateForm(field, val) { if (state.editForm) state.editForm[field] = val; }
-function updateMsg(i, val) { if (state.editForm) state.editForm.keyMessages[i] = val; }
-function addMsg() {
-  if (!state.editForm) return;
-  state.editForm.keyMessages.push('');
-  renderBrandEdit(state.selectedBrand);
-}
-function removeMsg(i) {
-  if (!state.editForm) return;
-  state.editForm.keyMessages.splice(i,1);
-  renderBrandEdit(state.selectedBrand);
-}
-function saveCurrentBrand() {
-  if (!state.editForm || !state.selectedBrand) return;
-  const profile = {...state.editForm, keyMessages: state.editForm.keyMessages.filter(m=>m.trim()), needsSetup: false};
-  saveBrandIntel(state.selectedBrand, profile);
-  const fb = document.getElementById('saveFb');
-  if (fb) { fb.textContent = 'Saved and locked.'; setTimeout(()=>fb.textContent='', 2500); }
-  renderBrandGrid();
-}
+function addMsg(){if(!S.editForm)return;S.editForm.keyMessages.push('');renderBrandEdit(S.selectedBrand);}
+function removeMsg(i){if(!S.editForm)return;S.editForm.keyMessages.splice(i,1);renderBrandEdit(S.selectedBrand);}
+function saveCurrentBrand(){if(!S.editForm||!S.selectedBrand)return;saveBrandIntel(S.selectedBrand,{...S.editForm,keyMessages:S.editForm.keyMessages.filter(m=>m.trim()),needsSetup:false});const fb=document.getElementById('saveFb');if(fb){fb.textContent='Saved and locked.';setTimeout(()=>fb.textContent='',2500);}renderBrandGrid();}
 
-// ── UTILS ─────────────────────────────────────────────────────────────────────
-function esc(str) {
-  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+// ── UTILS ──────────────────────────────────────────────────────────────────
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-// ── BOOT ──────────────────────────────────────────────────────────────────────
 init();
 </script>
 </body>
