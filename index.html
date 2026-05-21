@@ -211,6 +211,7 @@ tr:hover td{background:rgba(205,233,84,.025)}
   <div class="mode-tabs">
     <button class="mode-tab on" id="modeTabBulk" onclick="setMode('bulk')">Monthly Brief Upload</button>
     <button class="mode-tab" id="modeTabQuick" onclick="setMode('quick')">Quick Brief — 1 to 2 Copies</button>
+    <button class="mode-tab" onclick="testConnection()" style="flex:0;white-space:nowrap;padding:12px 16px">Test Connection</button>
   </div>
   <!-- BULK -->
   <div id="panelBulk">
@@ -222,6 +223,7 @@ tr:hover td{background:rgba(205,233,84,.025)}
       <input type="file" id="fileInput" accept=".xlsx,.xlsm" style="display:none" onchange="handleFileSelect(event)"/>
     </div>
     <div id="uploadError"></div>
+    <div id="apiTestResult" style="margin-top:12px"></div>
   </div>
   <!-- QUICK -->
   <div id="panelQuick" style="display:none">
@@ -524,9 +526,19 @@ async function runGeneration(rows){
     updateProgress(i+1,rows.length,row.BRAND);
     let result;
     try{const out=await callClaude(buildPrompt(row));result={row,output:parseOutput(out),status:'ok'};}
-    catch(e){result={row,output:null,status:'err',error:e.message};}
+    catch(e){
+      result={row,output:null,status:'err',error:e.message};
+      document.getElementById('progBrand').innerHTML='<span style="color:var(--err);font-size:12px;word-break:break-word">Error on '+esc(row.BRAND)+': '+esc(e.message)+'</span>';
+    }
     S.results.push(result);
-    document.getElementById('liveResults').appendChild(buildCard(result,S.results.length-1));
+    const card=buildCard(result,S.results.length-1);
+    document.getElementById('liveResults').appendChild(card);
+    if(result.status==='err'){
+      const body=card.querySelector('.card-body');
+      const chev=card.querySelector('.chevron');
+      if(body)body.style.display='';
+      if(chev)chev.classList.add('open');
+    }
   }
   renderComplete();
 }
@@ -734,11 +746,53 @@ async function callClaude(prompt){
   const data=await res.json();return data.content.map(b=>b.text||'').join('\n');
 }
 
+// ── CONNECTION TEST ───────────────────────────────────────────────────────
+async function testConnection(){
+  const area = document.getElementById('apiTestResult');
+  if(!area)return;
+  const key=getApiKey();
+  if(!key){
+    area.innerHTML='<div class="alert-err">No API key set on this device. Click the API Key button in the header and paste your Anthropic key (starts with sk-ant-).</div>';
+    return;
+  }
+  area.innerHTML='<div style="font-size:12px;color:var(--mid);padding:10px 0"><span class="spinner"></span> Testing connection to Anthropic API...</div>';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:30,messages:[{role:'user',content:'Reply with just the word CONNECTED.'}]})
+    });
+    const data=await res.json();
+    if(!res.ok){
+      const errMsg=data.error?.message||JSON.stringify(data);
+      area.innerHTML='<div class="alert-err"><strong>API Error '+res.status+'</strong><br>'+esc(errMsg)+'<br><br>'+getErrorHelp(res.status,errMsg)+'</div>';
+      return;
+    }
+    const reply=data.content?.map(b=>b.text||'').join('')||'';
+    area.innerHTML='<div style="background:rgba(127,232,154,.07);border:1px solid rgba(127,232,154,.25);color:var(--green);font-size:12px;padding:10px 14px;border-radius:4px"><strong>Connection successful.</strong> API key is valid and working on this device and domain. You can run briefs.</div>';
+    setTimeout(()=>{if(area)area.innerHTML='';},5000);
+  }catch(e){
+    area.innerHTML='<div class="alert-err"><strong>Connection failed: '+esc(e.message)+'</strong><br><br>'+getErrorHelp(0,e.message)+'</div>';
+  }
+}
+
+function getErrorHelp(status,msg){
+  if(status===401||msg.includes('invalid')||msg.includes('auth'))
+    return 'Your API key is invalid or expired. Go to <strong>console.anthropic.com</strong>, create a new key, and paste it using the API Key button in the header.';
+  if(msg.includes('not set')||msg.includes('No API key'))
+    return 'Click the <strong>API Key</strong> button in the header and paste your key from console.anthropic.com. You need to do this once per device and URL.';
+  if(status===429)
+    return 'You have hit your Anthropic API rate limit or have insufficient credits. Check your account at console.anthropic.com.';
+  if(msg.includes('fetch')||msg.includes('network')||msg.includes('Failed'))
+    return 'Network error. Check your internet connection. If you are on a corporate or restricted network, the Anthropic API endpoint may be blocked.';
+  return 'If this keeps happening, open browser DevTools (F12), go to the Console tab, run the brief, and share the red error text.';
+}
+
 // ── EXPORT ────────────────────────────────────────────────────────────────
 function exportExcel(){
   const wb=XLSX.utils.book_new();
-  const ws=XLSX.utils.json_to_sheet(S.results.map((r,i)=>({'#':i+1,'ROW ID':r.row.ROW_ID||'','BRAND':r.row.BRAND,'FORMAT':r.row.FORMAT,'PLATFORM':r.row.PLATFORM,'POST DATE':r.row.DATE||'','STATUS':r.status.toUpperCase(),'MAIN CAPTION':r.output?.caption||'','SLIDE COPY':r.output?.slides||'','HASHTAGS':r.output?.hashtags||'','ALTERNATIVE CAPTION':r.output?.variation||''})));
-  ws['!cols']=[4,12,20,14,14,12,10,60,60,40,60].map(w=>({wch:w}));
+  const ws=XLSX.utils.json_to_sheet(S.results.map((r,i)=>({'#':i+1,'ROW ID':r.row.ROW_ID||'','BRAND':r.row.BRAND,'FORMAT':r.row.FORMAT,'PLATFORM':r.row.PLATFORM,'POST DATE':r.row.DATE||'','STATUS':r.status.toUpperCase(),'ERROR DETAIL':r.status==='err'?(r.error||'Unknown error'):'','MAIN CAPTION':r.output?.caption||'','SLIDE COPY':r.output?.slides||'','HASHTAGS':r.output?.hashtags||'','ALTERNATIVE CAPTION':r.output?.variation||''})));
+  ws['!cols']=[4,12,20,14,14,12,10,50,60,60,40,60].map(w=>({wch:w}));
   XLSX.utils.book_append_sheet(wb,ws,'COPY OUTPUT');
   XLSX.writeFile(wb,'WDC_Copy_Output.xlsx');
 }
