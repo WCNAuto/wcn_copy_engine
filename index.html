@@ -736,7 +736,7 @@ function parseOutput(text){
 async function callClaude(prompt){
   const key=getApiKey();
   if(!key)throw new Error('API key not set on this device. Click "API Key" in the header and paste your Anthropic key. localStorage is device and domain specific — you need to set it once on each device and URL you use the engine from.');
-  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
+  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
   if(!res.ok){
     const e=await res.json().catch(()=>({}));
     const msg=e.error?.message||`API error ${res.status}`;
@@ -760,7 +760,7 @@ async function testConnection(){
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:30,messages:[{role:'user',content:'Reply with just the word CONNECTED.'}]})
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:30,messages:[{role:'user',content:'Reply with just the word CONNECTED.'}]})
     });
     const data=await res.json();
     if(!res.ok){
