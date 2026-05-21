@@ -1000,15 +1000,66 @@ function buildVisualPromptFromRow(row){
 }
 
 function parseOutput(text){
-  const sec=(h,stop)=>{const m=text.match(new RegExp('## '+h+'\\n([\\s\\S]*?)(?=## |$)','m'));return m?m[1].trim():'';};
-  return{caption:sec('1\\. MAIN CAPTION'),slides:sec('2\\. SLIDE COPY'),hashtags:sec('3\\. HASHTAGS'),variation:sec('4\\. ALTERNATIVE CAPTION'),raw:text};
+  // Normalise line endings and strip any bold markdown around headers
+  const norm=text.replace(/\r\n/g,'\n').replace(/\*\*(##[^*]+)\*\*/g,'$1');
+  const secs={};
+  // Split on ## at start of line (with or without leading newline)
+  norm.split(/\n(?=##\s)|^(?=##\s)/m).forEach(chunk=>{
+    const chunk2=chunk.trim();
+    if(!chunk2.startsWith('##'))return;
+    const nl=chunk2.indexOf('\n');
+    if(nl===-1)return;
+    const header=chunk2.substring(2,nl).trim().toUpperCase().replace(/[*:.]/g,'').trim();
+    const content=chunk2.substring(nl+1).trim();
+    if(header)secs[header]=content;
+  });
+  const get=(...keys)=>{
+    for(const k of keys){
+      for(const h of Object.keys(secs)){
+        if(h.includes(k.toUpperCase()))return secs[h];
+      }
+    }
+    return '';
+  };
+  return{
+    caption:  get('MAIN CAPTION','CAPTION'),
+    slides:   get('SLIDE COPY','SLIDES'),
+    hashtags: get('HASHTAGS'),
+    variation:get('ALTERNATIVE CAPTION','ALT'),
+    raw:text
+  };
 }
 
 function parseVisualOutput(text){
-  const sec=(h)=>{const m=text.match(new RegExp('## '+h+'\\n([\\s\\S]*?)(?=## |$)','m'));return m?m[1].trim():'';};
-  const isVideo=text.includes('## VIDEO PROMPT');
-  return{mj:sec('MJ PROMPT'),image:isVideo?'':sec('DALLE PROMPT'),video:isVideo?sec('VIDEO PROMPT'):'',artNote:sec('ART DIRECTION'),isVideo,raw:text};
+  const norm=text.replace(/\r\n/g,'\n').replace(/\*\*(##[^*]+)\*\*/g,'$1');
+  const secs={};
+  norm.split(/\n(?=##\s)|^(?=##\s)/m).forEach(chunk=>{
+    const chunk2=chunk.trim();
+    if(!chunk2.startsWith('##'))return;
+    const nl=chunk2.indexOf('\n');
+    if(nl===-1)return;
+    const header=chunk2.substring(2,nl).trim().toUpperCase().replace(/[*:.]/g,'').trim();
+    const content=chunk2.substring(nl+1).trim();
+    if(header)secs[header]=content;
+  });
+  const get=(...keys)=>{
+    for(const k of keys){
+      for(const h of Object.keys(secs)){
+        if(h.includes(k.toUpperCase()))return secs[h];
+      }
+    }
+    return '';
+  };
+  const isVideo=!!(text.includes('## VIDEO PROMPT')||get('VIDEO PROMPT'));
+  return{
+    mj:      get('MJ PROMPT','MIDJOURNEY'),
+    image:   isVideo?'':get('DALLE PROMPT','DALLE FIREFLY','FIREFLY'),
+    video:   isVideo?get('VIDEO PROMPT','VIDEO'):'',
+    artNote: get('ART DIRECTION'),
+    isVideo, raw:text
+  };
 }
+
 
 function buildRefinePrompt(result,section,feedback,context){
   const p=getProfile(result.row.BRAND)||getProfile(result.row._brandKey||'');
