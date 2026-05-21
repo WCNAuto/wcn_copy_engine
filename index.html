@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WDC Copy Engine</title>
+<title>WCN Content Engine</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{--navy:#0C1D5B;--deep:#0A1645;--card:#0f2266;--card2:#091852;--lime:#CDE954;--white:#FFFFFF;--mid:#8BA8C8;--dim:#5A7A9A;--warn:#ffb84d;--err:#ff7070;--green:#7fe89a}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--deep);color:var(--white);font-family:'Segoe UI',Calibri,system-ui,sans-serif;min-height:100vh;font-size:15px;line-height:1.6}
-.hdr{background:var(--navy);border-bottom:1px solid rgba(107,118,153,.2);padding:13px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.hdr{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08);padding:13px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
 .logo{display:flex;align-items:center;gap:11px;cursor:pointer}
 .mark{width:30px;height:30px;background:var(--lime);border-radius:3px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:900;font-size:14px;font-family:Georgia,serif;flex-shrink:0}
 .logo-name{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700}
-.logo-sub{font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-top:1px}
+.logo-sub{font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:1px}
 .hdr-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.hdr-btn{background:transparent;border:1px solid rgba(107,118,153,.28);color:var(--mid);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:6px 12px;border-radius:3px;cursor:pointer;transition:all .15s}
+.hdr-btn{background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:6px 12px;border-radius:3px;cursor:pointer;transition:all .15s}
 .hdr-btn:hover,.hdr-btn.on{border-color:var(--lime);color:var(--lime)}
 .badge{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);font-size:9px;letter-spacing:1.5px;padding:4px 9px;border-radius:2px;text-transform:uppercase;font-weight:700}
 .main{max-width:1060px;margin:0 auto;padding:40px 28px}
@@ -42,15 +42,15 @@ body{background:var(--deep);color:var(--white);font-family:'Segoe UI',Calibri,sy
 .btn-row{display:flex;align-items:center;gap:10px}
 .hero{text-align:center;margin-bottom:40px}
 .hero-label{font-size:11px;letter-spacing:2.5px;color:rgba(255,255,255,.45);text-transform:uppercase;font-weight:700;margin-bottom:13px}
-.hero-title{font-family:Georgia,serif;font-size:38px;line-height:1.2;margin-bottom:12px}
+.hero-title{font-family:Georgia,serif;font-size:38px;line-height:1.2;margin-bottom:10px}
 .hero-title em{font-style:italic;color:var(--white)}
 .hero-sub{font-size:15px;color:var(--mid);max-width:520px;margin:0 auto;line-height:1.7}
-.mode-tabs{display:flex;gap:0;margin-bottom:32px;border:1px solid rgba(107,118,153,.25);border-radius:5px;overflow:hidden}
-.mode-tab{flex:1;padding:14px;text-align:center;cursor:pointer;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:700;color:var(--mid);background:transparent;border:none;transition:all .15s;border-right:1px solid rgba(107,118,153,.2)}
+.mode-tabs{display:flex;gap:0;margin-bottom:32px;border:1px solid rgba(255,255,255,.1);border-radius:5px;overflow:hidden}
+.mode-tab{flex:1;padding:14px;text-align:center;cursor:pointer;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:700;color:var(--mid);background:transparent;border:none;transition:all .15s;border-right:1px solid rgba(255,255,255,.07)}
 .mode-tab:last-child{border-right:none}
 .mode-tab.on{background:var(--navy);color:var(--white)}
 .mode-tab:hover:not(.on){color:var(--white);background:rgba(12,29,91,.4)}
-.dropzone{border:2px dashed rgba(107,118,153,.32);border-radius:6px;padding:52px 40px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(12,29,91,.2)}
+.dropzone{border:2px dashed rgba(255,255,255,.12);border-radius:6px;padding:52px 40px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(12,29,91,.2)}
 .dropzone:hover,.dropzone.drag{border-color:var(--lime);background:rgba(205,233,84,.04)}
 .dz-icon{width:44px;height:44px;margin:0 auto 14px;background:rgba(205,233,84,.08);border:1px solid rgba(205,233,84,.2);border-radius:4px;display:flex;align-items:center;justify-content:center}
 .dz-title{font-size:17px;font-weight:600;margin-bottom:6px}
@@ -78,7 +78,7 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
 .prog-label{font-size:12px;color:var(--mid);letter-spacing:1px;text-transform:uppercase}
 .prog-num{font-size:26px;font-weight:800;color:var(--white);font-family:Georgia,serif}
-.prog-track{height:3px;background:rgba(107,118,153,.2);border-radius:2px;overflow:hidden}
+.prog-track{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
 .prog-fill{height:100%;background:var(--lime);transition:width .4s ease}
 .prog-brand{font-size:14px;color:var(--mid);margin-top:10px}
 .prog-brand span{color:rgba(255,255,255,.85)}
@@ -96,8 +96,8 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .s-ok{color:var(--lime)}.s-err{color:var(--err)}
 .chevron{font-size:10px;color:var(--mid);transition:transform .2s;margin-left:8px}
 .chevron.open{transform:rotate(180deg)}
-.card-body{border-top:1px solid rgba(107,118,153,.12)}
-.tabs{display:flex;border-bottom:1px solid rgba(107,118,153,.12)}
+.card-body{border-top:1px solid rgba(255,255,255,.06)}
+.tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.06)}
 .tab{padding:10px 16px;font-size:11px;letter-spacing:.8px;text-transform:uppercase;font-weight:700;cursor:pointer;color:var(--mid);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
 .tab.on{color:var(--white);border-bottom-color:var(--lime)}
 .tab:hover:not(.on){color:var(--white)}
@@ -109,29 +109,29 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .copy-btn:hover,.copy-btn.copied{background:rgba(205,233,84,.15)}
 .revise-toggle{background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.45);font-size:11px;letter-spacing:.8px;text-transform:uppercase;font-weight:700;padding:7px 14px;border-radius:3px;cursor:pointer;margin:0 15px 14px;transition:all .15s}
 .revise-toggle:hover,.revise-toggle.on{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)}
-.revise-panel{border-top:1px solid rgba(107,118,153,.12);padding:16px;background:rgba(10,22,69,.4);display:none}
+.revise-panel{border-top:1px solid rgba(255,255,255,.06);padding:16px;background:rgba(10,22,69,.4);display:none}
 .revise-panel.on{display:block}
 .revise-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:13px}
 .rev-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:13px}
-.rev-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:5px}
+.rev-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:6px}
 .rev-textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--white);font-family:inherit;font-size:13px;padding:11px;outline:none;resize:vertical;line-height:1.6;transition:border-color .15s;min-height:110px}
 .rev-textarea:focus{border-color:rgba(205,233,84,.35)}
+.rev-textarea::placeholder{color:rgba(107,118,153,.45)}
 .rev-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.btn-revise{background:transparent;border:1px solid var(--warn);color:var(--warn);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:3px;cursor:pointer;transition:all .15s}
+.btn-revise{background:transparent;border:1px solid var(--warn);color:var(--warn);font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:10px 20px;border-radius:3px;cursor:pointer;transition:all .15s}
 .btn-revise:hover{background:rgba(255,184,77,.1)}
 .btn-revise:disabled{opacity:.4;cursor:not-allowed}
-.rev-out{margin-top:13px;background:rgba(12,29,91,.5);border:1px solid rgba(205,233,84,.14);border-radius:4px;padding:13px;display:none}
+.rev-out{margin-top:13px;background:rgba(12,29,91,.5);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:13px;display:none}
 .rev-out.on{display:block}
 .rev-out-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:9px}
-.rev-out-text{font-family:'Courier New',monospace;font-size:12px;line-height:1.75;color:rgba(255,255,255,.88);white-space:pre-wrap;word-break:break-word}
-.btn-use{background:var(--lime);color:var(--navy);font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:6px 13px;border-radius:2px;cursor:pointer;border:none;margin-top:9px;transition:opacity .15s}
+.rev-out-text{font-family:'Courier New',monospace;font-size:13px;line-height:1.75;color:rgba(255,255,255,.88);white-space:pre-wrap;word-break:break-word}
+.btn-use{background:var(--lime);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:8px 16px;border-radius:2px;cursor:pointer;border:none;margin-top:10px;transition:opacity .15s}
 .btn-use:hover{opacity:.85}
 .spinner{display:inline-block;width:11px;height:11px;border:2px solid rgba(205,233,84,.18);border-top-color:var(--lime);border-radius:50%;animation:spin .6s linear infinite;margin-right:6px;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 .complete-bar{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap}
 .complete-text{font-size:15px}
 .complete-text strong{color:var(--white)}
-/* INTEL */
 .intel-note{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:13px 16px;font-size:14px;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:24px}
 .intel-note strong{color:var(--white)}
 .intel-actions{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
@@ -143,7 +143,6 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .bc-ind{font-size:12px;color:var(--mid);margin-bottom:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bc-status{font-size:11px;letter-spacing:1px;font-weight:700;text-transform:uppercase}
 .s-ready{color:var(--lime)}.s-setup{color:var(--warn)}
-/* bc-del removed */
 .brand-edit{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:24px}
 .be-title{font-family:Georgia,serif;font-size:22px;margin-bottom:22px;color:var(--white)}
 .msg-list{display:flex;flex-direction:column;gap:6px}
@@ -155,9 +154,10 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .btn-add-msg:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04)}
 .save-row{display:flex;align-items:center;gap:10px;margin-top:20px}
 .save-fb{font-size:13px;color:var(--green)}
-/* IMPORT FROM MEMORY FILE */
+.btn-add-brand{background:transparent;border:1px dashed rgba(255,255,255,.12);color:rgba(255,255,255,.4);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:8px 15px;border-radius:4px;cursor:pointer;font-weight:700;transition:all .15s;margin-bottom:18px}
+.btn-add-brand:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.7)}
 .import-section{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:20px;margin-bottom:24px}
-.import-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700;margin-bottom:6px}
+.import-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700;margin-bottom:6px}
 .import-sub{font-size:13px;color:var(--mid);margin-bottom:14px;line-height:1.6}
 .import-textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:rgba(255,255,255,.85);font-family:inherit;font-size:13px;padding:12px;outline:none;resize:vertical;line-height:1.6;transition:border-color .15s;min-height:140px}
 .import-textarea:focus{border-color:rgba(205,233,84,.35)}
@@ -166,39 +166,37 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .btn-import:hover{background:rgba(255,255,255,.06)}
 .btn-import:disabled{opacity:.4;cursor:not-allowed}
 .import-status{font-size:13px;color:var(--mid)}
-@media(max-width:640px){.main{padding:24px 16px}.two-col,.rev-grid{grid-template-columns:1fr}.hdr{padding:11px 16px}.hdr-right{gap:5px}.brand-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
-
-/* ── OUTPUT TABLE ── */
+/* OUTPUT TABLE */
 .out-table-wrap{overflow-x:auto;border:1px solid rgba(255,255,255,.07);border-radius:6px;background:var(--card)}
-.out-table{width:100%;border-collapse:collapse;font-size:14px;min-width:900px}
+.out-table{width:100%;border-collapse:collapse;font-size:14px;min-width:1100px}
 .out-table thead tr{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.12)}
 .out-table th{padding:12px 14px;text-align:left;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700;white-space:nowrap;position:sticky;top:0;background:var(--navy);z-index:10}
-.out-table th.th-content{min-width:220px}
+.th-visual{background:rgba(9,24,82,.8) !important;color:rgba(139,168,200,.7) !important;border-left:1px solid rgba(255,255,255,.06)}
 .out-table td{padding:0;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top}
-.out-table tr:last-child td{border-bottom:none}
 .out-table tr.row-err td{background:rgba(255,112,112,.04)}
-/* META CELLS */
 .td-meta{padding:12px 14px;font-size:13px;color:var(--mid);white-space:nowrap;vertical-align:top}
 .td-num{font-size:13px;color:rgba(255,255,255,.35);text-align:center;padding:14px 10px;vertical-align:top}
 .td-brand-name{font-weight:700;color:var(--white);font-size:15px;margin-bottom:3px}
 .td-tags{display:flex;flex-direction:column;gap:2px}
 .td-tag{font-size:12px;color:var(--mid);letter-spacing:.3px}
-/* CONTENT CELLS */
-.content-cell{position:relative;cursor:pointer;padding:0}
+.content-cell{position:relative;cursor:pointer;padding:0;min-width:200px}
+.vis-cell{border-left:1px solid rgba(255,255,255,.04)}
+.vis-cell .cc-inner{background:rgba(9,24,82,.3)}
+.vis-cell:hover .cc-inner{background:rgba(9,24,82,.55)}
+.th-content{min-width:200px}
 .cc-inner{padding:13px 14px;min-height:52px;transition:background .15s}
 .content-cell:hover .cc-inner{background:rgba(205,233,84,.04)}
+.content-cell.expanded .cc-inner{background:rgba(12,29,91,.5)}
+.vis-cell.expanded .cc-inner{background:rgba(9,24,82,.7)}
 .cc-preview{font-size:13px;line-height:1.65;color:rgba(255,255,255,.78);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-wrap;word-break:break-word}
-.cc-preview.err-text{color:var(--err)}
+.content-cell.expanded .cc-preview{-webkit-line-clamp:unset;display:block}
 .cc-preview.empty{color:rgba(107,118,153,.4);font-style:italic}
+.cc-vis-badge{display:inline-block;font-size:9px;letter-spacing:1.5px;font-weight:800;text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-bottom:6px;background:rgba(139,168,200,.1);color:rgba(139,168,200,.65);border:1px solid rgba(139,168,200,.15)}
 .cc-actions{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
 .cc-btn{background:rgba(205,233,84,.07);border:1px solid rgba(205,233,84,.15);color:var(--lime);font-size:11px;letter-spacing:.5px;text-transform:uppercase;padding:5px 11px;border-radius:2px;cursor:pointer;font-weight:700;transition:all .15s;font-family:inherit;white-space:nowrap}
 .cc-btn:hover{background:rgba(205,233,84,.15)}
 .cc-btn.copied{color:var(--green);border-color:rgba(127,232,154,.3)}
-/* EXPANDED CELL */
-.content-cell.expanded .cc-inner{background:rgba(12,29,91,.5)}
-.content-cell.expanded .cc-preview{-webkit-line-clamp:unset;display:block}
-/* REFINE ROW */
-.refine-row{border-top:1px solid rgba(107,118,153,.12)}
+.refine-row{border-top:1px solid rgba(255,255,255,.06)}
 .refine-row td{padding:0}
 .refine-panel{padding:16px;background:rgba(9,24,82,.6)}
 .refine-header{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
@@ -206,7 +204,7 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .refine-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .refine-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:6px}
 .refine-select{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--white);font-family:inherit;font-size:14px;padding:10px 12px;outline:none;-webkit-appearance:none;margin-bottom:12px}
-.refine-select option{background:var(--navy)}
+.refine-select option,.refine-select optgroup{background:var(--navy)}
 .refine-textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--white);font-family:inherit;font-size:14px;padding:11px 13px;outline:none;resize:vertical;line-height:1.6;transition:border-color .15s;min-height:100px}
 .refine-textarea:focus{border-color:rgba(205,233,84,.35)}
 .refine-textarea::placeholder{color:rgba(107,118,153,.45)}
@@ -214,13 +212,31 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .btn-refine{background:transparent;border:1px solid var(--warn);color:var(--warn);font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:10px 20px;border-radius:3px;cursor:pointer;transition:all .15s}
 .btn-refine:hover{background:rgba(255,184,77,.1)}
 .btn-refine:disabled{opacity:.4;cursor:not-allowed}
-.refine-output{margin-top:12px;background:rgba(12,29,91,.6);border:1px solid rgba(205,233,84,.14);border-radius:4px;padding:12px;display:none}
+.refine-output{margin-top:12px;background:rgba(12,29,91,.6);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:12px;display:none}
 .refine-output.on{display:block}
 .refine-output-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:8px}
 .refine-output-text{font-family:'Courier New',monospace;font-size:13px;line-height:1.75;color:rgba(255,255,255,.9);white-space:pre-wrap;word-break:break-word}
-.btn-use{background:var(--lime);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:8px 16px;border-radius:2px;cursor:pointer;border:none;margin-top:10px;transition:opacity .15s}
-.btn-use:hover{opacity:.85}
-@media(max-width:700px){.refine-grid{grid-template-columns:1fr}}
+/* DESIGN ENGINE */
+.des-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:12px}
+.des-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.des-card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:6px;overflow:hidden}
+.des-card.des-na{opacity:.45}
+.des-card-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px;gap:10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.des-icon{width:32px;height:32px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:rgba(255,255,255,.5);letter-spacing:.5px;flex-shrink:0}
+.des-card-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:2px}
+.des-card-desc{font-size:11px;color:rgba(255,255,255,.4)}
+.des-prompt-text{font-family:'Courier New',monospace;font-size:13px;line-height:1.75;color:rgba(255,255,255,.85);white-space:pre-wrap;word-break:break-word;padding:14px 16px;background:rgba(0,0,0,.15)}
+.des-art-text{font-size:13px;line-height:1.7;color:rgba(255,255,255,.75);padding:0 16px 14px}
+.des-rules{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 16px 14px}
+.des-rule-head{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;margin-bottom:8px}
+.des-rule-head.do{color:var(--green)}
+.des-rule-head.dont{color:var(--err)}
+.des-rule-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.des-rule-list li{font-size:12px;line-height:1.55;color:rgba(255,255,255,.7);padding-left:12px;position:relative}
+.des-rule-list li::before{content:"checkmark";position:absolute;left:0;color:var(--green);font-size:10px;top:1px}
+.des-rule-list.dont-list li::before{content:"x";color:var(--err)}
+@media(max-width:700px){.des-bottom-grid{grid-template-columns:1fr}.des-rules{grid-template-columns:1fr}.refine-grid{grid-template-columns:1fr}.rev-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
+@media(max-width:640px){.main{padding:24px 16px}.hdr{padding:11px 16px}.brand-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
 </style>
 </head>
 <body>
@@ -229,9 +245,9 @@ tr:hover td{background:rgba(205,233,84,.025)}
 <div class="modal-overlay" id="keyModal">
   <div class="modal">
     <div class="modal-title">Anthropic API Key</div>
-    <div class="modal-sub">Stored locally in your browser. Never sent anywhere except directly to Anthropic. Starts with <code style="color:rgba(255,255,255,.5)">sk-ant-</code></div>
+    <div class="modal-sub">Stored locally in your browser. Never sent anywhere except directly to Anthropic. Starts with <code style="color:var(--lime)">sk-ant-</code></div>
     <div class="field"><label>API Key</label><input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..."/></div>
-    <div style="font-size:11px;color:var(--mid);line-height:1.5;margin-bottom:16px">Get your key at <strong>console.anthropic.com</strong>. Usage billed to your Anthropic account.</div>
+    <div style="font-size:12px;color:var(--mid);line-height:1.5;margin-bottom:16px">Get your key at <strong>console.anthropic.com</strong>.</div>
     <div style="display:flex;gap:10px">
       <button class="btn-primary" onclick="saveApiKey()">Save Key</button>
       <button class="btn-ghost" id="closeKeyModalBtn" onclick="closeModal()">Cancel</button>
@@ -239,16 +255,15 @@ tr:hover td{background:rgba(205,233,84,.025)}
   </div>
 </div>
 
-<!-- HEADER -->
 <header class="hdr">
   <div class="logo" onclick="goHome()">
     <div class="mark">W</div>
-    <div><div class="logo-name">White Digital Canvas</div><div class="logo-sub">Content Operating System</div></div>
+    <div><div class="logo-name">WCN Content Engine</div><div class="logo-sub">Copy &middot; Design &middot; Intelligence</div></div>
   </div>
   <div class="hdr-right">
     <button class="hdr-btn" id="intelBtn" onclick="toggleIntel()">Brand Intelligence</button>
     <button class="hdr-btn" id="apiKeyBtn" onclick="showKeyModal()">API Key</button>
-    <span class="badge">Copy Engine v2</span>
+    <span class="badge">Content Engine</span>
   </div>
 </header>
 
@@ -257,41 +272,44 @@ tr:hover td{background:rgba(205,233,84,.025)}
 <!-- HOME -->
 <div class="main" id="viewHome">
   <div class="hero">
-    <div class="hero-label">WDC Content OS</div>
-    <h1 class="hero-title">Brief in. <em>All copies out.</em></h1>
-    <p class="hero-sub">Brand voice, positioning, and key messages are locked in this system. Fill the brief with what to communicate. The engine handles the rest.</p>
+    <div class="hero-label">WCN Content Engine</div>
+    <h1 class="hero-title">Brief in. <em>Everything out.</em></h1>
+    <p class="hero-sub">Brand intelligence is locked in. Brief with what to communicate or what to visualise. Copy and design prompts — both out.</p>
   </div>
   <div class="mode-tabs">
     <button class="mode-tab on" id="modeTabBulk" onclick="setMode('bulk')">Monthly Brief Upload</button>
-    <button class="mode-tab" id="modeTabQuick" onclick="setMode('quick')">Quick Brief — 1 to 2 Copies</button>
-    <button class="mode-tab" onclick="testConnection()" style="flex:0;white-space:nowrap;padding:12px 16px">Test Connection</button>
+    <button class="mode-tab" id="modeTabQuick" onclick="setMode('quick')">Quick Copy Brief</button>
+    <button class="mode-tab" id="modeTabDesign" onclick="setMode('design')">Design Prompt Engine</button>
+    <button class="mode-tab" onclick="testConnection()" style="flex:0;white-space:nowrap;padding:12px 16px;font-size:10px">Test Connection</button>
   </div>
+
   <!-- BULK -->
   <div id="panelBulk">
     <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave()" ondrop="onDrop(event)">
       <div class="dz-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#CDE954" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
       <div class="dz-title">Drop WDC_Monthly_Content_Brief.xlsx here</div>
-      <div class="dz-sub">Upload the filled monthly brief</div>
+      <div class="dz-sub">Upload the filled monthly brief — copy and visual prompts generated together</div>
       <button class="btn-primary" onclick="event.stopPropagation();document.getElementById('fileInput').click()">Select File</button>
       <input type="file" id="fileInput" accept=".xlsx,.xlsm" style="display:none" onchange="handleFileSelect(event)"/>
     </div>
     <div id="uploadError"></div>
     <div id="apiTestResult" style="margin-top:12px"></div>
   </div>
+
   <!-- QUICK -->
   <div id="panelQuick" style="display:none">
     <div class="qb-form">
-      <div class="qb-title">Quick Brief</div>
-      <div class="qb-sub">For 1–2 urgent copies. Brand intelligence is pulled automatically. Fill what to say — not how.</div>
+      <div class="qb-title">Quick Copy Brief</div>
+      <div class="qb-sub">For 1-2 urgent copies. Copy and visual prompts generated together. Fill what to say — not how.</div>
       <div class="two-col">
-        <div class="field"><label>Brand Name *</label><select id="qb-brand" onchange="updateQbNote('qb-brand','qb-brand-note')"><option value="">Select brand</option></select><div id="qb-brand-note" style="font-size:10px;color:var(--mid);margin-top:5px;min-height:14px"></div></div>
+        <div class="field"><label>Brand *</label><select id="qb-brand" onchange="updateQbNote('qb-brand','qb-brand-note')"><option value="">Select brand</option></select><div id="qb-brand-note" style="font-size:12px;color:var(--mid);margin-top:5px;min-height:16px"></div></div>
         <div class="field"><label>Platform *</label><select id="qb-platform"><option value="">Select platform</option><option>Instagram</option><option>LinkedIn</option><option>Facebook</option><option>Instagram + Facebook</option><option>Twitter / X</option><option>All Platforms</option></select></div>
       </div>
       <div class="two-col">
         <div class="field"><label>Content Format *</label><select id="qb-format"><option value="">Select format</option><option>Carousel</option><option>Static Post</option><option>Reel</option><option>Video Script</option><option>Story</option><option>Strip</option><option>Wheel</option></select></div>
         <div class="field"><label>Content Bucket *</label><select id="qb-bucket"><option value="">Select bucket</option><option>Education</option><option>Promotion</option><option>Testimonial</option><option>Brand Story</option><option>Culture</option><option>Product Showcase</option><option>Seasonal</option><option>Engagement</option><option>Announcement</option><option>Behind the Scenes</option></select></div>
       </div>
-      <div class="field"><label>Talking Points * — what this post must COMMUNICATE (3–5 points minimum)</label><textarea id="qb-points" rows="4" placeholder="e.g.&#10;- We just hit 10,000 customers&#10;- Journey started 3 years ago with 2 people&#10;- Thank you to the community&#10;- What is next for the brand"></textarea></div>
+      <div class="field"><label>Talking Points * — what this post must COMMUNICATE</label><textarea id="qb-points" rows="4" placeholder="3-5 points minimum. What must this post say?"></textarea></div>
       <div class="two-col">
         <div class="field"><label>Primary CTA *</label><input type="text" id="qb-cta" placeholder="e.g. DM us / Visit link in bio"/></div>
         <div class="field"><label>No. of Slides (carousels only)</label><input type="text" id="qb-slides" placeholder="e.g. 8"/></div>
@@ -301,34 +319,61 @@ tr:hover td{background:rgba(205,233,84,.025)}
         <div class="field"><label>Tone Override (optional)</label><input type="text" id="qb-tone" placeholder="Campaign-specific mood only"/></div>
       </div>
       <div class="field"><label>Additional Notes (optional)</label><textarea id="qb-notes" rows="2" placeholder="Anything specific the copywriter needs to know"></textarea></div>
-      <!-- Second piece -->
-      <div style="border-top:1px solid rgba(107,118,153,.15);padding-top:18px;margin-top:4px">
+      <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:18px;margin-top:4px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-          <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);font-weight:700">Second Piece (Optional)</span>
+          <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);font-weight:700">Second Piece (Optional)</span>
           <button class="btn-ghost" id="addSecondBtn" onclick="toggleSecond()" style="font-size:9px;padding:5px 10px">+ Add Second Brief</button>
         </div>
         <div id="secondBriefArea" style="display:none">
           <div class="two-col">
-            <div class="field"><label>Brand Name</label><select id="qb2-brand" onchange="updateQbNote('qb2-brand','qb2-brand-note')"><option value="">Select brand</option></select><div id="qb2-brand-note" style="font-size:10px;color:var(--mid);margin-top:5px;min-height:14px"></div></div>
+            <div class="field"><label>Brand</label><select id="qb2-brand" onchange="updateQbNote('qb2-brand','qb2-brand-note')"><option value="">Select brand</option></select><div id="qb2-brand-note" style="font-size:12px;color:var(--mid);margin-top:5px;min-height:16px"></div></div>
             <div class="field"><label>Platform</label><select id="qb2-platform"><option value="">Select platform</option><option>Instagram</option><option>LinkedIn</option><option>Facebook</option><option>Instagram + Facebook</option><option>Twitter / X</option><option>All Platforms</option></select></div>
           </div>
           <div class="two-col">
-            <div class="field"><label>Content Format</label><select id="qb2-format"><option value="">Select format</option><option>Carousel</option><option>Static Post</option><option>Reel</option><option>Video Script</option><option>Story</option></select></div>
-            <div class="field"><label>Content Bucket</label><select id="qb2-bucket"><option value="">Select bucket</option><option>Education</option><option>Promotion</option><option>Testimonial</option><option>Brand Story</option><option>Culture</option><option>Product Showcase</option><option>Seasonal</option><option>Engagement</option><option>Announcement</option></select></div>
+            <div class="field"><label>Format</label><select id="qb2-format"><option value="">Select format</option><option>Carousel</option><option>Static Post</option><option>Reel</option><option>Video Script</option><option>Story</option></select></div>
+            <div class="field"><label>Bucket</label><select id="qb2-bucket"><option value="">Select bucket</option><option>Education</option><option>Promotion</option><option>Testimonial</option><option>Brand Story</option><option>Culture</option><option>Product Showcase</option><option>Seasonal</option><option>Engagement</option><option>Announcement</option></select></div>
           </div>
           <div class="field"><label>Talking Points</label><textarea id="qb2-points" rows="3" placeholder="What this post must communicate"></textarea></div>
           <div class="two-col">
             <div class="field"><label>Primary CTA</label><input type="text" id="qb2-cta" placeholder="e.g. DM us"/></div>
             <div class="field"><label>No. of Slides</label><input type="text" id="qb2-slides" placeholder="e.g. 8"/></div>
           </div>
-          <div class="field"><label>Additional Notes (optional)</label><textarea id="qb2-notes" rows="2" placeholder="Anything specific"></textarea></div>
+          <div class="field"><label>Additional Notes (optional)</label><textarea id="qb2-notes" rows="2"></textarea></div>
         </div>
       </div>
       <div class="btn-row" style="margin-top:18px">
-        <button class="btn-primary" id="qbGenerateBtn" onclick="runQuickBrief()">Generate Copy</button>
+        <button class="btn-primary" id="qbGenerateBtn" onclick="runQuickBrief()">Generate Copy + Visual Prompts</button>
       </div>
       <div id="qbError"></div>
     </div>
+  </div>
+
+  <!-- DESIGN -->
+  <div id="panelDesign" style="display:none">
+    <div class="qb-form">
+      <div class="qb-title">Design Prompt Engine</div>
+      <div class="qb-sub">For the design team or standalone visual brief. Brand visual intelligence is loaded automatically.</div>
+      <div class="two-col">
+        <div class="field"><label>Brand *</label><select id="dp-brand" onchange="updateQbNote('dp-brand','dp-brand-note')"><option value="">Select brand</option></select><div id="dp-brand-note" style="font-size:12px;color:var(--mid);margin-top:5px;min-height:16px"></div></div>
+        <div class="field"><label>Asset Type *</label><select id="dp-asset"><option value="">Select asset type</option><option>Carousel Cover</option><option>Carousel Slide</option><option>Static Post</option><option>Reel / Video Thumbnail</option><option>Story</option><option>LinkedIn Banner</option><option>YouTube Thumbnail</option><option>Short Video / Reel (15-30s)</option><option>Long Video (60s+)</option><option>Product Visual</option><option>Event Poster</option><option>Ad Creative</option></select></div>
+      </div>
+      <div class="two-col">
+        <div class="field"><label>Platform *</label><select id="dp-platform"><option value="">Select platform</option><option>Instagram</option><option>LinkedIn</option><option>Facebook</option><option>YouTube</option><option>Twitter / X</option><option>All Platforms</option></select></div>
+        <div class="field"><label>AI Tool *</label><select id="dp-tool"><option value="">Select tool</option><option value="midjourney">Midjourney</option><option value="dalle">DALL-E 3 / Adobe Firefly</option><option value="runway">Runway / Kling / Pika (Video)</option><option value="all">All Tools</option></select></div>
+      </div>
+      <div class="field"><label>What this visual must COMMUNICATE or SHOW *</label><textarea id="dp-concept" rows="3" placeholder="Describe the scene, moment, or feeling the visual needs to capture"></textarea></div>
+      <div class="two-col">
+        <div class="field"><label>Visual Mood Override (optional)</label><input type="text" id="dp-mood" placeholder="e.g. Cinematic / Warm and real / High energy"/></div>
+        <div class="field"><label>Aspect Ratio</label><select id="dp-ratio"><option value="">Auto (based on asset)</option><option value="1:1">1:1 Square</option><option value="4:5">4:5 Portrait (Instagram)</option><option value="9:16">9:16 Vertical (Reels)</option><option value="16:9">16:9 Landscape (YouTube)</option><option value="3:2">3:2 Horizontal</option></select></div>
+      </div>
+      <div class="field"><label>Reference / Inspiration (optional)</label><input type="text" id="dp-ref" placeholder="Describe a visual style, photographer, or film reference"/></div>
+      <div class="field"><label>Art Direction Notes (optional)</label><textarea id="dp-notes" rows="2" placeholder="Anything specific — leave room for text overlay, no faces, specific colour to feature..."></textarea></div>
+      <div class="btn-row" style="margin-top:18px">
+        <button class="btn-primary" id="dpGenerateBtn" onclick="runDesignBrief()">Generate Design Prompts</button>
+      </div>
+      <div id="dpError"></div>
+    </div>
+    <div id="designOutputArea" style="margin-top:28px"></div>
   </div>
 </div>
 
@@ -337,15 +382,12 @@ tr:hover td{background:rgba(205,233,84,.025)}
   <div class="sec-hdr"><div><div class="sec-label">Brief Review</div><div class="sec-title">Ready to generate</div></div><div class="pill" id="reviewCount"></div></div>
   <div id="missingIntelWarn"></div>
   <div class="tbl-wrap"><table><thead><tr><th>#</th><th>Brand</th><th>Platform</th><th>Format</th><th>Talking Points</th><th>CTA</th><th>Intel</th></tr></thead><tbody id="reviewTable"></tbody></table></div>
-  <div class="btn-row">
-    <button class="btn-ghost" onclick="goHome()">Change file</button>
-    <button class="btn-primary" id="generateBtn" onclick="startGeneration()" style="flex:1">Generate all pieces</button>
-  </div>
+  <div class="btn-row"><button class="btn-ghost" onclick="goHome()">Change file</button><button class="btn-primary" id="generateBtn" onclick="startGeneration()" style="flex:1">Generate all pieces</button></div>
 </div>
 
 <!-- GENERATING -->
 <div class="main" id="viewGenerating" style="display:none">
-  <div class="sec-hdr"><div><div class="sec-label">Generating</div><div class="sec-title">Writing copy...</div></div><div class="pill" id="genCount"></div></div>
+  <div class="sec-hdr"><div><div class="sec-label">Generating</div><div class="sec-title">Writing copy and visual prompts...</div></div><div class="pill" id="genCount"></div></div>
   <div class="prog-wrap">
     <div class="prog-top"><span class="prog-label">Progress</span><span class="prog-num" id="progNum">0%</span></div>
     <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
@@ -363,29 +405,23 @@ tr:hover td{background:rgba(205,233,84,.025)}
       <button class="btn-ghost" onclick="exportExcel()">Export .xlsx</button>
     </div>
   </div>
-  <!-- OUTPUT TABLE -->
   <div id="outputTable"></div>
 </div>
 
 <!-- INTEL -->
 <div class="main" id="viewIntel" style="display:none">
   <div class="sec-hdr"><div><div class="sec-label">Brand Intelligence</div><div class="sec-title">Locked voice and positioning</div></div></div>
-  <div class="intel-note"><strong>Not for the team.</strong> Brand voice, positioning, audience intelligence, and message pillars are set here and fed silently into every generation. AMs fill the brief — WHAT to communicate. This defines HOW. <strong id="brandCountNote"></strong></div>
-
-  <!-- IMPORT FROM MEMORY FILE -->
+  <div class="intel-note"><strong>Not for the team.</strong> Brand voice, positioning, visual intelligence, and message pillars are set here and fed silently into every generation — copy and design prompts both. AMs fill the brief. This defines how.</div>
   <div class="import-section">
     <div class="import-title">Add Brand from Project Memory File</div>
-    <div class="import-sub">Paste the full contents of any project memory file or brand brief document. The engine will read it, extract all brand intelligence, and auto-populate a new brand profile. Review and save.</div>
-    <textarea class="import-textarea" id="importTextarea" placeholder="Paste project memory file content here — full .md or .txt file, any format. The engine will parse it."></textarea>
+    <div class="import-sub">Paste the full contents of any project memory file. The engine reads it, extracts all brand intelligence, and auto-populates a new profile.</div>
+    <textarea class="import-textarea" id="importTextarea" placeholder="Paste project memory file content here — full .md or .txt file, any format."></textarea>
     <div class="import-actions">
       <button class="btn-import" id="importBtn" onclick="importFromMemoryFile()">Parse and Import Brand</button>
       <span class="import-status" id="importStatus"></span>
     </div>
   </div>
-
-  <div class="intel-actions">
-    <button class="btn-ghost" onclick="addBrandManually()">+ Add Brand Manually</button>
-  </div>
+  <div class="intel-actions"><button class="btn-add-brand" onclick="addBrandManually()">+ Add Brand Manually</button></div>
   <div class="brand-grid" id="brandGrid"></div>
   <div id="brandEditArea"></div>
 </div>
@@ -393,24 +429,218 @@ tr:hover td{background:rgba(205,233,84,.025)}
 </div>
 
 <script>
-// ── BRAND DEFAULTS (locked in, not editable by team) ──────────────────────
 const BRAND_DEFAULTS={
-  "superup":{name:"SuperUp",industry:"EdTech / Upskilling / Career Growth",audience:"Ambitious Indians aged 22–35. Working professionals who feel stuck. Aspirational achievers who want to move up in life, not just on paper. Not the elite — the driven.",voice:"Bold, direct, human, anti-corporate, slightly provocative. Short sentences. No fluff. Earns every word. Speaks like a mentor who has done it, not a brand that sells it.",positioning:"Everyone is selling learning. Nobody is selling progress. SuperUp is not an ed-platform — it is a belief system for people who want to move up in life. The product is progress, not certificates.",keyMessages:["Karke Dekh — try it, do it, prove it to yourself. Action over intention.","Upgrade Zindagi — not just your resume, your whole life trajectory.","Progress is the product. Certificates are a side effect.","For the achiever in every Indian. Not just the privileged few."],platformNotes:"Instagram: bold hooks, relatable career struggles, punchy 3–5 line captions. LinkedIn: career narrative, thought leadership. Reels: real transformation stories not polished testimonials.",avoidWords:"learnings, upskill, empower, synergy, holistic, seamless, innovative, best-in-class, leverage, unlock your potential, game-changer",avoidTopics:"Generic motivational quotes without substance. Corporate speak. Promises without specificity."},
-  "raj petro":{name:"Raj Petro Specialities",industry:"Specialty Industrial Oils / Chemicals / Shell Group Company",audience:"B2B industrial buyers. Vikram: Chief Engineer at Power Utilities buying transformer oils — fears grid downtime. Priya: Head of Quality at Pharma and Personal Care buying petroleum jelly — fears audit failure. Suresh: Plant Manager at Rubber and Tyre plants buying waxes — fears batch variance. All three are buying risk reduction, not a product.",voice:"Precise, not vague. Confident, not boastful. Industrial, not corporate. Elevating, not listing. Every claim is specific and verifiable. Sounds like it understands the customer's application and their commercial reality. The premium signal is in the exactness of language.",positioning:"Indian premium specialist — provably global quality, locally rooted, Shell Group-backed. Everyday Forward: the chemistry that holds critical systems together. Nobody owns this territory. Selling gold jewellery that has been priced and presented as silver with gold polish — that changes now.",keyMessages:["Consequence before product — open with the cost of failure before naming the product. When a transformer fails, a grid goes dark.","Proof before claim — NTPC and PGCIL approved is different from trusted by India's power sector.","Shell Group as validator not protagonist — it confirms standards and does not replace Raj Petro's own proof points.","For more than 80 years, the chemistry the world depends on without needing the world to know our name.","The invisible infrastructure of progress — power grids, pharmaceuticals, food systems, rubber, agriculture."],platformNotes:"LinkedIn is primary B2B channel. Five-phase arc: brand credibility, category expertise by persona, product proof, customer validation, lead generation. Instagram and Facebook deprioritised. Zoomol automotive content continues in controlled proportion only.",avoidWords:"trusted without named proof, world-class quality, cost-effective, competitive pricing, solutions for modern industry, powering tomorrow, your trusted partner, innovative products, quality you can rely on",avoidTopics:"Generic social posting. Consumer brand thinking. Vague adjectives. Using Shell logo in any form — this is a legal compliance rule, not a preference. Zoomol content dominating output."},
-  "zoomol":{name:"Zoomol",industry:"Automotive Lubricants / FMCG / Raj Petro Specialities / Shell Group",audience:"Distributors, dealers, fleet operators, mechanics, end consumers. Vehicle owners wanting reliable engine protection. Trade channel partners who need a brand they can sell confidently.",voice:"Performance-led, practical, confident. Consumer-facing but credible. Speaks in engine protection and performance, not chemistry. The Shell Group connection is a consumer trust bridge, used as one closing validation line, not the lead.",positioning:"Zoomol is part of the Shell Group — the same group that makes Shell Helix, the world's most trusted engine oil brand. Performance story leads every paragraph. Shell Group appears as closing institutional validation only.",keyMessages:["Performance story leads — Shell Group appears as one closing line of validation, not as the identity.","The relationship and reliability of 80 years of Raj Petro behind every product.","Consumer trust bridge: Shell Group membership means the same quality governance as the world's most trusted engine oil."],platformNotes:"Instagram, Facebook, YouTube, WhatsApp, point of sale. Social content continues in practical proportion. Must not dominate Raj Petro output thinking.",avoidWords:"Industrial language from the specialty portfolio, B2B persona language",avoidTopics:"Anchoring Zoomol identity so heavily on Shell Group that Zoomol itself becomes invisible. Industrial specialty language on a consumer brand."},
-  "hfs":{name:"HFS — Hiranandani Financial Services",industry:"NBFC / MSME Lending / Financial Services",audience:"MSME business owners across Tier 2 and Tier 3 cities. Kirana traders, seasonal vendors, women entrepreneurs, micro-manufacturers. People who have confidence to act when support is honest. Secondary: field RMs and DSAs who need to believe in the brand before selling it.",voice:"Transparent, warm, empowering. Talk like a guide, not like an institution. Hinglish is appropriate and expected for MSME-facing content. No wall of text — only clarity. Identity-affirming. Grounded in real business moments.",positioning:"HFS = Honest Financial Support in people's minds. A corrector of a broken system, not another lender. Ab Badho: Honest Financial Support ke Saath. Every piece of content answers one question: does this make an MSME feel more confident to move?",keyMessages:["Ab Badho — urgency and acquisition, for market-facing content and social ads.","Badho Hum Hain — warmth and retention, for branch experience and internal culture.","HFS = Honest Financial Support — woven throughout all communication, not treated as a standalone slogan.","If it doesn't move, it doesn't go in — every piece must create emotional momentum.","The financial system failed MSMEs through jargon and hidden charges. HFS corrects it."],platformNotes:"Social and video: Hinglish, warm, direct, zero jargon. LinkedIn articles: simple English only, under 500 words. Content mix: 60% confidence-building, 25% proof and stories, 15% product and process clarity.",avoidWords:"Vague superlatives, generic motivational language, feature lists, statistics without emotional grounding",avoidTopics:"Identity-erasing copy that treats MSMEs as numbers. Content that informs but does not inspire. Anything that does not pass the three filters: Does it move? Does it carry the platform? Does it earn the right?"},
-  "gff":{name:"Global Fintech Fest (GFF)",industry:"Fintech Conference / Event / PCI / IAMAI",audience:"B2B: Fintech founders, policymakers, regulators, central bank officials, banks, investors, Cabinet ministers, government secretaries. 14 countries represented. LinkedIn is primary for the decision-maker audience.",voice:"Authoritative yet inspiring. Global yet rooted in India's fintech leadership. Festival energy, not just conference. Copy structure is always: Trend, then Room, then CTA. Every post must answer: why should I be in Mumbai on September 9?",positioning:"World's largest fintech festival. Potential to Impact. Three pillars: Agentic AI, Tokenisation, Quantum. India's DPI story — UPI, ONDC, Account Aggregator — as a global exportable model. Not a trade floor. Not a lobby group. The only neutral room where the whole industry sits together.",keyMessages:["The world's largest fintech festival — own this claim actively, repeatedly, unapologetically.","Where policy meets possibility — policy gets shaped around a table here, not just announced from a stage.","India's fintech story is a blueprint for the world.","Trusted. Connected. Global. Shaping the future of inclusive finance.","#GFF2026 on every single post without exception."],platformNotes:"LinkedIn: daily during peak phases. Twitter/X: 2–3x daily, real-time channel. Instagram: Reels 15–30 seconds with hook in first 2 seconds. #GFF2026 on every post. Copy rule: Trend then Room then CTA.",avoidWords:"India's largest (always world's largest), revolutionary, game-changer, fin-tech (always fintech), #GFF26",avoidTopics:"Referencing competitor events. Claiming specific attendance figures unless confirmed. Referencing Modi or UK PM as 2026 speakers — they were 2025 speakers. Using #GFF26 or #GFF'26."},
-  "casadevall":{name:"Casadevall Group",industry:"Luxury Shopfitting / Bespoke Retail Display and Packaging / B2B India Market Entry",audience:"VP Retail, Head of VM at LVMH brands, Richemont, Kering, Creed, Messika, Pandora, Swarovski, Tissot, Citizen. Business heads at Reliance Brands Ltd (single highest-leverage relationship — one approved vendor equals access to 20 plus luxury brands), ABFRL, Tata CLiQ Luxury. CMOs at Titan, Ethos Limited, Malabar Gold, Kalyan Jewellers.",voice:"Premium, precise, authoritative. Craftsmanship language. Speaks to luxury decision-makers as a peer, not a vendor. Confidence grounded in a 500-person global operation with factories across five countries and clients including LVMH, Pandora, Tissot, and Forevermark. The weight of the work speaks before the pitch does.",positioning:"India is the last major luxury market without a premium shopfitting category. Casadevall has the first-mover window. We already build the environments your favourite luxury brands live in — now we're bringing that standard to India. You already trust us in New York, Geneva, and Copenhagen.",keyMessages:["India's luxury shopfitting category doesn't have a leader yet — we intend to be it.","We already build the environments your favourite luxury brands live in. Now we're bringing that standard to India.","You already trust us in New York, Geneva, and Copenhagen. Let us do the same in Mumbai and Delhi.","Same global quality. Closer to your India operations. Faster turnaround. No import headaches.","One approved vendor relationship with Reliance equals access to 20 plus luxury brands entering India."],platformNotes:"LinkedIn is primary — luxury brand retail decision-makers operate on LinkedIn. Instagram is a credibility repair channel: factory walkthroughs, craftsmanship Reels, high-res project imagery. Events: IIJS Mumbai August, India Fashion Forum, Images Retail Summit.",avoidWords:"affordable, cost-effective, value-for-money, local fabricator, budget-friendly, competitive pricing",avoidTopics:"Competing on price with Indian local fabricators. Generic retail language. Anything that does not signal premium craftsmanship and global pedigree."},
-  "seic":{name:"SEIC — Sugar Ethanol & Bioenergy India Conference",industry:"Industry Conference / Sugar, Ethanol and Bioenergy Sector / ChiniMandi / Bioenergy Times",audience:"Industry CEOs, sugar millers, ethanol traders, distillers, bioenergy players. Cabinet ministers, government secretaries, policymakers. Global delegates from 14 countries. Sponsors, partners, exhibitors, investors. WhatsApp broadcast, LinkedIn, Instagram Reels, direct email.",voice:"Insider voice. One industry person speaking to peers, not an external narrator performing authority. Professional, energetic, global. Not a corporate invite — reads like a letter from someone who has watched this industry grow and knows what the next chapter means.",positioning:"India's only neutral forum for the entire sugar and bioenergy industry. Not a trade floor, not a lobby group — a conversation with the people who matter most. Be in the room where it happens. SEIC 2026, 5th edition, 9–11 June 2026, The Westin Powai, Mumbai.",keyMessages:["India hit its bioenergy E20 target five years ahead of schedule — the next chapter is already being written.","SEIC is where policy gets shaped around a table, not just announced from a stage.","The world's only neutral forum across the entire sugar, ethanol, and bioenergy value chain — 14 countries, Cabinet ministers, and industry CEOs in one room.","Not an expo. Not a lobby. The one room where decisions get made.","Be in the room where it happens — SEIC 2026, Mumbai, 9–11 June."],platformNotes:"WhatsApp broadcast for direct invitee outreach. LinkedIn for B2B policymaker and industry leader audience. Instagram Reels for 30-second social cut. Copy structure: Trend then Room then CTA. Always reference seic.events.",avoidWords:"revolutionary, game-changer, landmark, synergy, sector-altering",avoidTopics:"Competitor association events — never name them even positively. Listing RTBs as bullet points — embed them in narrative. Stock footage substitution for SEIC roundtable footage."},
-  "kiwi":{name:"Kiwi",industry:"Fintech / UPI Credit Card / Digital Payments",audience:"Young urban Indians 22–35. UPI-first users who watch everyone else earn rewards while they earn nothing. Kirana shoppers, daily commuters, weekend spenders. Small business owners and freelancers with high UPI transaction volume. People who feel the loss before they see the gain.",voice:"Sharp, relevant, slightly provocative. Speaks in real money and real moments. Relatable scenes — Bangalore weekend, brunch, Uber, groceries, Monday coffee — make the abstract concrete. Trust-first before conversion. The loss before the gain is the engine of every hook.",positioning:"India's original UPI rewards credit card since 2022. Har Scan Pe Kya Mila. First-mover when GPay is still on a waitlist. Every scan earns. Trust is the product, rewards are the proof. Content engine: trust first for 60 days, then conversion in month three.",keyMessages:["Har Scan Pe Kya Mila — every scan you make should earn you something.","Kiwi has been doing UPI rewards since 2022 — GPay is still on a waitlist.","Make them feel the loss before you show them the gain — the single rule behind every hook.","Trust-building content earns the conversion, not the other way around.","Every scan, every kirana, every Uber, every OTT subscription — all earning. Invisibly, consistently."],platformNotes:"Instagram and YouTube Reels primary. Series: Har Scan Pe Kya Mila runs every week. Credit Card Teri Baat is the YouTube SEO anchor. Month 3 is system and conversion phase. GPay comparison hook is time-sensitive.",avoidWords:"seamless, cashless India, financial empowerment, banking revolution, disruptive fintech",avoidTopics:"Predatory credit messaging. Anything that sounds like it is pushing debt. Generic fintech lifestyle content without a specific monetary hook."},
-  "campa":{name:"Campa",industry:"CSD / Cola / FMCG / Reliance Consumer Products",audience:"India-first Gen Z and millennials. IPL fans in Tier 1, 2, and 3 India. The consumer who wants to choose something that feels theirs. Nostalgia-driven buyers aged 30 plus who remember Campa from the 1970s and 1990s. New-India believers who actively root for homegrown brands.",voice:"Anti-establishment, defiant, proud. Born Indian, staying Indian. Not imported aspiration — Asian solidarity in a can. Real flavour, real roots. The underdog narrative that Gen Z in India actively seeks. Energetic, culturally rooted, cricket-ready.",positioning:"The cola that refused to disappear. Born 1977, shut down by multinationals, revived by Reliance. The dual emotional register: it's back AND it's ours. Rs10 price weapon — every IPL fan who buys a Campa because it costs half is a converted trial. Reliance flywheel: JioStar TV, JioCinema, Reliance Retail, Jio telecom.",keyMessages:["We were always here. Now we're everywhere.","Real flavour. Real roots.","The Rs10 weapon — price is the most visceral brand statement Campa can make at the stadium.","Use IPL — Mumbai Indians and Gujarat Titans — as both the announcement and the distribution trigger.","The stadium is the sampling stage. The digital ecosystem is the amplification engine."],platformNotes:"Instagram and short-form video primary. IPL-timed campaigns. Creator-led approach. Reels for engagement. Never abandon sports reach for pure social — beverage brands need arena reach.",avoidWords:"imported aspiration, sophisticated, premium artisanal, refined, multinational-style language",avoidTopics:"Positioning that makes Campa sound like a substitute for Pepsi or Coke rather than a category challenger. Pure social without sports reach amplification."},
-  "powerup":{name:"PowerUp",industry:"Cola / CSD / Campa Sub-brand / FMCG / Reliance",audience:"Young India with fire inside them. Aspirational achievers aged 16–28. Students, hustlers, first-generation professionals. Campus India, Tier 2 and Tier 3 youth. People who believe they have power within them and want a brand that reflects that belief back.",voice:"Philosophical, bold, youth-facing. Provocative without being aggressive. The brand speaks to the fire inside rather than the product in the can. Identity-led, movement-led, not product-led. Andar Se Aag Hai — the tone lives here.",positioning:"Ab Power Apne Haath Mein. The core strategic inversion: every competitor says the drink gives you power. PowerUp says the power was always in you. The drink doesn't give you power — it reminds you of the power you already have. Andar Se Aag Hai is the summer activation. PowerStarter is the flagship movement.",keyMessages:["Ab Power Apne Haath Mein — power is in your hands, not in a can.","Andar Se Aag Hai — the fire is inside you, not in the drink.","PowerStarter — turn it into a movement, not just a campaign.","The brand inverts the category: competitors say the drink is the source. PowerUp says you are."],platformNotes:"Instagram, Reels, YouTube primary. Campus activation through PowerStarter. Creator-led for youth reach. UGC potential is high — PowerStarter is designed to generate user participation.",avoidWords:"energy drink clichés, generic youth language, wings-style claims",avoidTopics:"Positioning the drink as the source of power — this is the category error PowerUp corrects. Generic cola advertising language."},
-  "automatorr":{name:"Automatorr",industry:"SaaS / Business Automation",audience:"SMB owners, operations managers, founders aged 28–45. People drowning in manual work. They want systems, not more software.",voice:"Clear, confident, practical, growth-oriented. Jargon-light. Results-first. Speaks in problems solved and time recovered.",positioning:"Automation for businesses that want to scale without chaos. The operational upgrade every growing business needs.",keyMessages:["Stop doing manually what can run itself.","Scale without hiring more people for the same tasks.","From chaos to system — without a three-month implementation.","Your best people should not be doing repetitive work."],platformNotes:"LinkedIn: primary. ROI-focused content, before/after stories, founder pain points. Instagram: product explainers, testimonials.",avoidWords:"robust, seamless, cutting-edge, next-generation, synergy, leverage, paradigm, holistic",avoidTopics:"Overly technical feature dumps without business context."},
-  "keysoul":{name:"KeySoul",industry:"Business / RCM / Digital Services",audience:"Business owners, aspiring entrepreneurs, professionals exploring structured income and business-building opportunities. Community-oriented, long-term thinkers.",voice:"Aspirational, community-first, opportunity-focused. Warm but credible. Purpose-driven more than profit-driven.",positioning:"Where business meets purpose. KeySoul is for people who want to build something real — a network, a business, a reputation.",keyMessages:["Business that grows with the people around you.","The right system changes everything.","Your network is your net worth — built with integrity.","Community over commission. Legacy over quick wins."],platformNotes:"Instagram: lifestyle and business intersection. Success stories with real people. Facebook: community updates, events, announcements.",avoidWords:"passive income, get rich, overnight success, MLM-adjacent phrasing",avoidTopics:"Anything that sounds like a scheme. Promise-heavy content without substance."},
-  "enzo":{name:"Enzo",industry:"FMCG / Detergent / RCPL",audience:"Households in Tier 3/4 India. Rural and semi-urban. West Bengal and Assam primary markets. Value-conscious homemakers who do more with less.",voice:"Warm, community-rooted, aspirational for everyday people. Practical and relatable. Hinglish works. Speaks to people, not at them.",positioning:"All-in-one detergent for the real India. Ek mein sab. Built for the Bharat that is smart with its money.",keyMessages:["Ek mein sab — one product, multiple uses, real savings.","Value for real families, not convenience for rich ones.","Roshni Gaon — the brand that shows up in your community.","Smart choice for the smart household."],platformNotes:"Facebook: primary. Community-first content. Instagram: aspirational rural India aesthetic. Hinglish works well.",avoidWords:"premium, luxury, elite, sophisticated, urban, metropolitan, cutting-edge",avoidTopics:"Condescending to rural audiences. Urban lifestyle imagery."}
+  "superup":{
+    name:"SuperUp",industry:"EdTech / Upskilling / Career Growth",
+    audience:"Ambitious Indians aged 22–35. Working professionals who feel stuck. Aspirational achievers who want to move up in life, not just on paper. Not the elite — the driven.",
+    voice:"Bold, direct, human, anti-corporate, slightly provocative. Short sentences. No fluff. Earns every word. Speaks like a mentor who has done it, not a brand that sells it.",
+    positioning:"Everyone is selling learning. Nobody is selling progress. SuperUp is not an ed-platform — it is a belief system for people who want to move up in life. The product is progress, not certificates.",
+    keyMessages:["Karke Dekh — try it, do it, prove it to yourself. Action over intention.","Upgrade Zindagi — not just your resume, your whole life trajectory.","Progress is the product. Certificates are a side effect.","For the achiever in every Indian. Not just the privileged few."],
+    platformNotes:"Instagram: bold hooks, relatable career struggles, punchy 3-5 line captions. LinkedIn: career narrative, thought leadership. Reels: real transformation stories not polished testimonials.",
+    avoidWords:"learnings, upskill, empower, synergy, holistic, seamless, innovative, best-in-class, leverage, unlock your potential, game-changer",
+    avoidTopics:"Generic motivational quotes without substance. Corporate speak. Promises without specificity.",
+    visualMood:"Gritty, real, aspirational. Street-level energy, not studio polish. Candid over composed.",
+    colorPalette:"Deep blue, white, electric yellow accents. No pastels, no corporate gradients.",
+    imageStyle:"Real people in real moments — workplace frustration, late-night hustle, the face before a breakthrough. Documentary photography style. Avoid stock-photo perfection.",
+    videoStyle:"Handheld feel, quick cuts, subtitles always on. Urban India backdrops. Mobile-shot aesthetic is fine if authentic.",
+    avoidVisuals:"Generic motivational sunrises, suits and boardrooms, studio-white backgrounds, stock-photo smiles, anything that looks expensive or aspirational in an imported way.",
+    mjParams:"--ar 4:5 --style raw --v 6"
+  },
+  "raj petro":{
+    name:"Raj Petro Specialities",industry:"Specialty Industrial Oils / Chemicals / Shell Group Company",
+    audience:"B2B industrial buyers. Vikram: Chief Engineer at Power Utilities buying transformer oils — fears grid downtime. Priya: Head of Quality at Pharma buying petroleum jelly — fears audit failure. Suresh: Plant Manager at Rubber and Tyre plants buying waxes — fears batch variance. All three are buying risk reduction, not a product.",
+    voice:"Precise, not vague. Confident, not boastful. Industrial, not corporate. Elevating, not listing. Every claim is specific and verifiable. Sounds like it understands the customers application and their commercial reality.",
+    positioning:"Indian premium specialist — provably global quality, locally rooted, Shell Group-backed. Everyday Forward: the chemistry that holds critical systems together. Nobody owns this territory.",
+    keyMessages:["Consequence before product — open with the cost of failure before naming the product. When a transformer fails, a grid goes dark.","Proof before claim — NTPC and PGCIL approved is different from trusted by India's power sector.","Shell Group as validator not protagonist — it confirms standards and does not replace Raj Petro's own proof points.","For more than 80 years, the chemistry the world depends on without needing the world to know our name.","The invisible infrastructure of progress — power grids, pharmaceuticals, food systems, rubber, agriculture."],
+    platformNotes:"LinkedIn is primary B2B channel. Five-phase arc: brand credibility, category expertise by persona, product proof, customer validation, lead generation. Instagram and Facebook deprioritised.",
+    avoidWords:"trusted without named proof, world-class quality, cost-effective, competitive pricing, solutions for modern industry, powering tomorrow, your trusted partner, innovative products",
+    avoidTopics:"Generic social posting. Consumer brand thinking. Vague adjectives. Using Shell logo in any form — this is a legal compliance rule. Zoomol content dominating output.",
+    visualMood:"Industrial precision. Serious, earned, institutional. The visual equivalent of a technical manual that commands respect.",
+    colorPalette:"Steel blue, dark navy, industrial grey, white. Shell yellow only when referencing the partnership.",
+    imageStyle:"Macro shots of machinery, oil flow, transformer infrastructure, lab environments. B2B decision-maker personas in real industrial contexts. Precision over personality.",
+    videoStyle:"Controlled camera, slow deliberate movement. Technical environments. No fast cuts. Authority through pace.",
+    avoidVisuals:"Consumer-facing lifestyle imagery, bright consumer brand colours, casual environments, anything resembling a petrol station forecourt ad.",
+    mjParams:"--ar 16:9 --style raw --v 6 --quality 2"
+  },
+  "zoomol":{
+    name:"Zoomol",industry:"Automotive Lubricants / FMCG / Raj Petro Specialities / Shell Group",
+    audience:"Distributors, dealers, fleet operators, mechanics, end consumers. Vehicle owners wanting reliable engine protection. Trade channel partners who need a brand they can sell confidently.",
+    voice:"Performance-led, practical, confident. Consumer-facing but credible. Speaks in engine protection and performance, not chemistry. The Shell Group connection is a consumer trust bridge used as one closing validation line.",
+    positioning:"Zoomol is part of the Shell Group — the same group that makes Shell Helix, the worlds most trusted engine oil brand. Performance story leads every paragraph. Shell Group appears as closing institutional validation only.",
+    keyMessages:["Performance story leads — Shell Group appears as one closing line of validation, not as the identity.","The relationship and reliability of 80 years of Raj Petro behind every product.","Consumer trust bridge: Shell Group membership means the same quality governance as the worlds most trusted engine oil."],
+    platformNotes:"Instagram, Facebook, YouTube, WhatsApp, point of sale. Social content continues in practical proportion. Must not dominate Raj Petro output thinking.",
+    avoidWords:"Industrial language from the specialty portfolio, B2B persona language",
+    avoidTopics:"Anchoring Zoomol identity so heavily on Shell Group that Zoomol itself becomes invisible.",
+    visualMood:"Performance energy. Consumer-facing but credible. The visual feeling of an engine running perfectly.",
+    colorPalette:"Deep red, black, silver. High contrast. Performance brand energy.",
+    imageStyle:"Engine interiors, oil in motion, vehicles on road, mechanics at work, product close-ups. Real vehicles, real workshops, real drivers.",
+    videoStyle:"Dynamic, motion-forward. Engine startup sequences, oil pour shots, before and after engine health. Fast but not chaotic.",
+    avoidVisuals:"Generic car advertising — winding mountain roads at sunset, silhouettes. Industrial specialty oil imagery from Raj Petro portfolio.",
+    mjParams:"--ar 16:9 --style raw --v 6"
+  },
+  "hfs":{
+    name:"HFS — Hiranandani Financial Services",industry:"NBFC / MSME Lending / Financial Services",
+    audience:"MSME business owners across Tier 2 and Tier 3 cities. Kirana traders, seasonal vendors, women entrepreneurs, micro-manufacturers. People who have confidence to act when support is honest. Secondary: field RMs and DSAs who need to believe in the brand before selling it.",
+    voice:"Transparent, warm, empowering. Talk like a guide, not like an institution. Hinglish is appropriate and expected for MSME-facing content. No wall of text — only clarity. Identity-affirming. Grounded in real business moments.",
+    positioning:"HFS = Honest Financial Support in peoples minds. A corrector of a broken system, not another lender. Ab Badho: Honest Financial Support ke Saath. Every piece of content answers one question: does this make an MSME feel more confident to move?",
+    keyMessages:["Ab Badho — urgency and acquisition, for market-facing content and social ads.","Badho Hum Hain — warmth and retention, for branch experience and internal culture.","HFS = Honest Financial Support — woven throughout all communication, not treated as a standalone slogan.","If it does not move, it does not go in — every piece must create emotional momentum.","The financial system failed MSMEs through jargon and hidden charges. HFS corrects it."],
+    platformNotes:"Social and video: Hinglish, warm, direct, zero jargon. LinkedIn articles: simple English only, under 500 words. Content mix: 60% confidence-building, 25% proof and stories, 15% product and process clarity.",
+    avoidWords:"Vague superlatives, generic motivational language, feature lists, statistics without emotional grounding",
+    avoidTopics:"Identity-erasing copy that treats MSMEs as numbers. Content that informs but does not inspire. Anything that does not pass the three filters: Does it move? Does it carry the platform? Does it earn the right?",
+    visualMood:"Warm, grounded, real. The visual feeling of someone who finally has support they can trust.",
+    colorPalette:"Warm amber, off-white, deep navy. Earthy tones. Nothing cold or clinical.",
+    imageStyle:"Real MSMEs in their element — kirana store owners, women entrepreneurs at their workshop, street vendors. Expressions of quiet confidence, not euphoric success. Real hands, real spaces, real light.",
+    videoStyle:"Warm colour grade. Handheld or slightly handheld. Real locations, not sets. Interviews and testimonials over scripted scenarios.",
+    avoidVisuals:"Bank advertisement clichés — family celebrating, money raining, overly aspirational office environments. Clinical white backgrounds. Corporate suits.",
+    mjParams:"--ar 4:5 --style raw --v 6 --stylize 50"
+  },
+  "gff":{
+    name:"Global Fintech Fest (GFF)",industry:"Fintech Conference / Event / PCI / IAMAI",
+    audience:"B2B: Fintech founders, policymakers, regulators, central bank officials, banks, investors, Cabinet ministers, government secretaries. 14 countries represented. LinkedIn is primary for the decision-maker audience.",
+    voice:"Authoritative yet inspiring. Global yet rooted in India's fintech leadership. Festival energy, not just conference. Copy structure is always: Trend, then Room, then CTA. Every post must answer: why should I be in Mumbai on September 9?",
+    positioning:"World's largest fintech festival. Potential to Impact. Three pillars: Agentic AI, Tokenisation, Quantum. India's DPI story — UPI, ONDC, Account Aggregator — as a global exportable model. Not a trade floor. Not a lobby group.",
+    keyMessages:["The world's largest fintech festival — own this claim actively, repeatedly, unapologetically.","Where policy meets possibility — policy gets shaped around a table here, not just announced from a stage.","India's fintech story is a blueprint for the world.","Trusted. Connected. Global. Shaping the future of inclusive finance.","#GFF2026 on every single post without exception."],
+    platformNotes:"LinkedIn: daily during peak phases. Twitter/X: 2-3x daily, real-time channel. Instagram: Reels 15-30 seconds with hook in first 2 seconds. #GFF2026 on every post. Copy rule: Trend then Room then CTA.",
+    avoidWords:"India's largest (always world's largest), revolutionary, game-changer, fin-tech (always fintech), #GFF26",
+    avoidTopics:"Referencing competitor events. Claiming specific attendance figures unless confirmed. Using #GFF26 or #GFF'26.",
+    visualMood:"Global summit energy. Premium, international, forward-looking. The visual scale of Davos but rooted in India.",
+    colorPalette:"Deep navy, gold accents, white. Mumbai skyline blues. Fintech circuit patterns as texture.",
+    imageStyle:"Conference hall scale, delegates in conversation, large screen presentations, handshakes between global figures. Aerial Mumbai. Data visualisation aesthetics.",
+    videoStyle:"Wide establishing shots of conference scale, then intimate conversations. Professional grade. No handheld jitter.",
+    avoidVisuals:"Generic tech startup imagery, casual office environments, anything that looks like a meetup rather than a global summit.",
+    mjParams:"--ar 16:9 --v 6 --quality 2"
+  },
+  "casadevall":{
+    name:"Casadevall Group",industry:"Luxury Shopfitting / Bespoke Retail Display and Packaging / B2B India Market Entry",
+    audience:"VP Retail, Head of VM at LVMH brands, Richemont, Kering, Creed, Messika, Pandora, Swarovski, Tissot, Citizen. Business heads at Reliance Brands Ltd. CMOs at Titan, Ethos Limited, Malabar Gold, Kalyan Jewellers.",
+    voice:"Premium, precise, authoritative. Craftsmanship language. Speaks to luxury decision-makers as a peer, not a vendor. Confidence grounded in a 500-person global operation with factories across five countries.",
+    positioning:"India is the last major luxury market without a premium shopfitting category. Casadevall has the first-mover window. We already build the environments your favourite luxury brands live in — now we are bringing that standard to India.",
+    keyMessages:["India's luxury shopfitting category does not have a leader yet — we intend to be it.","We already build the environments your favourite luxury brands live in. Now we are bringing that standard to India.","You already trust us in New York, Geneva, and Copenhagen. Let us do the same in Mumbai and Delhi.","Same global quality. Closer to your India operations. Faster turnaround. No import headaches.","One approved vendor relationship with Reliance equals access to 20 plus luxury brands entering India."],
+    platformNotes:"LinkedIn is primary — luxury brand retail decision-makers operate on LinkedIn. Instagram is a credibility repair channel: factory walkthroughs, craftsmanship Reels, high-res project imagery.",
+    avoidWords:"affordable, cost-effective, value-for-money, local fabricator, budget-friendly, competitive pricing",
+    avoidTopics:"Competing on price with Indian local fabricators. Generic retail language. Anything that does not signal premium craftsmanship and global pedigree.",
+    visualMood:"Luxury craft. The visual silence of a perfectly designed space. Materials, precision, restraint.",
+    colorPalette:"Cream, champagne, dark walnut, brushed gold, jet black. Never primary colours. Never loud.",
+    imageStyle:"Close-up craft details — wood grain, brushed metal, glass. Luxury retail environments in considered lighting. Empty stores that feel curated. Architecture photography aesthetic.",
+    videoStyle:"Slow reveal, macro to wide. The camera earns each shot. Silent or scored with ambient sound. Never narrated.",
+    avoidVisuals:"Anything busy or colourful. Price tags or commercial retail contexts. Indian local fabrication aesthetics.",
+    mjParams:"--ar 3:2 --style raw --v 6 --quality 2 --stylize 200"
+  },
+  "seic":{
+    name:"SEIC — Sugar Ethanol and Bioenergy India Conference",industry:"Industry Conference / Sugar, Ethanol and Bioenergy Sector / ChiniMandi / Bioenergy Times",
+    audience:"Industry CEOs, sugar millers, ethanol traders, distillers, bioenergy players. Cabinet ministers, government secretaries, policymakers. Global delegates from 14 countries. Sponsors, partners, exhibitors, investors.",
+    voice:"Insider voice. One industry person speaking to peers, not an external narrator performing authority. Professional, energetic, global. Not a corporate invite — reads like a letter from someone who has watched this industry grow.",
+    positioning:"India's only neutral forum for the entire sugar and bioenergy industry. Not a trade floor, not a lobby group — a conversation with the people who matter most. Be in the room where it happens. SEIC 2026, 5th edition, 9-11 June 2026, The Westin Powai, Mumbai.",
+    keyMessages:["India hit its bioenergy E20 target five years ahead of schedule — the next chapter is already being written.","SEIC is where policy gets shaped around a table, not just announced from a stage.","The world's only neutral forum across the entire sugar, ethanol, and bioenergy value chain — 14 countries, Cabinet ministers, and industry CEOs in one room.","Not an expo. Not a lobby. The one room where decisions get made.","Be in the room where it happens — SEIC 2026, Mumbai, 9-11 June."],
+    platformNotes:"WhatsApp broadcast for direct invitee outreach. LinkedIn for B2B policymaker and industry leader audience. Instagram Reels for 30-second social cut. Copy structure: Trend then Room then CTA. Always reference seic.events.",
+    avoidWords:"revolutionary, game-changer, landmark, synergy, sector-altering",
+    avoidTopics:"Competitor association events — never name them even positively. Listing RTBs as bullet points — embed them in narrative. Stock footage substitution for SEIC roundtable footage.",
+    visualMood:"Industry authority. The visual weight of a room where policy gets made. Not glamorous — significant.",
+    colorPalette:"Deep forest green (sugar cane reference), amber (ethanol), white, charcoal.",
+    imageStyle:"Round-table discussions, sugar cane fields at scale, ethanol plant infrastructure, ministerial interactions. Faces of industry veterans. Conference rooms at capacity.",
+    videoStyle:"Documentary gravitas. Steady camera. Wide shots of conference hall, close-ups of discussion panels. The energy of a full room.",
+    avoidVisuals:"Consumer food imagery, generic agriculture stock photos, anything that looks like a farming ad rather than an industry summit.",
+    mjParams:"--ar 16:9 --style raw --v 6"
+  },
+  "kiwi":{
+    name:"Kiwi",industry:"Fintech / UPI Credit Card / Digital Payments",
+    audience:"Young urban Indians 22-35. UPI-first users who watch everyone else earn rewards while they earn nothing. Kirana shoppers, daily commuters, weekend spenders. Small business owners and freelancers with high UPI transaction volume.",
+    voice:"Sharp, relevant, slightly provocative. Speaks in real money and real moments. Relatable scenes — Bangalore weekend, brunch, Uber, groceries, Monday coffee — make the abstract concrete. Trust-first before conversion. The loss before the gain is the engine of every hook.",
+    positioning:"India's original UPI rewards credit card since 2022. Har Scan Pe Kya Mila. First-mover when GPay is still on a waitlist. Every scan earns. Trust is the product, rewards are the proof.",
+    keyMessages:["Har Scan Pe Kya Mila — every scan you make should earn you something.","Kiwi has been doing UPI rewards since 2022 — GPay is still on a waitlist.","Make them feel the loss before you show them the gain — the single rule behind every hook.","Trust-building content earns the conversion, not the other way around.","Every scan, every kirana, every Uber, every OTT subscription — all earning. Invisibly, consistently."],
+    platformNotes:"Instagram and YouTube Reels primary. Har Scan Pe Kya Mila series runs every week. Credit Card Teri Baat is the YouTube SEO anchor. Month 3 is system and conversion phase.",
+    avoidWords:"seamless, cashless India, financial empowerment, banking revolution, disruptive fintech",
+    avoidTopics:"Predatory credit messaging. Anything that sounds like it is pushing debt. Generic fintech lifestyle content without a specific monetary hook.",
+    visualMood:"Young, urban, frictionless. The visual moment of getting something for nothing — that micro-delight.",
+    colorPalette:"Kiwi green, deep purple, white. Digital-native colours. Screen-first.",
+    imageStyle:"Phone screen close-ups showing rewards. Real urban moments — kirana scan, Uber arrival, coffee shop tap. Hands and phones, not faces. The UX of everyday life made vivid.",
+    videoStyle:"Screen recording aesthetics. Real app UI. Quick notification pop moments. Bangalore and Mumbai daily life footage.",
+    avoidVisuals:"Traditional banking imagery, formal financial settings, anything that implies complexity or risk.",
+    mjParams:"--ar 9:16 --style raw --v 6"
+  },
+  "campa":{
+    name:"Campa",industry:"CSD / Cola / FMCG / Reliance Consumer Products",
+    audience:"India-first Gen Z and millennials. IPL fans in Tier 1, 2, and 3 India. The consumer who wants to choose something that feels theirs. Nostalgia-driven buyers aged 30 plus who remember Campa from the 1970s and 1990s. New-India believers who actively root for homegrown brands.",
+    voice:"Anti-establishment, defiant, proud. Born Indian, staying Indian. Not imported aspiration — Asian solidarity in a can. Real flavour, real roots. The underdog narrative that Gen Z in India actively seeks. Energetic, culturally rooted, cricket-ready.",
+    positioning:"The cola that refused to disappear. Born 1977, shut down by multinationals, revived by Reliance. The dual emotional register: it's back AND it's ours. Rs10 price weapon. Reliance flywheel: JioStar TV, JioCinema, Reliance Retail, Jio telecom.",
+    keyMessages:["We were always here. Now we are everywhere.","Real flavour. Real roots.","The Rs10 weapon — price is the most visceral brand statement Campa can make at the stadium.","Use IPL — Mumbai Indians and Gujarat Titans — as both the announcement and the distribution trigger.","The stadium is the sampling stage. The digital ecosystem is the amplification engine."],
+    platformNotes:"Instagram and short-form video primary. IPL-timed campaigns. Creator-led approach. Reels for engagement. Never abandon sports reach for pure social.",
+    avoidWords:"imported aspiration, sophisticated, premium artisanal, refined, multinational-style language",
+    avoidTopics:"Positioning that makes Campa sound like a substitute for Pepsi or Coke rather than a category challenger. Pure social without sports reach amplification.",
+    visualMood:"Defiant, festive, stadium-loud. The colour and noise of real India celebrating.",
+    colorPalette:"Campa Red, white, deep blue. IPL team colours. Crowd energy colours.",
+    imageStyle:"Stadium crowds, IPL match moments, street celebrations, friends sharing a bottle, the Rs10 note next to a can. Real India from Tier 1 to Tier 3.",
+    videoStyle:"High energy, quick cuts timed to beat. Stadium ambience. Crowd chants. Real match day footage aesthetic.",
+    avoidVisuals:"Luxury lifestyle, imported aesthetic, anything that looks like a Pepsi or Coke global ad campaign.",
+    mjParams:"--ar 9:16 --style raw --v 6 --stylize 100"
+  },
+  "powerup":{
+    name:"PowerUp",industry:"Cola / CSD / Campa Sub-brand / FMCG / Reliance",
+    audience:"Young India with fire inside them. Aspirational achievers aged 16-28. Students, hustlers, first-generation professionals. Campus India, Tier 2 and Tier 3 youth. People who believe they have power within them and want a brand that reflects that belief back.",
+    voice:"Philosophical, bold, youth-facing. Provocative without being aggressive. The brand speaks to the fire inside rather than the product in the can. Identity-led, movement-led, not product-led. Andar Se Aag Hai — the tone lives here.",
+    positioning:"Ab Power Apne Haath Mein. The core strategic inversion: every competitor says the drink gives you power. PowerUp says the power was always in you. The drink does not give you power — it reminds you of the power you already have.",
+    keyMessages:["Ab Power Apne Haath Mein — power is in your hands, not in a can.","Andar Se Aag Hai — the fire is inside you, not in the drink.","PowerStarter — turn it into a movement, not just a campaign.","The brand inverts the category: competitors say the drink is the source. PowerUp says you are."],
+    platformNotes:"Instagram, Reels, YouTube primary. Campus activation through PowerStarter. Creator-led for youth reach. UGC potential is high — PowerStarter is designed to generate user participation.",
+    avoidWords:"energy drink clichés, generic youth language, wings-style claims",
+    avoidTopics:"Positioning the drink as the source of power — this is the category error PowerUp corrects. Generic cola advertising language.",
+    visualMood:"Fire from within. The visual of internal energy made visible — not external performance, internal truth.",
+    colorPalette:"Deep electric blue, flame orange and red, black. High contrast. Youth-facing energy.",
+    imageStyle:"Young people in the moment before — before the exam, before the pitch, before the game. Internal determination visible on face. Campus environments, hostel rooms, practice grounds. Real youth, not models.",
+    videoStyle:"The moment of ignition — slow build then release. Camera on the face, not the action. Energy directed inward then out.",
+    avoidVisuals:"Wings-style energy drink imagery, generic sports shots, anything that looks like a Red Bull ad.",
+    mjParams:"--ar 9:16 --style raw --v 6 --stylize 150"
+  },
+  "automatorr":{
+    name:"Automatorr",industry:"SaaS / Business Automation",
+    audience:"SMB owners, operations managers, founders aged 28-45. People drowning in manual work. They want systems, not more software.",
+    voice:"Clear, confident, practical, growth-oriented. Jargon-light. Results-first. Speaks in problems solved and time recovered.",
+    positioning:"Automation for businesses that want to scale without chaos. The operational upgrade every growing business needs.",
+    keyMessages:["Stop doing manually what can run itself.","Scale without hiring more people for the same tasks.","From chaos to system — without a three-month implementation.","Your best people should not be doing repetitive work."],
+    platformNotes:"LinkedIn: primary. ROI-focused content, before and after stories, founder pain points. Instagram: product explainers, testimonials.",
+    avoidWords:"robust, seamless, cutting-edge, next-generation, synergy, leverage, paradigm, holistic",
+    avoidTopics:"Overly technical feature dumps without business context.",
+    visualMood:"Clean systems. The visual calm of everything running on its own.",
+    colorPalette:"Electric blue, white, dark charcoal. SaaS-clean. No skeuomorphism.",
+    imageStyle:"Dashboards, workflow diagrams, the empty inbox, the ticking automation. Abstract system flows. Clean UI screenshots.",
+    videoStyle:"Screen recordings of automation running. Before chaos, after order. Calm product demo energy.",
+    avoidVisuals:"Stressed office workers, coffee-fuelled late nights, anything that glorifies hustle culture.",
+    mjParams:"--ar 16:9 --v 6"
+  },
+  "keysoul":{
+    name:"KeySoul",industry:"Business / RCM / Digital Services",
+    audience:"Business owners, aspiring entrepreneurs, professionals exploring structured income and business-building opportunities. Community-oriented, long-term thinkers.",
+    voice:"Aspirational, community-first, opportunity-focused. Warm but credible. Purpose-driven more than profit-driven.",
+    positioning:"Where business meets purpose. KeySoul is for people who want to build something real — a network, a business, a reputation.",
+    keyMessages:["Business that grows with the people around you.","The right system changes everything.","Your network is your net worth — built with integrity.","Community over commission. Legacy over quick wins."],
+    platformNotes:"Instagram: lifestyle and business intersection. Success stories with real people. Facebook: community updates, events, announcements.",
+    avoidWords:"passive income, get rich, overnight success, MLM-adjacent phrasing",
+    avoidTopics:"Anything that sounds like a scheme. Promise-heavy content without substance.",
+    visualMood:"Community warmth. Real people building something real together.",
+    colorPalette:"Warm gold, deep blue, white. Community and trust colours.",
+    imageStyle:"Group meetings, whiteboard sessions, real people shaking hands, community gatherings. Authentic — not corporate retreat stock photos.",
+    videoStyle:"Testimonial-style, community event footage, real moments of business growth.",
+    avoidVisuals:"Luxury lifestyle, scheme-like imagery, anything that looks like a get-rich-quick ad.",
+    mjParams:"--ar 4:5 --style raw --v 6"
+  },
+  "enzo":{
+    name:"Enzo",industry:"FMCG / Detergent / RCPL",
+    audience:"Households in Tier 3 and 4 India. Rural and semi-urban. West Bengal and Assam primary markets. Value-conscious homemakers who do more with less.",
+    voice:"Warm, community-rooted, aspirational for everyday people. Practical and relatable. Hinglish works. Speaks to people, not at them.",
+    positioning:"All-in-one detergent for the real India. Ek mein sab. Built for the Bharat that is smart with its money.",
+    keyMessages:["Ek mein sab — one product, multiple uses, real savings.","Value for real families, not convenience for rich ones.","Roshni Gaon — the brand that shows up in your community.","Smart choice for the smart household."],
+    platformNotes:"Facebook: primary. Community-first content. Instagram: aspirational rural India aesthetic. Hinglish works well.",
+    avoidWords:"premium, luxury, elite, sophisticated, urban, metropolitan, cutting-edge",
+    avoidTopics:"Condescending to rural audiences. Urban lifestyle imagery.",
+    visualMood:"Everyday pride. The warmth of a home that is cared for by people who care.",
+    colorPalette:"Bright white, sunshine yellow, clean greens. The visual of clean laundry in sunlight.",
+    imageStyle:"Real homes in Tier 3 and 4 India. Mothers, grandmothers, working women at home. Clothes drying in sunlight. Village aesthetics that are warm, not poverty-coded.",
+    videoStyle:"Slice of life. Morning routines, washing scenes, the satisfaction of clean. Warm colour grade.",
+    avoidVisuals:"Urban premium lifestyle, high-end home aesthetics, anything that looks like a multinational FMCG ad.",
+    mjParams:"--ar 4:5 --style raw --v 6 --stylize 50"
+  }
 };
 
-// ── STATE ─────────────────────────────────────────────────────────────────
+
 const S={briefRows:[],results:[],brandIntel:{},showIntel:false,selectedBrand:null,editForm:null,mode:'bulk',showSecond:false};
 
 function init(){
@@ -425,95 +655,58 @@ function init(){
 }
 
 function updateKeyStatus(){
-  const btn=document.getElementById('apiKeyBtn');
-  if(!btn)return;
-  const hasKey=!!localStorage.getItem('wdc_api_key');
-  btn.textContent=hasKey?'API Key ✓':'API Key — Not Set';
-  btn.style.borderColor=hasKey?'rgba(127,232,154,.35)':'rgba(255,112,112,.5)';
-  btn.style.color=hasKey?'var(--green)':'var(--err)';
+  const btn=document.getElementById('apiKeyBtn');if(!btn)return;
+  const ok=!!localStorage.getItem('wdc_api_key');
+  btn.textContent=ok?'API Key \u2713':'API Key \u2014 Not Set';
+  btn.style.borderColor=ok?'rgba(127,232,154,.35)':'rgba(255,112,112,.5)';
+  btn.style.color=ok?'var(--green)':'var(--err)';
 }
-
-// ── API KEY ───────────────────────────────────────────────────────────────
 function showKeyModal(){const k=localStorage.getItem('wdc_api_key')||'';document.getElementById('apiKeyInput').value=k;document.getElementById('keyModal').classList.add('on');document.getElementById('closeKeyModalBtn').style.display=k?'':'none';}
-function saveApiKey(){const k=document.getElementById('apiKeyInput').value.trim();if(!k)return alert('Enter your API key');localStorage.setItem('wdc_api_key',k);closeModal();updateKeyStatus();}
 function closeModal(){document.getElementById('keyModal').classList.remove('on');}
+function saveApiKey(){const k=document.getElementById('apiKeyInput').value.trim();if(!k)return alert('Enter your API key');localStorage.setItem('wdc_api_key',k);closeModal();updateKeyStatus();}
 function getApiKey(){return localStorage.getItem('wdc_api_key')||'';}
-
-// ── VIEWS ─────────────────────────────────────────────────────────────────
 function showView(id){['viewHome','viewReview','viewGenerating','viewComplete','viewIntel'].forEach(v=>document.getElementById(v).style.display=v===id?'':'none');}
 function goHome(){S.briefRows=[];S.results=[];S.showIntel=false;document.getElementById('intelBtn').classList.remove('on');showView('viewHome');}
 function toggleIntel(){S.showIntel=!S.showIntel;document.getElementById('intelBtn').classList.toggle('on',S.showIntel);if(S.showIntel){renderBrandGrid();showView('viewIntel');}else{showView(S.results.length>0?'viewComplete':'viewHome');}}
-
-// ── MODE ──────────────────────────────────────────────────────────────────
-function setMode(m){S.mode=m;document.getElementById('modeTabBulk').classList.toggle('on',m==='bulk');document.getElementById('modeTabQuick').classList.toggle('on',m==='quick');document.getElementById('panelBulk').style.display=m==='bulk'?'':'none';document.getElementById('panelQuick').style.display=m==='quick'?'':'none';}
-function toggleSecond(){S.showSecond=!S.showSecond;document.getElementById('secondBriefArea').style.display=S.showSecond?'':'none';document.getElementById('addSecondBtn').textContent=S.showSecond?'— Remove Second Brief':'+ Add Second Brief';}
+function setMode(m){
+  S.mode=m;
+  ['Bulk','Quick','Design'].forEach(n=>{
+    const tab=document.getElementById('modeTab'+n);
+    if(tab)tab.classList.toggle('on',n.toLowerCase()===m);
+    const panel=document.getElementById('panel'+n);
+    if(panel)panel.style.display=n.toLowerCase()===m?'':'none';
+  });
+  if(m==='design')populateBrandDropdowns();
+}
+function toggleSecond(){S.showSecond=!S.showSecond;document.getElementById('secondBriefArea').style.display=S.showSecond?'':'none';document.getElementById('addSecondBtn').textContent=S.showSecond?'\u2014 Remove Second Brief':'+ Add Second Brief';}
 
 function populateBrandDropdowns(){
   const brands=Object.keys(S.brandIntel).sort((a,b)=>S.brandIntel[a].name.localeCompare(S.brandIntel[b].name));
-  ['qb-brand','qb2-brand'].forEach(id=>{
+  ['qb-brand','qb2-brand','dp-brand'].forEach(id=>{
     const el=document.getElementById(id);if(!el)return;
     const cur=el.value;
-    el.innerHTML='<option value="">Select brand</option>'+brands.map(k=>`<option value="${k}">${esc(S.brandIntel[k].name||k)}</option>`).join('');
+    el.innerHTML='<option value="">Select brand</option>'+brands.map(k=>'<option value="'+k+'">'+esc(S.brandIntel[k].name||k)+'</option>').join('');
     if(cur)el.value=cur;
   });
 }
-
 function updateQbNote(selId,noteId){
-  const k=document.getElementById(selId)?.value;
-  const p=k?S.brandIntel[k]:null;
-  const el=document.getElementById(noteId);
-  if(!el)return;
-  el.textContent=p&&p.voice?'Intelligence ready — voice and positioning loaded':k?'No intelligence set — set up in Brand Intelligence panel':'';
+  const k=document.getElementById(selId)?.value;const p=k?S.brandIntel[k]:null;
+  const el=document.getElementById(noteId);if(!el)return;
+  el.textContent=p&&p.voice?'Intelligence ready \u2014 voice and positioning loaded':k?'No intelligence set \u2014 set up in Brand Intelligence panel':'';
   el.style.color=p&&p.voice?'var(--green)':'var(--warn)';
 }
-
 function updateBrandCountNote(){
   const total=Object.keys(S.brandIntel).length;
   const ready=Object.keys(S.brandIntel).filter(k=>isReady(k)).length;
   const el=document.getElementById('brandCountNote');
-  if(el)el.textContent=`${total} brands in system, ${ready} fully configured.`;
+  if(el)el.textContent=total+' brands in system, '+ready+' fully configured.';
 }
 
-// ── QUICK BRIEF ───────────────────────────────────────────────────────────
-async function runQuickBrief(){
-  if(!getApiKey()){showKeyModal();return;}
-  const rows=[];
-  const r1=getQbRow(1);
-  if(!r1){document.getElementById('qbError').innerHTML='<div class="alert-err">Fill in Brand, Platform, Format, Bucket, Talking Points and CTA.</div>';return;}
-  rows.push(r1);
-  if(S.showSecond){const r2=getQbRow(2);if(r2)rows.push(r2);}
-  document.getElementById('qbError').innerHTML='';
-  S.briefRows=rows;S.results=[];
-  document.getElementById('liveResults').innerHTML='';
-  document.getElementById('genCount').textContent=`0 / ${rows.length}`;
-  showView('viewGenerating');
-  await runGeneration(rows);
-}
-
-function getQbRow(n){
-  const p=n===1?'qb':'qb2';
-  const brand=document.getElementById(`${p}-brand`)?.value||'';
-  const platform=document.getElementById(`${p}-platform`)?.value||'';
-  const format=document.getElementById(`${p}-format`)?.value||'';
-  const bucket=document.getElementById(`${p}-bucket`)?.value||'';
-  const points=document.getElementById(`${p}-points`)?.value?.trim()||'';
-  const cta=document.getElementById(`${p}-cta`)?.value?.trim()||'';
-  if(!brand||!platform||!format||!bucket||!points||!cta)return null;
-  const profileName=S.brandIntel[brand]?.name||brand;
-  return{BRAND:profileName,MONTH:'',PLATFORM:platform,FORMAT:format,BUCKET:bucket,POINTS:points,CTA:cta,
-    SLIDES:document.getElementById(`${p}-slides`)?.value||'',
-    CAMPAIGN:n===1?document.getElementById('qb-campaign')?.value||'':'',
-    TONE:n===1?document.getElementById('qb-tone')?.value||'':'',
-    NOTES:document.getElementById(`${p}-notes`)?.value||'',DATE:'',AUDIENCE:'',ROW_ID:'QK-'+Date.now(),
-    _brandKey:brand};
-}
-
-// ── FILE HANDLING ─────────────────────────────────────────────────────────
+// FILE HANDLING
 function onDragOver(e){e.preventDefault();document.getElementById('dropzone').classList.add('drag');}
 function onDragLeave(){document.getElementById('dropzone').classList.remove('drag');}
 function onDrop(e){e.preventDefault();document.getElementById('dropzone').classList.remove('drag');processFile(e.dataTransfer.files[0]);}
 function handleFileSelect(e){processFile(e.target.files[0]);}
-
 function processFile(file){
   setErr('');
   if(!file||!file.name.match(/\.xlsx?$/i)){setErr('Upload a .xlsx file.');return;}
@@ -524,7 +717,7 @@ function processFile(file){
   };
   reader.readAsArrayBuffer(file);
 }
-function setErr(msg){document.getElementById('uploadError').innerHTML=msg?`<div class="alert-err">${msg}</div>`:'';}
+function setErr(msg){document.getElementById('uploadError').innerHTML=msg?'<div class="alert-err">'+msg+'</div>':'';}
 
 function parseExcel(buf){
   const wb=XLSX.read(buf,{type:'array'});
@@ -547,36 +740,58 @@ function parseExcel(buf){
   })).filter(r=>{
     if(!r.BRAND)return false;
     const b=r.BRAND.toUpperCase().trim();
-    // Exclude header repeats and legend rows
-    if(b==='BRAND NAME')return false;
-    if(b.includes('= MANDATORY')||b.includes('= OPTIONAL')||b.includes('= AUTO'))return false;
-    if(b.includes('BRAND VOICE')||b.includes('IN COPY ENGINE'))return false;
-    if(b.startsWith('ORANGE')||b.startsWith('YELLOW')||b.startsWith('GREEN'))return false;
-    // Must have at least talking points to be a valid brief row
+    if(b==='BRAND NAME'||b.includes('= MANDATORY')||b.includes('= OPTIONAL')||b.startsWith('ORANGE')||b.startsWith('YELLOW')||b.startsWith('GREEN'))return false;
     if(!r.POINTS)return false;
     return true;
   });
 }
 
-// ── REVIEW ────────────────────────────────────────────────────────────────
 function renderReview(){
   const rows=S.briefRows;
   document.getElementById('reviewCount').textContent=rows.length+' rows';
-  document.getElementById('generateBtn').textContent=`Generate all ${rows.length} pieces`;
+  document.getElementById('generateBtn').textContent='Generate all '+rows.length+' pieces';
   const missing=[...new Set(rows.filter(r=>!hasIntel(r.BRAND)).map(r=>r.BRAND))];
-  document.getElementById('missingIntelWarn').innerHTML=missing.length?`<div class="alert-warn">No brand intelligence for: <strong>${missing.join(', ')}</strong>. <a onclick="toggleIntel()">Set up →</a></div>`:'';
-  document.getElementById('reviewTable').innerHTML=rows.map((r,i)=>`
-    <tr><td class="td-dim">${i+1}</td><td class="td-brand">${esc(r.BRAND)}</td><td class="td-dim">${esc(r.PLATFORM)||'—'}</td><td class="td-dim">${esc(r.FORMAT)||'—'}</td><td class="td-trunc">${esc(r.POINTS)}</td><td class="td-dim">${esc(r.CTA)||'—'}</td><td class="${hasIntel(r.BRAND)?'td-ok':'td-miss'}">${hasIntel(r.BRAND)?'Ready':'Missing'}</td></tr>`).join('');
+  document.getElementById('missingIntelWarn').innerHTML=missing.length?'<div class="alert-warn">No brand intelligence for: <strong>'+missing.join(', ')+'</strong>. <a onclick="toggleIntel()">Set up \u2192</a></div>':'';
+  document.getElementById('reviewTable').innerHTML=rows.map((r,i)=>'<tr><td class="td-dim">'+(i+1)+'</td><td class="td-brand">'+esc(r.BRAND)+'</td><td class="td-dim">'+esc(r.PLATFORM||'\u2014')+'</td><td class="td-dim">'+esc(r.FORMAT||'\u2014')+'</td><td class="td-trunc">'+esc(r.POINTS)+'</td><td class="td-dim">'+esc(r.CTA||'\u2014')+'</td><td class="'+(hasIntel(r.BRAND)?'td-ok':'td-miss')+'">'+(hasIntel(r.BRAND)?'Ready':'Missing')+'</td></tr>').join('');
   showView('viewReview');
 }
 
-// ── GENERATION ────────────────────────────────────────────────────────────
 async function startGeneration(){
   if(!getApiKey()){showKeyModal();return;}
   S.results=[];document.getElementById('liveResults').innerHTML='';
-  document.getElementById('genCount').textContent=`0 / ${S.briefRows.length}`;
+  document.getElementById('genCount').textContent='0 / '+S.briefRows.length;
   showView('viewGenerating');
   await runGeneration(S.briefRows);
+}
+
+async function runQuickBrief(){
+  if(!getApiKey()){showKeyModal();return;}
+  const r1=getQbRow(1);
+  if(!r1){document.getElementById('qbError').innerHTML='<div class="alert-err">Fill in Brand, Platform, Format, Bucket, Talking Points and CTA.</div>';return;}
+  const rows=[r1];
+  if(S.showSecond){const r2=getQbRow(2);if(r2)rows.push(r2);}
+  document.getElementById('qbError').innerHTML='';
+  S.briefRows=rows;S.results=[];
+  document.getElementById('liveResults').innerHTML='';
+  document.getElementById('genCount').textContent='0 / '+rows.length;
+  showView('viewGenerating');
+  await runGeneration(rows);
+}
+
+function getQbRow(n){
+  const p=n===1?'qb':'qb2';
+  const brand=document.getElementById(p+'-brand')?.value||'';
+  const platform=document.getElementById(p+'-platform')?.value||'';
+  const format=document.getElementById(p+'-format')?.value||'';
+  const bucket=document.getElementById(p+'-bucket')?.value||'';
+  const points=document.getElementById(p+'-points')?.value?.trim()||'';
+  const cta=document.getElementById(p+'-cta')?.value?.trim()||'';
+  if(!brand||!platform||!format||!bucket||!points||!cta)return null;
+  return{BRAND:S.brandIntel[brand]?.name||brand,MONTH:'',PLATFORM:platform,FORMAT:format,BUCKET:bucket,POINTS:points,CTA:cta,
+    SLIDES:document.getElementById(p+'-slides')?.value||'',
+    CAMPAIGN:n===1?document.getElementById('qb-campaign')?.value||'':'',
+    TONE:n===1?document.getElementById('qb-tone')?.value||'':'',
+    NOTES:document.getElementById(p+'-notes')?.value||'',DATE:'',AUDIENCE:'',ROW_ID:'QK-'+Date.now(),_brandKey:brand};
 }
 
 async function runGeneration(rows){
@@ -584,20 +799,20 @@ async function runGeneration(rows){
     const row=rows[i];
     updateProgress(i+1,rows.length,row.BRAND);
     let result;
-    try{const out=await callClaude(buildPrompt(row));result={row,output:parseOutput(out),status:'ok'};}
-    catch(e){
-      result={row,output:null,status:'err',error:e.message};
+    try{
+      const [copyRaw,visualRaw]=await Promise.all([
+        callClaude(buildPrompt(row)),
+        callClaude(buildVisualPromptFromRow(row))
+      ]);
+      result={row,output:parseOutput(copyRaw),visual:parseVisualOutput(visualRaw),status:'ok'};
+    }catch(e){
+      result={row,output:null,visual:null,status:'err',error:e.message};
       document.getElementById('progBrand').innerHTML='<span style="color:var(--err);font-size:12px;word-break:break-word">Error on '+esc(row.BRAND)+': '+esc(e.message)+'</span>';
     }
     S.results.push(result);
     const card=buildCard(result,S.results.length-1);
     document.getElementById('liveResults').appendChild(card);
-    if(result.status==='err'){
-      const body=card.querySelector('.card-body');
-      const chev=card.querySelector('.chevron');
-      if(body)body.style.display='';
-      if(chev)chev.classList.add('open');
-    }
+    if(result.status==='err'){const b=card.querySelector('.card-body');const c=card.querySelector('.chevron');if(b)b.style.display='';if(c)c.classList.add('open');}
   }
   renderComplete();
 }
@@ -606,650 +821,307 @@ function updateProgress(cur,total,brand){
   const pct=Math.round((cur/total)*100);
   document.getElementById('progNum').textContent=pct+'%';
   document.getElementById('progFill').style.width=pct+'%';
-  document.getElementById('genCount').textContent=`${cur} / ${total}`;
-  document.getElementById('progBrand').innerHTML=`<span class="spinner"></span> Writing for <span>${esc(brand)}</span>`;
+  document.getElementById('genCount').textContent=cur+' / '+total;
+  document.getElementById('progBrand').innerHTML='<span class="spinner"></span> Writing for <span>'+esc(brand)+'</span>';
 }
 
 function renderComplete(){
   const ok=S.results.filter(r=>r.status==='ok').length;
-  document.getElementById('completeText').innerHTML=`<strong>${ok} piece${ok!==1?'s':''} generated</strong> from ${S.results.length} rows. Click any cell to expand. Refine button for changes.`;
+  document.getElementById('completeText').innerHTML='<strong>'+ok+' piece'+(ok!==1?'s':'')+' generated</strong> from '+S.results.length+' row'+(S.results.length!==1?'s:':'.')+'. Copy + visual prompts. Writer checks copy, share visuals to design.';
   renderOutputTable();
   showView('viewComplete');
 }
 
 function renderOutputTable(){
-  const cont=document.getElementById('outputTable');
-  if(!cont)return;
-  cont.innerHTML=`
-    <div class="out-table-wrap">
-      <table class="out-table">
-        <thead>
-          <tr>
-            <th style="width:32px">#</th>
-            <th style="min-width:130px">Brand</th>
-            <th class="th-content">Caption</th>
-            <th class="th-content">Slides</th>
-            <th style="min-width:160px">Hashtags</th>
-            <th class="th-content">Alt Caption</th>
-            <th style="width:80px">Actions</th>
-          </tr>
-        </thead>
-        <tbody id="outputTbody"></tbody>
-      </table>
-    </div>`;
+  const cont=document.getElementById('outputTable');if(!cont)return;
+  const COPY_COLS=[['caption','Caption'],['slides','Slides'],['hashtags','Hashtags'],['variation','Alt Caption']];
+  const VIS_COLS=(r)=>r.visual?[['mj','Midjourney'],[(r.visual.isVideo?'video':'image'),(r.visual.isVideo?'Video Prompt':'DALL-E / Firefly')],['artNote','Art Direction']]:[];
+  cont.innerHTML='<div class="out-table-wrap"><table class="out-table"><thead><tr><th style="width:32px">#</th><th style="min-width:130px">Brand</th><th class="th-content">Caption</th><th class="th-content">Slides</th><th style="min-width:160px">Hashtags</th><th class="th-content">Alt Caption</th><th class="th-content th-visual">Midjourney</th><th class="th-content th-visual">AI / Video</th><th style="min-width:180px" class="th-visual">Art Direction</th><th style="width:90px">Actions</th></tr></thead><tbody id="outputTbody"></tbody></table></div>';
   const tbody=document.getElementById('outputTbody');
   S.results.forEach((r,i)=>{
-    // Main data row
     const tr=document.createElement('tr');
-    tr.className=r.status==='err'?'row-err':'';
-    tr.id=`row-${i}`;
+    tr.className=r.status==='err'?'row-err':'';tr.id='row-'+i;
     if(r.status==='err'){
-      tr.innerHTML=`
-        <td class="td-num">${i+1}</td>
-        <td class="td-meta"><div class="td-brand-name">${esc(r.row.BRAND)}</div><div class="td-tags"><span class="td-tag">${esc(r.row.PLATFORM||'')}</span><span class="td-tag">${esc(r.row.FORMAT||'')}</span></div></td>
-        <td colspan="5" style="padding:10px 12px;color:var(--err);font-size:12px">Error: ${esc(r.error||'Unknown error')}</td>`;
+      tr.innerHTML='<td class="td-num">'+(i+1)+'</td><td class="td-meta"><div class="td-brand-name">'+esc(r.row.BRAND)+'</div><div class="td-tags"><span class="td-tag">'+esc(r.row.PLATFORM||'')+'</span><span class="td-tag">'+esc(r.row.FORMAT||'')+'</span></div></td><td colspan="8" style="padding:10px 12px;color:var(--err);font-size:13px">Error: '+esc(r.error||'Unknown error')+'</td>';
     } else {
-      const COLS=[['caption','Caption'],['slides','Slides'],['hashtags','Hashtags'],['variation','Alt Caption']];
-      let cellsHtml=COLS.map(([key,label])=>{
-        const text=r.output?.[key]||'';
-        return `<td class="content-cell" id="cell-${i}-${key}" onclick="toggleCell(${i},'${key}')">
-          <div class="cc-inner">
-            <div class="cc-preview${!text?' empty':''}">${text?esc(text):'(empty)'}</div>
-            <div class="cc-actions">
-              <button class="cc-btn" id="copybtn-${i}-${key}" onclick="event.stopPropagation();copyCell(${i},'${key}',this)">Copy</button>
-              <button class="cc-btn" onclick="event.stopPropagation();openRefine(${i},'${key}')" style="border-color:rgba(255,184,77,.25);color:var(--warn)">Refine</button>
-            </div>
-          </div>
-        </td>`;
+      const allCols=[...COPY_COLS,...VIS_COLS(r)];
+      const cellsHtml=allCols.map(([key,label])=>{
+        const isVis=['mj','image','video','artNote'].includes(key);
+        const text=isVis?(r.visual?.[key]||''):(r.output?.[key]||'');
+        const badge=key==='mj'?'MJ':key==='artNote'?'ART':isVis?'AI':'';
+        return '<td class="content-cell'+(isVis?' vis-cell':'')+'" id="cell-'+i+'-'+key+'" onclick="toggleCell('+i+',\''+key+'\')">'+'<div class="cc-inner">'+(badge?'<div class="cc-vis-badge">'+badge+'</div>':'')+'<div class="cc-preview'+(text?'':' empty')+'">'+esc(text||'(empty)')+'</div><div class="cc-actions"><button class="cc-btn" onclick="event.stopPropagation();copyCell('+i+',\''+key+'\',this)">Copy</button><button class="cc-btn" onclick="event.stopPropagation();openRefine('+i+',\''+key+'\')" style="border-color:rgba(255,184,77,.25);color:var(--warn)">Refine</button></div></div></td>';
       }).join('');
-      tr.innerHTML=`
-        <td class="td-num">${i+1}</td>
-        <td class="td-meta">
-          <div class="td-brand-name">${esc(r.row.BRAND)}</div>
-          <div class="td-tags">
-            <span class="td-tag">${esc(r.row.PLATFORM||'')}</span>
-            <span class="td-tag">${esc(r.row.FORMAT||'')}</span>
-            ${r.row.BUCKET?`<span class="td-tag">${esc(r.row.BUCKET)}</span>`:''}
-          </div>
-        </td>
-        ${cellsHtml}
-        <td class="td-meta" style="text-align:center">
-          <button class="cc-btn" onclick="openRefine(${i},null)" style="border-color:rgba(255,184,77,.35);color:var(--warn);margin-bottom:4px;display:block;width:100%">Refine All</button>
-          <button class="cc-btn" onclick="copyAllForRow(${i},this)" style="display:block;width:100%">Copy All</button>
-        </td>`;
+      tr.innerHTML='<td class="td-num">'+(i+1)+'</td><td class="td-meta"><div class="td-brand-name">'+esc(r.row.BRAND)+'</div><div class="td-tags"><span class="td-tag">'+esc(r.row.PLATFORM||'')+'</span><span class="td-tag">'+esc(r.row.FORMAT||'')+'</span>'+(r.row.BUCKET?'<span class="td-tag">'+esc(r.row.BUCKET)+'</span>':'')+'</div></td>'+cellsHtml+'<td class="td-meta" style="text-align:center;vertical-align:top"><button class="cc-btn" onclick="openRefine('+i+',null)" style="border-color:rgba(255,184,77,.35);color:var(--warn);margin-bottom:5px;display:block;width:100%">Refine</button><button class="cc-btn" onclick="copyAllForRow('+i+',this)" style="display:block;width:100%">Copy All</button></td>';
     }
     tbody.appendChild(tr);
-
-    // Refine row (hidden until triggered)
+    // Refine row
     const refineRow=document.createElement('tr');
-    refineRow.className='refine-row';
-    refineRow.id=`refine-row-${i}`;
-    refineRow.style.display='none';
-    refineRow.innerHTML=`<td colspan="7"><div class="refine-panel" id="refine-panel-${i}">
-      <div class="refine-header">
-        <span>Refine Copy</span>
-        <button class="refine-close" onclick="closeRefine(${i})">✕</button>
-      </div>
-      <div style="margin-bottom:10px">
-        <div class="refine-label">Which section to refine</div>
-        <select class="refine-select" id="refine-section-${i}">
-          <option value="all">All sections</option>
-          <option value="caption">Caption only</option>
-          <option value="slides">Slides only</option>
-          <option value="hashtags">Hashtags only</option>
-          <option value="variation">Alt Caption only</option>
-        </select>
-      </div>
-      <div class="refine-grid">
-        <div>
-          <div class="refine-label">What to change / client feedback</div>
-          <textarea class="refine-textarea" id="refine-fb-${i}" placeholder="e.g.&#10;Make the hook more punchy.&#10;Client wants a softer CTA.&#10;Remove references to pricing.&#10;More energy, less corporate.&#10;Shorten to 3 slides max."></textarea>
-        </div>
-        <div>
-          <div class="refine-label">Additional context (optional)</div>
-          <textarea class="refine-textarea" id="refine-ctx-${i}" placeholder="e.g.&#10;This is for a product launch week.&#10;Target audience is new customers only.&#10;Avoid mentioning competitors."></textarea>
-        </div>
-      </div>
-      <div class="refine-actions">
-        <button class="btn-refine" id="refine-btn-${i}" onclick="runRefine(${i})">Generate Refined Copy</button>
-        <span style="font-size:10px;color:var(--mid)" id="refine-status-${i}"></span>
-      </div>
-      <div class="refine-output" id="refine-out-${i}">
-        <div class="refine-output-label" id="refine-out-label-${i}">Refined Copy</div>
-        <pre class="refine-output-text" id="refine-out-text-${i}"></pre>
-        <div style="display:flex;gap:7px;margin-top:8px;flex-wrap:wrap">
-          <button class="btn-use" onclick="useRefined(${i})">Use This — Replace in Table</button>
-          <button class="cc-btn" onclick="navigator.clipboard.writeText(document.getElementById('refine-out-text-${i}').textContent)">Copy</button>
-        </div>
-      </div>
-    </div></td>`;
+    refineRow.className='refine-row';refineRow.id='refine-row-'+i;refineRow.style.display='none';
+    refineRow.innerHTML='<td colspan="10"><div class="refine-panel" id="refine-panel-'+i+'"><div class="refine-header"><span>Refine Copy or Visual Prompts</span><button class="refine-close" onclick="closeRefine('+i+')">&#x2715;</button></div><div style="margin-bottom:10px"><div class="refine-label">Which section to refine</div><select class="refine-select" id="refine-section-'+i+'"><optgroup label="Copy"><option value="caption">Caption</option><option value="slides">Slides</option><option value="hashtags">Hashtags</option><option value="variation">Alt Caption</option><option value="all_copy">All copy</option></optgroup><optgroup label="Visual Prompts"><option value="mj">Midjourney Prompt</option><option value="image">DALL-E / Firefly Prompt</option><option value="video">Video Prompt</option><option value="artNote">Art Direction Note</option><option value="all_visual">All visual prompts</option></optgroup><option value="all">Everything</option></select></div><div class="refine-grid"><div><div class="refine-label">Feedback / what to change</div><textarea class="refine-textarea" id="refine-fb-'+i+'" placeholder="Be specific. e.g. Make hook more punchy. Client wants softer CTA. Make the visual darker and more cinematic."></textarea></div><div><div class="refine-label">Additional context (optional)</div><textarea class="refine-textarea" id="refine-ctx-'+i+'" placeholder="e.g. This is for a product launch week. Target only new customers."></textarea></div></div><div class="refine-actions"><button class="btn-refine" id="refine-btn-'+i+'" onclick="runRefine('+i+')">Generate Refinement</button><span style="font-size:11px;color:var(--mid)" id="refine-status-'+i+'"></span></div><div class="refine-output" id="refine-out-'+i+'"><div class="refine-output-label" id="refine-out-label-'+i+'">Refined Output</div><pre class="refine-output-text" id="refine-out-text-'+i+'"></pre><div style="display:flex;gap:7px;margin-top:8px;flex-wrap:wrap"><button class="btn-use" onclick="useRefined('+i+')">Use This</button><button class="cc-btn" onclick="navigator.clipboard.writeText(document.getElementById(\'refine-out-text-'+i+'\').textContent)">Copy</button></div></div></div></td>';
     tbody.appendChild(refineRow);
   });
 }
 
-// ── CARD ──────────────────────────────────────────────────────────────────
-function buildCard(result,index){
-  const{row,output,status,error:err}=result;const id=`c${index}`;
-  const el=document.createElement('div');
-  el.className=`res-card${status==='err'?' card-err':''}`;el.id=id;
-  el.innerHTML=`
-    <div class="card-hdr" onclick="toggleCard('${id}')">
-      <div class="card-meta">
-        <div class="card-num">${index+1}</div>
-        <div><div class="card-brand">${esc(row.BRAND)}</div>${row.ROW_ID?`<div style="font-size:9px;color:var(--mid);margin-top:1px">${esc(row.ROW_ID)}</div>`:''}</div>
-        <div class="card-tags">${row.PLATFORM?`<span class="tag">${esc(row.PLATFORM)}</span>`:''} ${row.FORMAT?`<span class="tag">${esc(row.FORMAT)}</span>`:''} ${row.BUCKET?`<span class="tag">${esc(row.BUCKET)}</span>`:''}</div>
-      </div>
-      <div style="display:flex;align-items:center">
-        <span class="card-status ${status==='ok'?'s-ok':'s-err'}">${status==='ok'?'Done':'Error'}</span>
-        <span class="chevron" id="chev-${id}">▼</span>
-      </div>
-    </div>
-    <div class="card-body" id="body-${id}" style="display:none">
-      ${status==='err'?`<div style="padding:14px 16px;color:var(--err);font-size:13px">Generation failed: ${esc(err)}</div>`:buildCardBody(result,index)}
-    </div>`;
-  return el;
+function toggleCell(rowIdx,key){
+  const cell=document.getElementById('cell-'+rowIdx+'-'+key);if(!cell)return;
+  const was=cell.classList.contains('expanded');
+  ['caption','slides','hashtags','variation','mj','image','video','artNote'].forEach(k=>{const c2=document.getElementById('cell-'+rowIdx+'-'+k);if(c2)c2.classList.remove('expanded');});
+  if(!was)cell.classList.add('expanded');
 }
-
-function buildCardBody(result,index){
-  const{output}=result;const id=`c${index}`;
-  return `
-    <div class="tabs" id="tabs-${id}">
-      <div class="tab on" onclick="switchTab('${id}','caption')">Caption</div>
-      <div class="tab" onclick="switchTab('${id}','slides')">Slides</div>
-      <div class="tab" onclick="switchTab('${id}','hashtags')">Hashtags</div>
-      <div class="tab" onclick="switchTab('${id}','variation')">Alt</div>
-    </div>
-    ${['caption','slides','hashtags','variation'].map(k=>`
-      <div class="tab-panel${k==='caption'?' on':''}" id="pnl-${id}-${k}">
-        <div class="copy-wrap">
-          <pre class="copy-pre" id="cp-${id}-${k}">${esc(output[k]||'(empty)')}</pre>
-          <button class="copy-btn" onclick="doCopy('${id}','${k}',this)">Copy</button>
-        </div>
-      </div>`).join('')}
-    <button class="revise-toggle" id="rev-tog-${id}" onclick="toggleRevise('${id}',${index})">Revise / Client Feedback</button>
-    <div class="revise-panel" id="rev-pnl-${id}">
-      <div class="revise-title">Revision</div>
-      <div class="rev-grid">
-        <div><div class="rev-label">Current copy to revise</div><textarea class="rev-textarea" id="rev-orig-${id}" placeholder="Paste or edit the copy to revise. Pre-filled from the active tab."></textarea></div>
-        <div><div class="rev-label">Client feedback / what to change</div><textarea class="rev-textarea" id="rev-fb-${id}" placeholder="e.g.&#10;Make it shorter.&#10;Client wants more energy in the hook.&#10;Avoid the word growth.&#10;CTA needs to be softer."></textarea></div>
-      </div>
-      <div class="rev-actions">
-        <button class="btn-revise" id="rev-btn-${id}" onclick="generateRevision('${id}',${index})">Generate Revision</button>
-        <span style="font-size:10px;color:var(--mid)">Revised copy replaces the active tab when you click Use This</span>
-      </div>
-      <div class="rev-out" id="rev-out-${id}">
-        <div class="rev-out-label">Revised Copy</div>
-        <pre class="rev-out-text" id="rev-out-txt-${id}"></pre>
-        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-          <button class="btn-use" onclick="useRevision('${id}',${index})">Use This — Replace Active Tab</button>
-          <button class="copy-btn" style="position:static" onclick="navigator.clipboard.writeText(document.getElementById('rev-out-txt-${id}').textContent)">Copy</button>
-        </div>
-      </div>
-    </div>`;
+function copyCell(rowIdx,key,btn){
+  const result=S.results[rowIdx];if(!result)return;
+  const isVis=['mj','image','video','artNote'].includes(key);
+  const text=isVis?(result.visual?.[key]||''):(result.output?.[key]||'');
+  navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});
 }
-
-function toggleCard(id){const b=document.getElementById(`body-${id}`);const c=document.getElementById(`chev-${id}`);const open=b.style.display==='';b.style.display=open?'none':'';c.classList.toggle('open',!open);}
-function switchTab(cardId,tab){['caption','slides','hashtags','variation'].forEach(k=>{document.getElementById(`pnl-${cardId}-${k}`)?.classList.toggle('on',k===tab);});const tabs=document.querySelectorAll(`#tabs-${cardId} .tab`);const keys=['caption','slides','hashtags','variation'];tabs.forEach((t,i)=>t.classList.toggle('on',keys[i]===tab));}
-function doCopy(cardId,tab,btn){const t=document.getElementById(`cp-${cardId}-${tab}`)?.textContent||'';navigator.clipboard.writeText(t).then(()=>{btn.textContent='Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});}
-
-// ── REVISE ────────────────────────────────────────────────────────────────
-function toggleRevise(cardId,index){
-  const pnl=document.getElementById(`rev-pnl-${cardId}`);
-  const btn=document.getElementById(`rev-tog-${cardId}`);
-  const isOpen=pnl.classList.toggle('on');
-  btn.classList.toggle('on',isOpen);
-  if(isOpen){
-    const result=S.results[index];
-    if(result?.output){
-      const tabs=document.querySelectorAll(`#tabs-${cardId} .tab`);
-      const keys=['caption','slides','hashtags','variation'];
-      let activeKey='caption';
-      tabs.forEach((t,i)=>{if(t.classList.contains('on'))activeKey=keys[i];});
-      document.getElementById(`rev-orig-${cardId}`).value=result.output[activeKey]||'';
-    }
+function copyAllForRow(rowIdx,btn){
+  const r=S.results[rowIdx];if(!r)return;
+  const o=r.output||{};const v=r.visual||{};
+  const parts=[
+    'BRAND: '+r.row.BRAND+' | '+r.row.PLATFORM+' | '+r.row.FORMAT,'',
+    '\u2500\u2500 COPY \u2500\u2500','CAPTION:',o.caption||'','',
+    'SLIDES:',o.slides||'','','HASHTAGS:',o.hashtags||'','',
+    'ALT CAPTION:',o.variation||''
+  ];
+  if(v.mj){
+    parts.push('','\u2500\u2500 VISUAL PROMPTS \u2500\u2500','MIDJOURNEY:',v.mj||'','');
+    if(v.video)parts.push('VIDEO PROMPT:',v.video||'','');
+    else if(v.image)parts.push('DALL-E / FIREFLY:',v.image||'','');
+    if(v.artNote)parts.push('ART DIRECTION:',v.artNote||'');
+  }
+  navigator.clipboard.writeText(parts.join('\n')).then(()=>{btn.textContent='Copied!';setTimeout(()=>{btn.textContent='Copy All';},1800);});
+}
+function openRefine(rowIdx,key){
+  document.querySelectorAll('.refine-row').forEach(r=>{if(r.id!=='refine-row-'+rowIdx)r.style.display='none';});
+  const row=document.getElementById('refine-row-'+rowIdx);if(!row)return;
+  const isOpen=row.style.display!=='none';
+  row.style.display=isOpen?'none':'';
+  if(!isOpen){
+    const sel=document.getElementById('refine-section-'+rowIdx);
+    if(sel&&key)sel.value=key;
+    setTimeout(()=>row.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
   }
 }
+function closeRefine(rowIdx){const r=document.getElementById('refine-row-'+rowIdx);if(r)r.style.display='none';}
 
-async function generateRevision(cardId,index){
+async function runRefine(rowIdx){
   if(!getApiKey()){showKeyModal();return;}
-  const result=S.results[index];
-  const origText=document.getElementById(`rev-orig-${cardId}`).value.trim();
-  const feedback=document.getElementById(`rev-fb-${cardId}`).value.trim();
+  const result=S.results[rowIdx];if(!result)return;
+  const section=document.getElementById('refine-section-'+rowIdx)?.value||'all';
+  const feedback=document.getElementById('refine-fb-'+rowIdx)?.value?.trim()||'';
+  const context=document.getElementById('refine-ctx-'+rowIdx)?.value?.trim()||'';
   if(!feedback){alert('Add feedback or revision notes first.');return;}
-  const btn=document.getElementById(`rev-btn-${cardId}`);
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Revising...';
+  const btn=document.getElementById('refine-btn-'+rowIdx);
+  const statusEl=document.getElementById('refine-status-'+rowIdx);
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Refining...';statusEl.textContent='';
   try{
-    const revised=await callClaude(buildRevisionPrompt(result.row,origText,feedback));
-    document.getElementById(`rev-out-txt-${cardId}`).textContent=revised.trim();
-    document.getElementById(`rev-out-${cardId}`).classList.add('on');
-  }catch(e){alert('Revision failed: '+e.message);}
-  btn.disabled=false;btn.textContent='Generate Revision';
+    const prompt=buildRefinePrompt(result,section,feedback,context);
+    const refined=await callClaude(prompt);
+    document.getElementById('refine-out-text-'+rowIdx).textContent=refined.trim();
+    const label=document.getElementById('refine-out-label-'+rowIdx);
+    if(label)label.textContent='Refined: '+section;
+    document.getElementById('refine-out-'+rowIdx).classList.add('on');
+    S.results[rowIdx]._refinedOutput=refined.trim();
+    S.results[rowIdx]._refinedSection=section;
+    statusEl.textContent='Done.';statusEl.style.color='var(--green)';
+  }catch(e){statusEl.textContent='Error: '+e.message;statusEl.style.color='var(--err)';}
+  btn.disabled=false;btn.textContent='Generate Refinement';
 }
 
-function useRevision(cardId,index){
-  const revised=document.getElementById(`rev-out-txt-${cardId}`)?.textContent||'';if(!revised)return;
-  const tabs=document.querySelectorAll(`#tabs-${cardId} .tab`);
-  const keys=['caption','slides','hashtags','variation'];let activeKey='caption';
-  tabs.forEach((t,i)=>{if(t.classList.contains('on'))activeKey=keys[i];});
-  const cpEl=document.getElementById(`cp-${cardId}-${activeKey}`);
-  if(cpEl)cpEl.textContent=revised;
-  if(S.results[index]?.output)S.results[index].output[activeKey]=revised;
-  document.getElementById(`rev-pnl-${cardId}`)?.classList.remove('on');
-  document.getElementById(`rev-tog-${cardId}`)?.classList.remove('on');
-  document.getElementById(`rev-out-${cardId}`)?.classList.remove('on');
+function useRefined(rowIdx){
+  const result=S.results[rowIdx];if(!result)return;
+  const refined=result._refinedOutput||'';const section=result._refinedSection||'all';if(!refined)return;
+  const isVis=['mj','image','video','artNote','all_visual'].includes(section);
+  if(section==='all'){const p=parseOutput(refined);if(p.caption||p.slides){result.output=p;}else{result.output.caption=refined;}const vp=parseVisualOutput(refined);if(vp.mj&&result.visual){result.visual=vp;}}
+  else if(section==='all_copy'){const p=parseOutput(refined);if(p.caption||p.slides){result.output=p;}else{result.output.caption=refined;}}
+  else if(section==='all_visual'){const vp=parseVisualOutput(refined);if(vp.mj){result.visual=vp;}else if(result.visual){result.visual.mj=refined;}}
+  else if(isVis){if(!result.visual)result.visual={};result.visual[section]=refined;}
+  else{result.output[section]=refined;}
+  renderOutputTable();
+  const row=document.getElementById('refine-row-'+rowIdx);if(row)row.style.display='none';
 }
 
-// ── PROMPT BUILDERS ───────────────────────────────────────────────────────
+// LIVE GENERATION CARDS (progress view)
+function buildCard(result,index){
+  const{row,output,status,error:err}=result;const id='c'+index;
+  const el=document.createElement('div');
+  el.className='res-card'+(status==='err'?' card-err':'');el.id=id;
+  el.innerHTML='<div class="card-hdr" onclick="toggleCard(\''+id+'\')"><div class="card-meta"><div class="card-num">'+(index+1)+'</div><div><div class="card-brand">'+esc(row.BRAND)+'</div>'+(row.ROW_ID?'<div style="font-size:9px;color:var(--mid);margin-top:1px">'+esc(row.ROW_ID)+'</div>':'')+'</div><div class="card-tags">'+(row.PLATFORM?'<span class="tag">'+esc(row.PLATFORM)+'</span>':'')+' '+(row.FORMAT?'<span class="tag">'+esc(row.FORMAT)+'</span>':'')+'</div></div><div style="display:flex;align-items:center"><span class="card-status '+(status==='ok'?'s-ok':'s-err')+'">'+(status==='ok'?'Done':'Error')+'</span><span class="chevron" id="chev-'+id+'">\u25bc</span></div></div><div class="card-body" id="body-'+id+'" style="display:none">'+(status==='err'?'<div style="padding:14px 16px;color:var(--err);font-size:13px">'+esc(err||'Unknown error')+'</div>':buildCardBody(result,index))+'</div>';
+  return el;
+}
+function buildCardBody(result,index){
+  const{output,visual}=result;const id='c'+index;
+  const copyTabs=[['caption','Caption'],['slides','Slides'],['hashtags','Hashtags'],['variation','Alt']];
+  const visTabs=visual?[['mj','Midjourney'],[(visual.isVideo?'video':'image'),(visual.isVideo?'Video':'DALL-E')],['artNote','Art Dir']]:[]; 
+  const allTabs=[...copyTabs,...visTabs];
+  const tabHtml=allTabs.map(([k,l],i)=>'<div class="tab'+(i===0?' on':'')+'" onclick="switchTab(\''+id+'\',\''+k+'\')">'+l+'</div>').join('');
+  const panelHtml=allTabs.map(([k,l],i)=>{
+    const isVis=['mj','image','video','artNote'].includes(k);
+    const text=isVis?(visual?.[k]||''):(output?.[k]||'');
+    return '<div class="tab-panel'+(i===0?' on':'')+'" id="pnl-'+id+'-'+k+'"><div class="copy-wrap"><pre class="copy-pre">'+esc(text||'(empty)')+'</pre><button class="copy-btn" onclick="doCopy(\''+id+'\',\''+k+'\',this,'+index+')">Copy</button></div></div>';
+  }).join('');
+  return '<div class="tabs" id="tabs-'+id+'">'+tabHtml+'</div>'+panelHtml;
+}
+function toggleCard(id){const b=document.getElementById('body-'+id);const c=document.getElementById('chev-'+id);const open=b.style.display==='';b.style.display=open?'none':'';c.classList.toggle('open',!open);}
+function switchTab(cardId,tab){const allKeys=['caption','slides','hashtags','variation','mj','image','video','artNote'];allKeys.forEach(k=>{const p=document.getElementById('pnl-'+cardId+'-'+k);if(p)p.classList.toggle('on',k===tab);});const tabs=document.querySelectorAll('#tabs-'+cardId+' .tab');const keys=[];tabs.forEach(t=>keys.push(t.textContent));tabs.forEach((t,i)=>{const k=allKeys.find(k=>t.textContent.toLowerCase().includes(k.substring(0,3).toLowerCase()));t.classList.toggle('on',document.getElementById('pnl-'+cardId+'-'+tab)&&document.getElementById('pnl-'+cardId+'-'+tab)&&false);});document.querySelectorAll('#tabs-'+cardId+' .tab').forEach(t=>t.classList.remove('on'));const tabsEl=document.getElementById('tabs-'+cardId);if(tabsEl){tabsEl.querySelectorAll('.tab').forEach((t,i)=>{if(allKeys[i]===tab)t.classList.add('on');});}}
+function doCopy(cardId,tab,btn,rowIdx){
+  const el=document.getElementById('pnl-'+cardId+'-'+tab);if(!el)return;
+  const text=el.querySelector('.copy-pre')?.textContent||'';
+  navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});
+}
+
+// PROMPT BUILDERS
 function hasIntel(brandName){const p=getProfile(brandName);return!!(p&&p.voice&&p.positioning);}
 function getProfile(brandName){
-  // Try exact key match first, then fuzzy
   const key=brandName.toLowerCase().trim();
   if(S.brandIntel[key])return S.brandIntel[key];
-  // Try partial match
   const found=Object.keys(S.brandIntel).find(k=>k.includes(key)||key.includes(k)||S.brandIntel[k].name?.toLowerCase()===key);
   return found?S.brandIntel[found]:null;
 }
 
 function buildPrompt(row){
   const p=getProfile(row.BRAND)||getProfile(row._brandKey||'');
-  const brandBlock=p&&p.voice?`\nBRAND INTELLIGENCE — LOCKED. Do not deviate from this framework.\nBrand: ${p.name}\nIndustry: ${p.industry}\nTarget Audience: ${p.audience}\nBrand Voice: ${p.voice}\nPositioning: ${p.positioning}\nKey Messages (weave naturally, do not list literally):\n${(p.keyMessages||[]).filter(m=>m.trim()).map((m,i)=>`  ${i+1}. ${m}`).join('\n')}${p.platformNotes?`\nPlatform Notes: ${p.platformNotes}`:''}\nWords NEVER to use: ${p.avoidWords}\nTopics/Tones NEVER to adopt: ${p.avoidTopics}\n`:`\n// No brand profile for "${row.BRAND}". Use professional senior copywriter judgment.\n`;
-  return `You are a senior social media copywriter at White Digital CANVAS. Writing for ${row.BRAND}.
-${brandBlock}
-BRIEF:
-Platform: ${row.PLATFORM}
-Format: ${row.FORMAT}${row.BUCKET?`\nContent Bucket: ${row.BUCKET}`:''}${row.TONE?`\nCampaign Tone Override: ${row.TONE}`:''}${row.CTA?`\nCTA: ${row.CTA}`:''}${row.SLIDES?`\nSlides: ${row.SLIDES}`:''}${row.CAMPAIGN?`\nCampaign Theme: ${row.CAMPAIGN}`:''}${row.AUDIENCE?`\nAudience Focus: ${row.AUDIENCE}`:''}
-
-TALKING POINTS:
-${row.POINTS}${row.NOTES?`\n\nAdditional Context: ${row.NOTES}`:''}
-
-DELIVERABLES:
-1. Main caption / post copy (hook + body + CTA)
-2. All slide headlines and supporting copy
-3. 15–20 relevant hashtags
-4. One alternative caption variation
-
-RULES:
-- Hook is line one. Stops the scroll. No preamble.
-- Caption max 150 words unless long-form LinkedIn.
-- Emojis sparingly, only where brand voice allows.
-- CTA lands naturally. Not forced.
-- Write in this brand's voice. Not generic.
-
-Respond EXACTLY:
-## 1. MAIN CAPTION
-[caption]
-
-## 2. SLIDE COPY
-[slides]
-
-## 3. HASHTAGS
-[hashtags]
-
-## 4. ALTERNATIVE CAPTION
-[variation]`;
+  const brandBlock=p&&p.voice?'\nBRAND INTELLIGENCE:\nBrand: '+p.name+'\nIndustry: '+p.industry+'\nAudience: '+p.audience+'\nVoice: '+p.voice+'\nPositioning: '+p.positioning+'\nKey Messages (weave naturally):\n'+(p.keyMessages||[]).filter(m=>m.trim()).map((m,i)=>'  '+(i+1)+'. '+m).join('\n')+(p.platformNotes?'\nPlatform Notes: '+p.platformNotes:'')+'\nWords NEVER to use: '+p.avoidWords+'\nTopics NEVER to adopt: '+p.avoidTopics+'\n':'\n// No brand profile for "'+row.BRAND+'". Use professional copywriter judgment.\n';
+  return 'You are a senior social media copywriter at WCN. Writing for '+row.BRAND+'.\n'+brandBlock+'\nBRIEF:\nPlatform: '+row.PLATFORM+'\nFormat: '+row.FORMAT+(row.BUCKET?'\nContent Bucket: '+row.BUCKET:'')+(row.TONE?'\nTone Override: '+row.TONE:'')+(row.CTA?'\nCTA: '+row.CTA:'')+(row.SLIDES?'\nSlides: '+row.SLIDES:'')+(row.CAMPAIGN?'\nCampaign: '+row.CAMPAIGN:'')+(row.AUDIENCE?'\nAudience Focus: '+row.AUDIENCE:'')+'\n\nTALKING POINTS:\n'+row.POINTS+(row.NOTES?'\n\nAdditional Context: '+row.NOTES:'')+'\n\nDELIVERABLES:\n1. Main caption (hook + body + CTA)\n2. All slide headlines and supporting copy\n3. 15-20 relevant hashtags\n4. One alternative caption variation\n\nRULES: Hook is line one. Caption max 150 words unless LinkedIn. Write in brand voice.\n\nRespond EXACTLY:\n## 1. MAIN CAPTION\n[caption]\n\n## 2. SLIDE COPY\n[slides]\n\n## 3. HASHTAGS\n[hashtags]\n\n## 4. ALTERNATIVE CAPTION\n[variation]';
 }
 
-function buildRevisionPrompt(row,originalCopy,feedback){
+function buildVisualPromptFromRow(row){
   const p=getProfile(row.BRAND)||getProfile(row._brandKey||'');
-  const ctx=p&&p.voice?`Brand voice: ${p.voice}\nPositioning: ${p.positioning}\nWords to avoid: ${p.avoidWords}`:'';
-  return `You wrote the following copy for ${row.BRAND}:\n\n${ctx?`BRAND CONTEXT:\n${ctx}\n\n`:''}ORIGINAL COPY:\n${originalCopy}\n\nFEEDBACK / WHAT NEEDS TO CHANGE:\n${feedback}\n\nRevise based on feedback. Stay within brand voice. Return ONLY the revised copy — no explanation, no labels.`;
+  const v=p||{};
+  const assetMap={'carousel':'Carousel Cover and Slides','carousel cover':'Carousel Cover','static post':'Static Post','reel':'Reel / Video','video':'Video Content','story':'Story','strip':'Strip Post','wheel':'Wheel Post','video script':'Short Video / Reel'};
+  const formatKey=(row.FORMAT||'').toLowerCase().trim();
+  const assetType=Object.entries(assetMap).find(([k])=>formatKey.includes(k))?.[1]||row.FORMAT||'Social Media Post';
+  const ratioMap={'instagram':'4:5','linkedin':'16:9','facebook':'4:5','youtube':'16:9','twitter':'16:9','story':'9:16','reel':'9:16'};
+  const platformKey=(row.PLATFORM||'').toLowerCase();
+  const ratio=Object.entries(ratioMap).find(([k])=>platformKey.includes(k))?.[1]||'4:5';
+  const isVideo=formatKey.includes('reel')||formatKey.includes('video');
+  const visualBlock=v.visualMood?'VISUAL BRAND INTELLIGENCE:\nBrand: '+(v.name||row.BRAND)+'\nVisual Mood: '+v.visualMood+'\nColour Palette: '+v.colorPalette+'\nImage Style: '+v.imageStyle+(v.videoStyle&&isVideo?'\nVideo Style: '+v.videoStyle:'')+'\nNEVER show: '+v.avoidVisuals+'\nSuggested MJ params: '+(v.mjParams||'--ar '+ratio+' --v 6'):'Brand: '+row.BRAND+'. No visual profile set.'+(v.voice?'\nBrand voice: '+v.voice:'');
+  return 'You are a creative director writing AI generation prompts for the design team at WCN.\n'+visualBlock+'\n\nCOPY BRIEF THIS VISUAL SUPPORTS:\nPlatform: '+row.PLATFORM+'\nAsset Type: '+assetType+'\nContent: '+row.POINTS+(row.CAMPAIGN?'\nCampaign: '+row.CAMPAIGN:'')+(row.TONE?'\nTone: '+row.TONE:'')+'\n\nRespond EXACTLY:\n\n## MJ PROMPT\n[Detailed Midjourney prompt with '+( v.mjParams||'--ar '+ratio+' --style raw --v 6')+' at end]\n\n## '+(isVideo?'VIDEO PROMPT':'DALLE PROMPT')+'\n['+(isVideo?'Runway/Kling prompt: opening shot, camera movement, subject, lighting, mood':'DALL-E 3 / Firefly prompt in natural language — highly descriptive')+' ]\n\n## ART DIRECTION\n[2-3 sentences: what the designer should look for and what to reject. Brand-specific.]';
 }
 
 function parseOutput(text){
-  const g=re=>{const m=text.match(re);return m?m[1].trim():'';};
-  return{caption:g(/## 1\. MAIN CAPTION\n([\s\S]*?)(?=## 2\.|$)/),slides:g(/## 2\. SLIDE COPY\n([\s\S]*?)(?=## 3\.|$)/),hashtags:g(/## 3\. HASHTAGS\n([\s\S]*?)(?=## 4\.|$)/),variation:g(/## 4\. ALTERNATIVE CAPTION\n([\s\S]*?)$/),raw:text};
+  const sec=(h,stop)=>{const m=text.match(new RegExp('## '+h+'\\n([\\s\\S]*?)(?=## |$)','m'));return m?m[1].trim():'';};
+  return{caption:sec('1\\. MAIN CAPTION'),slides:sec('2\\. SLIDE COPY'),hashtags:sec('3\\. HASHTAGS'),variation:sec('4\\. ALTERNATIVE CAPTION'),raw:text};
 }
 
-// ── CLAUDE API ────────────────────────────────────────────────────────────
+function parseVisualOutput(text){
+  const sec=(h)=>{const m=text.match(new RegExp('## '+h+'\\n([\\s\\S]*?)(?=## |$)','m'));return m?m[1].trim():'';};
+  const isVideo=text.includes('## VIDEO PROMPT');
+  return{mj:sec('MJ PROMPT'),image:isVideo?'':sec('DALLE PROMPT'),video:isVideo?sec('VIDEO PROMPT'):'',artNote:sec('ART DIRECTION'),isVideo,raw:text};
+}
+
+function buildRefinePrompt(result,section,feedback,context){
+  const p=getProfile(result.row.BRAND)||getProfile(result.row._brandKey||'');
+  const o=result.output||{};const v=result.visual||{};
+  const isVis=['mj','image','video','artNote','all_visual'].includes(section);
+  if(isVis||section==='all_visual'){
+    const vCtx=p&&p.visualMood?'Visual Mood: '+p.visualMood+'\nColour Palette: '+p.colorPalette+'\nImage Style: '+p.imageStyle+'\nNEVER show: '+p.avoidVisuals:'';
+    const current=section==='all_visual'?['MJ:',v.mj||'','','Video/DALL-E:',v.video||v.image||'','','Art Direction:',v.artNote||''].join('\n'):(v[section]||'');
+    const fmt=section==='all_visual'?'Return exactly:\n## MJ PROMPT\n[prompt]\n\n## '+(v.isVideo?'VIDEO PROMPT':'DALLE PROMPT')+'\n[prompt]\n\n## ART DIRECTION\n[note]':'Return ONLY the refined prompt. No labels.';
+    return 'You are a creative director at WCN refining AI generation prompts for '+result.row.BRAND+'.\n\n'+(vCtx?'BRAND VISUAL CONTEXT:\n'+vCtx+'\n\n':'')+'ORIGINAL BRIEF:\n'+result.row.POINTS+'\n\nCURRENT PROMPT:\n'+current+'\n\nFEEDBACK:\n'+feedback+(context?'\n\nADDITIONAL CONTEXT:\n'+context:'')+'\n\n'+fmt;
+  }
+  const brandCtx=p&&p.voice?'Brand: '+p.name+'\nVoice: '+p.voice+'\nPositioning: '+p.positioning+'\nAvoid: '+p.avoidWords:'';
+  const current=(section==='all_copy'||section==='all')?['CAPTION:',o.caption||'','SLIDES:',o.slides||'','HASHTAGS:',o.hashtags||'','ALT:',o.variation||''].join('\n'):(o[section]||'');
+  const fmt=(section==='all_copy'||section==='all')?'Return exactly:\n## 1. MAIN CAPTION\n[caption]\n\n## 2. SLIDE COPY\n[slides]\n\n## 3. HASHTAGS\n[hashtags]\n\n## 4. ALTERNATIVE CAPTION\n[variation]':'Return ONLY the refined '+section+'. No labels.';
+  return 'You are a senior copywriter at WCN refining copy for '+result.row.BRAND+'.\n\n'+(brandCtx?'BRAND CONTEXT:\n'+brandCtx+'\n\n':'')+'CURRENT COPY:\n'+current+'\n\nFEEDBACK:\n'+feedback+(context?'\n\nADDITIONAL CONTEXT:\n'+context:'')+'\n\n'+fmt;
+}
+
+// DESIGN ENGINE (standalone tab)
+async function runDesignBrief(){
+  if(!getApiKey()){showKeyModal();return;}
+  const brand=document.getElementById('dp-brand')?.value||'';
+  const asset=document.getElementById('dp-asset')?.value||'';
+  const platform=document.getElementById('dp-platform')?.value||'';
+  const tool=document.getElementById('dp-tool')?.value||'';
+  const concept=document.getElementById('dp-concept')?.value?.trim()||'';
+  if(!brand||!asset||!platform||!tool||!concept){document.getElementById('dpError').innerHTML='<div class="alert-err">Fill in Brand, Asset Type, Platform, AI Tool, and visual concept.</div>';return;}
+  document.getElementById('dpError').innerHTML='';
+  const btn=document.getElementById('dpGenerateBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Generating prompts...';
+  const p=getProfile(brand);const pName=p?.name||S.brandIntel[brand]?.name||brand;
+  try{
+    const prompt=buildStandaloneDesignPrompt({brand:pName,brandKey:brand,asset,platform,tool,concept,mood:document.getElementById('dp-mood')?.value||'',ratio:document.getElementById('dp-ratio')?.value||'',ref:document.getElementById('dp-ref')?.value||'',notes:document.getElementById('dp-notes')?.value||''},p);
+    const raw=await callClaude(prompt);
+    renderDesignOutput(raw,{brand:pName,asset,platform,tool});
+  }catch(e){document.getElementById('dpError').innerHTML='<div class="alert-err">Generation failed: '+esc(e.message)+'</div>';}
+  btn.disabled=false;btn.textContent='Generate Design Prompts';
+}
+
+function buildStandaloneDesignPrompt(brief,profile){
+  const v=profile||{};
+  const vBlock=v.visualMood?'\nVISUAL BRAND INTELLIGENCE:\nBrand: '+v.name+'\nVisual Mood: '+v.visualMood+'\nColour Palette: '+v.colorPalette+'\nImage Style: '+v.imageStyle+(v.videoStyle?'\nVideo Style: '+v.videoStyle:'')+'\nNEVER show: '+v.avoidVisuals+'\nMJ params: '+(v.mjParams||'--ar 4:5 --v 6')+'\n':'\n// No visual profile. Use brand voice: '+(v.voice||'professional')+'.\n';
+  const ratio=brief.ratio||'auto based on asset type';
+  const tools={'midjourney':'Generate ONE highly detailed Midjourney prompt. End with: '+(v.mjParams||'--ar 4:5 --style raw --v 6'),'dalle':'Generate ONE detailed DALL-E 3 / Adobe Firefly prompt in natural language.','runway':'Generate ONE detailed video generation prompt for Runway/Kling/Pika.','all':'Generate prompts for all three: Midjourney, DALL-E 3 / Firefly, and Runway/Kling.'};
+  return 'You are a senior creative director and AI prompt engineer at WCN. Writing for '+brief.brand+'.\n'+vBlock+'\nDESIGN BRIEF:\nAsset: '+brief.asset+'\nPlatform: '+brief.platform+'\nAspect Ratio: '+ratio+'\nWhat this visual communicates: '+brief.concept+(brief.mood?'\nMood: '+brief.mood:'')+(brief.ref?'\nReference: '+brief.ref:'')+(brief.notes?'\nArt direction: '+brief.notes:'')+'\n\nTASK: '+tools[brief.tool]+'\n\nAlso provide:\n- Short art direction note (3-4 sentences)\n- DO list (3 points)\n- DON\'T list (3 points)\n\nRespond EXACTLY:\n\n## MIDJOURNEY PROMPT\n[prompt or N/A]\n\n## DALLE FIREFLY PROMPT\n[prompt or N/A]\n\n## VIDEO PROMPT\n[prompt or N/A]\n\n## ART DIRECTION NOTE\n[3-4 sentences]\n\n## DO\n- [point 1]\n- [point 2]\n- [point 3]\n\n## DONT\n- [point 1]\n- [point 2]\n- [point 3]';
+}
+
+function renderDesignOutput(raw,meta){
+  const sec=(h)=>{const m=raw.match(new RegExp('## '+h+'\\n([\\s\\S]*?)(?=## |$)','m'));return m?m[1].trim():'';};
+  const out={midjourney:sec('MIDJOURNEY PROMPT'),dalle:sec('DALLE FIREFLY PROMPT'),video:sec('VIDEO PROMPT'),artNote:sec('ART DIRECTION NOTE'),doList:sec('DO'),dontList:sec('DONT'),raw};
+  const area=document.getElementById('designOutputArea');if(!area)return;
+  const PROMPTS=[{key:'midjourney',label:'Midjourney',icon:'MJ',desc:'Paste into Midjourney /imagine'},{key:'dalle',label:'DALL-E 3 / Adobe Firefly',icon:'AI',desc:'Paste into DALL-E 3 or Firefly'},{key:'video',label:'Runway / Kling / Pika',icon:'VD',desc:'Paste into video generation tool'}];
+  const cards=PROMPTS.map(p=>{const t=out[p.key]||'';const na=!t||t.toLowerCase().includes('n/a');return '<div class="des-card'+(na?' des-na':'')+'"><div class="des-card-hdr"><div style="display:flex;align-items:center;gap:10px"><div class="des-icon">'+p.icon+'</div><div><div class="des-card-title">'+p.label+'</div><div class="des-card-desc">'+p.desc+'</div></div></div>'+(na?'<span style="font-size:11px;color:var(--mid)">Not requested</span>':'<button class="cc-btn" onclick="copyDesignPrompt(\''+p.key+'\',this)">Copy Prompt</button>')+'</div>'+(na?'':'<div class="des-prompt-text" id="desp-'+p.key+'">'+esc(t)+'</div>')+'</div>';}).join('');
+  const doLines=(out.doList||'').split('\n').filter(l=>l.trim().startsWith('-')).map(l=>'<li>'+esc(l.replace(/^-\s*/,''))+'</li>').join('');
+  const dontLines=(out.dontList||'').split('\n').filter(l=>l.trim().startsWith('-')).map(l=>'<li>'+esc(l.replace(/^-\s*/,''))+'</li>').join('');
+  area.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px"><div><div class="sec-label">Design Output</div><div class="sec-title">'+esc(meta.brand)+' \u2014 '+esc(meta.asset)+'</div></div><button class="btn-ghost" onclick="document.getElementById(\'designOutputArea\').innerHTML=\'\'">Clear</button></div><div class="des-grid">'+cards+'</div><div class="des-bottom-grid"><div class="des-card"><div class="des-card-hdr" style="margin-bottom:10px"><div class="des-card-title">Art Direction Note</div><button class="cc-btn" onclick="navigator.clipboard.writeText(document.getElementById(\'des-art-txt\').textContent)">Copy</button></div><div class="des-art-text" id="des-art-txt">'+esc(out.artNote||'')+'</div></div><div class="des-card"><div class="des-card-title" style="padding:14px 16px 10px">Brand Visual Rules</div><div class="des-rules"><div><div class="des-rule-head do">DO</div><ul class="des-rule-list">'+doLines+'</ul></div><div><div class="des-rule-head dont">DON\'T</div><ul class="des-rule-list dont-list">'+dontLines+'</ul></div></div></div></div>';
+}
+function copyDesignPrompt(key,btn){const el=document.getElementById('desp-'+key);if(!el)return;navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy Prompt';btn.classList.remove('copied');},1800);});}
+
+// API
 async function callClaude(prompt){
   const key=getApiKey();
-  if(!key)throw new Error('API key not set on this device. Click "API Key" in the header and paste your Anthropic key. localStorage is device and domain specific — you need to set it once on each device and URL you use the engine from.');
+  if(!key)throw new Error('API key not set on this device. Click API Key in the header and paste your Anthropic key.');
   const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
-  if(!res.ok){
-    const e=await res.json().catch(()=>({}));
-    const msg=e.error?.message||`API error ${res.status}`;
-    if(res.status===401)throw new Error('API key invalid or expired. Click "API Key" in the header and re-enter your key from console.anthropic.com.');
-    throw new Error(msg);
-  }
+  if(!res.ok){const e=await res.json().catch(()=>({}));const msg=e.error?.message||'API error '+res.status;if(res.status===401)throw new Error('API key invalid or expired. Re-enter from console.anthropic.com.');throw new Error(msg);}
   const data=await res.json();return data.content.map(b=>b.text||'').join('\n');
 }
 
-// ── CONNECTION TEST ───────────────────────────────────────────────────────
-async function testConnection(){
-  const area = document.getElementById('apiTestResult');
-  if(!area)return;
-  const key=getApiKey();
-  if(!key){
-    area.innerHTML='<div class="alert-err">No API key set on this device. Click the API Key button in the header and paste your Anthropic key (starts with sk-ant-).</div>';
-    return;
-  }
-  area.innerHTML='<div style="font-size:12px;color:var(--mid);padding:10px 0"><span class="spinner"></span> Testing connection to Anthropic API...</div>';
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:30,messages:[{role:'user',content:'Reply with just the word CONNECTED.'}]})
-    });
-    const data=await res.json();
-    if(!res.ok){
-      const errMsg=data.error?.message||JSON.stringify(data);
-      area.innerHTML='<div class="alert-err"><strong>API Error '+res.status+'</strong><br>'+esc(errMsg)+'<br><br>'+getErrorHelp(res.status,errMsg)+'</div>';
-      return;
-    }
-    const reply=data.content?.map(b=>b.text||'').join('')||'';
-    area.innerHTML='<div style="background:rgba(127,232,154,.07);border:1px solid rgba(127,232,154,.25);color:var(--green);font-size:12px;padding:10px 14px;border-radius:4px"><strong>Connection successful.</strong> API key is valid and working on this device and domain. You can run briefs.</div>';
-    setTimeout(()=>{if(area)area.innerHTML='';},5000);
-  }catch(e){
-    area.innerHTML='<div class="alert-err"><strong>Connection failed: '+esc(e.message)+'</strong><br><br>'+getErrorHelp(0,e.message)+'</div>';
-  }
-}
-
-function getErrorHelp(status,msg){
-  if(status===401||msg.includes('invalid')||msg.includes('auth'))
-    return 'Your API key is invalid or expired. Go to <strong>console.anthropic.com</strong>, create a new key, and paste it using the API Key button in the header.';
-  if(msg.includes('not set')||msg.includes('No API key'))
-    return 'Click the <strong>API Key</strong> button in the header and paste your key from console.anthropic.com. You need to do this once per device and URL.';
-  if(status===429)
-    return 'You have hit your Anthropic API rate limit or have insufficient credits. Check your account at console.anthropic.com.';
-  if(msg.includes('fetch')||msg.includes('network')||msg.includes('Failed'))
-    return 'Network error. Check your internet connection. If you are on a corporate or restricted network, the Anthropic API endpoint may be blocked.';
-  return 'If this keeps happening, open browser DevTools (F12), go to the Console tab, run the brief, and share the red error text.';
-}
-
-
-// ── OUTPUT TABLE INTERACTIONS ─────────────────────────────────────────────
-function toggleCell(rowIdx, key){
-  const cell=document.getElementById(`cell-${rowIdx}-${key}`);
-  if(!cell)return;
-  const isExpanded=cell.classList.contains('expanded');
-  // Collapse all cells in this row first
-  ['caption','slides','hashtags','variation'].forEach(k=>{
-    const c2=document.getElementById(`cell-${rowIdx}-${k}`);
-    if(c2)c2.classList.remove('expanded');
-  });
-  // Toggle clicked cell
-  if(!isExpanded)cell.classList.add('expanded');
-}
-
-function copyCell(rowIdx, key, btn){
-  const result=S.results[rowIdx];
-  if(!result?.output)return;
-  const text=result.output[key]||'';
-  navigator.clipboard.writeText(text).then(()=>{
-    btn.textContent='Copied';btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);
-  });
-}
-
-function copyAllForRow(rowIdx, btn){
-  const result=S.results[rowIdx];
-  if(!result?.output)return;
-  const r=result.row;
-  const o=result.output;
-  const text=[
-    `BRAND: ${r.BRAND} | ${r.PLATFORM} | ${r.FORMAT}`,
-    ``,
-    `CAPTION:`,o.caption||'',``,
-    `SLIDES:`,o.slides||'',``,
-    `HASHTAGS:`,o.hashtags||'',``,
-    `ALT CAPTION:`,o.variation||''
-  ].join('\n');
-  navigator.clipboard.writeText(text).then(()=>{
-    btn.textContent='Copied!';
-    setTimeout(()=>{btn.textContent='Copy All';},1800);
-  });
-}
-
-function openRefine(rowIdx, key){
-  // Close any other open refine rows
-  document.querySelectorAll('.refine-row').forEach(r=>{
-    if(r.id!==`refine-row-${rowIdx}`)r.style.display='none';
-  });
-  const row=document.getElementById(`refine-row-${rowIdx}`);
-  if(!row)return;
-  const isOpen=row.style.display!=='none';
-  row.style.display=isOpen?'none':'';
-  if(!isOpen){
-    // Pre-select section if specific key passed
-    const sel=document.getElementById(`refine-section-${rowIdx}`);
-    if(sel&&key)sel.value=key;
-    // Scroll to refine panel
-    setTimeout(()=>row.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
-  }
-}
-
-function closeRefine(rowIdx){
-  const row=document.getElementById(`refine-row-${rowIdx}`);
-  if(row)row.style.display='none';
-}
-
-async function runRefine(rowIdx){
-  if(!getApiKey()){showKeyModal();return;}
-  const result=S.results[rowIdx];
-  if(!result)return;
-  const section=document.getElementById(`refine-section-${rowIdx}`)?.value||'all';
-  const feedback=document.getElementById(`refine-fb-${rowIdx}`)?.value?.trim()||'';
-  const context=document.getElementById(`refine-ctx-${rowIdx}`)?.value?.trim()||'';
-  if(!feedback){alert('Tell the engine what to change first.');return;}
-
-  const btn=document.getElementById(`refine-btn-${rowIdx}`);
-  const status=document.getElementById(`refine-status-${rowIdx}`);
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Refining...';
-  status.textContent='';
-
-  try{
-    const prompt=buildRefinePrompt(result,section,feedback,context);
-    const refined=await callClaude(prompt);
-    document.getElementById(`refine-out-text-${rowIdx}`).textContent=refined.trim();
-    const label=document.getElementById(`refine-out-label-${rowIdx}`);
-    if(label)label.textContent=section==='all'?'All Sections Refined':`Refined: ${section.charAt(0).toUpperCase()+section.slice(1)}`;
-    document.getElementById(`refine-out-${rowIdx}`).classList.add('on');
-    // Store for use
-    S.results[rowIdx]._refinedOutput=refined.trim();
-    S.results[rowIdx]._refinedSection=section;
-    status.textContent='Done.';
-    status.style.color='var(--green)';
-  }catch(e){
-    status.textContent='Error: '+e.message;
-    status.style.color='var(--err)';
-  }
-  btn.disabled=false;btn.textContent='Generate Refined Copy';
-}
-
-function useRefined(rowIdx){
-  const result=S.results[rowIdx];
-  if(!result)return;
-  const refined=result._refinedOutput||'';
-  const section=result._refinedSection||'all';
-  if(!refined)return;
-
-  if(section==='all'){
-    // Parse the refined output same way as generation
-    const parsed=parseOutput(refined);
-    if(parsed.caption||parsed.slides){
-      result.output=parsed;
-    } else {
-      // If format didn't match, put it all in caption
-      result.output.caption=refined;
-    }
-  } else {
-    result.output[section]=refined;
-  }
-
-  // Re-render table
-  renderOutputTable();
-  // Re-open the refine row
-  const row=document.getElementById(`refine-row-${rowIdx}`);
-  if(row)row.style.display='none';
-}
-
-function buildRefinePrompt(result, section, feedback, context){
-  const p=getProfile(result.row.BRAND)||getProfile(result.row._brandKey||'');
-  const brandCtx=p&&p.voice?`Brand: ${p.name}\nVoice: ${p.voice}\nPositioning: ${p.positioning}\nAvoid: ${p.avoidWords}`:'';
-  const o=result.output||{};
-
-  let currentCopy='';
-  if(section==='all'){
-    currentCopy=[
-      o.caption?`CAPTION:\n${o.caption}`:'',
-      o.slides?`\nSLIDES:\n${o.slides}`:'',
-      o.hashtags?`\nHASHTAGS:\n${o.hashtags}`:'',
-      o.variation?`\nALT CAPTION:\n${o.variation}`:''
-    ].filter(Boolean).join('\n');
-  } else {
-    currentCopy=o[section]||'';
-  }
-
-  const sectionLabel=section==='all'?'all copy sections':section;
-  const returnFormat=section==='all'?`Return in this exact format:
-## 1. MAIN CAPTION
-[caption]
-
-## 2. SLIDE COPY
-[slides]
-
-## 3. HASHTAGS
-[hashtags]
-
-## 4. ALTERNATIVE CAPTION
-[variation]`:`Return ONLY the refined ${section}. No labels, no explanation.`;
-
-  return `You are a senior copywriter at White Digital CANVAS refining copy for ${result.row.BRAND}.
-
-${brandCtx?`BRAND CONTEXT:\n${brandCtx}\n`:''}
-CURRENT COPY (${sectionLabel}):
-${currentCopy}
-
-FEEDBACK — WHAT TO CHANGE:
-${feedback}${context?`\n\nADDITIONAL CONTEXT:\n${context}`:''}
-
-${returnFormat}`;
-}
-
-// ── EXPORT ────────────────────────────────────────────────────────────────
+// EXPORT
 function exportExcel(){
   const wb=XLSX.utils.book_new();
-  const ws=XLSX.utils.json_to_sheet(S.results.map((r,i)=>({'#':i+1,'ROW ID':r.row.ROW_ID||'','BRAND':r.row.BRAND,'FORMAT':r.row.FORMAT,'PLATFORM':r.row.PLATFORM,'POST DATE':r.row.DATE||'','STATUS':r.status.toUpperCase(),'ERROR DETAIL':r.status==='err'?(r.error||'Unknown error'):'','MAIN CAPTION':r.output?.caption||'','SLIDE COPY':r.output?.slides||'','HASHTAGS':r.output?.hashtags||'','ALTERNATIVE CAPTION':r.output?.variation||''})));
-  ws['!cols']=[4,12,20,14,14,12,10,50,60,60,40,60].map(w=>({wch:w}));
+  const ws=XLSX.utils.json_to_sheet(S.results.map((r,i)=>({'#':i+1,'ROW ID':r.row.ROW_ID||'','BRAND':r.row.BRAND,'FORMAT':r.row.FORMAT,'PLATFORM':r.row.PLATFORM,'STATUS':r.status.toUpperCase(),'ERROR':r.status==='err'?(r.error||''):'','CAPTION':r.output?.caption||'','SLIDES':r.output?.slides||'','HASHTAGS':r.output?.hashtags||'','ALT CAPTION':r.output?.variation||'','MJ PROMPT':r.visual?.mj||'','AI / VIDEO PROMPT':r.visual?.video||r.visual?.image||'','ART DIRECTION':r.visual?.artNote||''})));
+  ws['!cols']=[4,12,20,14,14,10,30,60,60,40,60,60,60,40].map(w=>({wch:w}));
   XLSX.utils.book_append_sheet(wb,ws,'COPY OUTPUT');
-  XLSX.writeFile(wb,'WDC_Copy_Output.xlsx');
+  XLSX.writeFile(wb,'WCN_Content_Output.xlsx');
 }
 
-// ── IMPORT FROM MEMORY FILE ───────────────────────────────────────────────
-async function importFromMemoryFile(){
-  const text=document.getElementById('importTextarea').value.trim();
-  if(!text){alert('Paste a project memory file first.');return;}
-  if(!getApiKey()){showKeyModal();return;}
-  const btn=document.getElementById('importBtn');
-  const status=document.getElementById('importStatus');
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Parsing...';
-  status.textContent='';
+// CONNECTION TEST
+async function testConnection(){
+  const area=document.getElementById('apiTestResult');if(!area)return;
+  const key=getApiKey();
+  if(!key){area.innerHTML='<div class="alert-err">No API key set. Click the API Key button in the header and paste your Anthropic key.</div>';return;}
+  area.innerHTML='<div style="font-size:13px;color:var(--mid);padding:10px 0"><span class="spinner"></span> Testing connection to Anthropic API...</div>';
   try{
-    const prompt=`You are reading a project memory file for a brand or client. Extract the brand intelligence and return it as a JSON object with EXACTLY these fields:
-{
-  "name": "Brand display name",
-  "industry": "Industry or category",
-  "audience": "Full target audience description",
-  "voice": "Brand voice description — how this brand speaks, adjectives, behavioral description",
-  "positioning": "What this brand owns in the mind — its positioning truth",
-  "keyMessages": ["Message 1", "Message 2", "Message 3"],
-  "platformNotes": "Platform-specific content notes",
-  "avoidWords": "Comma-separated words and phrases to never use",
-  "avoidTopics": "Topics, tones, and approaches to never use"
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:20,messages:[{role:'user',content:'Reply with the word CONNECTED only.'}]})});
+    const data=await res.json();
+    if(!res.ok){const msg=data.error?.message||JSON.stringify(data);area.innerHTML='<div class="alert-err"><strong>API Error '+res.status+'</strong><br>'+esc(msg)+(res.status===401?'<br><br>Invalid or expired key. Go to console.anthropic.com for a new key.':(res.status===404?'<br><br>Model not found. The model claude-sonnet-4-6 should be valid.':''))+'</div>';return;}
+    area.innerHTML='<div style="background:rgba(127,232,154,.07);border:1px solid rgba(127,232,154,.25);color:var(--green);font-size:13px;padding:11px 14px;border-radius:4px"><strong>Connection successful.</strong> API key is valid. You can run briefs.</div>';
+    setTimeout(()=>{if(area)area.innerHTML='';},5000);
+  }catch(e){area.innerHTML='<div class="alert-err"><strong>Connection failed:</strong> '+esc(e.message)+'</div>';}
 }
 
-Return ONLY the JSON object. No markdown, no explanation, no preamble.
-
-PROJECT MEMORY FILE:
-${text.substring(0,8000)}`;
-    const raw=await callClaude(prompt);
-    const clean=raw.replace(/```json|```/g,'').trim();
-    const parsed=JSON.parse(clean);
-    if(!parsed.name)throw new Error('Could not extract brand name from the file.');
-    const key=parsed.name.toLowerCase().replace(/\s+/g,' ').trim();
-    saveBrandIntel(key,{...parsed,needsSetup:false});
-    S.selectedBrand=key;
-    // Pre-select the brand for editing
-    S.editForm={...parsed,keyMessages:Array.isArray(parsed.keyMessages)?parsed.keyMessages:['']};
-    document.getElementById('importTextarea').value='';
-    status.textContent=`${parsed.name} imported successfully.`;
-    status.style.color='var(--green)';
-    renderBrandGrid();
-    setTimeout(()=>{status.textContent='';},4000);
-  }catch(e){
-    status.textContent='Parse failed: '+e.message+'. Try pasting more of the file.';
-    status.style.color='var(--err)';
-  }
-  btn.disabled=false;btn.textContent='Parse and Import Brand';
-}
-
-// ── BRAND INTEL PANEL ─────────────────────────────────────────────────────
+// BRAND INTEL PANEL
 function saveBrandIntel(key,profile){
   S.brandIntel[key]=profile;
-  // Save only non-default or modified profiles
-  const toSave={};
-  Object.keys(S.brandIntel).forEach(k=>{
-    // Save everything (defaults + any new/modified)
-    toSave[k]=S.brandIntel[k];
-  });
+  const toSave={};Object.keys(S.brandIntel).forEach(k=>{toSave[k]=S.brandIntel[k];});
   localStorage.setItem('wdc_brand_intel_v3',JSON.stringify(toSave));
-  populateBrandDropdowns();
-  updateBrandCountNote();
+  populateBrandDropdowns();updateBrandCountNote();
 }
-
-// deleteBrand removed — brand intelligence is protected from deletion via UI
-
 function isReady(key){const p=S.brandIntel[key];return!!(p&&p.voice&&p.positioning&&!p.needsSetup);}
 
 function renderBrandGrid(){
   const grid=document.getElementById('brandGrid');
   const keys=Object.keys(S.brandIntel).sort((a,b)=>(S.brandIntel[a].name||a).localeCompare(S.brandIntel[b].name||b));
-  grid.innerHTML=keys.map(k=>{const p=S.brandIntel[k];const ready=isReady(k);return`<div class="brand-card${S.selectedBrand===k?' sel':''}" onclick="selectBrand('${k}')"><div class="bc-name">${esc(p.name||k)}</div><div class="bc-ind">${esc(p.industry||'Industry not set')}</div><div class="bc-status ${ready?'s-ready':'s-setup'}">${ready?'Intelligence ready':'Needs setup'}</div></div>`;}).join('');
+  grid.innerHTML=keys.map(k=>{const p=S.brandIntel[k];const ready=isReady(k);return '<div class="brand-card'+(S.selectedBrand===k?' sel':'')+'" onclick="selectBrand(\''+k+'\')"><div class="bc-name">'+esc(p.name||k)+'</div><div class="bc-ind">'+esc(p.industry||'Industry not set')+'</div><div class="bc-status '+(ready?'s-ready':'s-setup')+'">'+(ready?'Intelligence ready':'Needs setup')+'</div></div>';}).join('');
   if(S.selectedBrand&&S.brandIntel[S.selectedBrand])renderBrandEdit(S.selectedBrand);
   else document.getElementById('brandEditArea').innerHTML='';
 }
-
-function selectBrand(key){
-  S.selectedBrand=key;
-  const p=S.brandIntel[key];
-  S.editForm={name:p.name||'',industry:p.industry||'',audience:p.audience||'',voice:p.voice||'',positioning:p.positioning||'',keyMessages:p.keyMessages?.length?[...p.keyMessages]:[''],platformNotes:p.platformNotes||'',avoidWords:p.avoidWords||'',avoidTopics:p.avoidTopics||''};
-  renderBrandGrid();
-}
-
-function addBrandManually(){
-  const name=prompt('Brand name (as it appears in briefs):');
-  if(!name?.trim())return;
-  const key=name.trim().toLowerCase();
-  saveBrandIntel(key,{name:name.trim(),industry:'',audience:'',voice:'',positioning:'',keyMessages:[''],platformNotes:'',avoidWords:'',avoidTopics:'',needsSetup:true});
-  S.selectedBrand=key;
-  S.editForm={name:name.trim(),industry:'',audience:'',voice:'',positioning:'',keyMessages:[''],platformNotes:'',avoidWords:'',avoidTopics:''};
-  renderBrandGrid();
-}
+function selectBrand(key){S.selectedBrand=key;const p=S.brandIntel[key];S.editForm={name:p.name||'',industry:p.industry||'',audience:p.audience||'',voice:p.voice||'',positioning:p.positioning||'',keyMessages:p.keyMessages?.length?[...p.keyMessages]:[''],platformNotes:p.platformNotes||'',avoidWords:p.avoidWords||'',avoidTopics:p.avoidTopics||'',visualMood:p.visualMood||'',colorPalette:p.colorPalette||'',imageStyle:p.imageStyle||'',videoStyle:p.videoStyle||'',avoidVisuals:p.avoidVisuals||'',mjParams:p.mjParams||''};renderBrandGrid();}
+function addBrandManually(){const name=prompt('Brand name:');if(!name?.trim())return;const key=name.trim().toLowerCase();saveBrandIntel(key,{name:name.trim(),industry:'',audience:'',voice:'',positioning:'',keyMessages:[''],platformNotes:'',avoidWords:'',avoidTopics:'',visualMood:'',colorPalette:'',imageStyle:'',videoStyle:'',avoidVisuals:'',mjParams:'',needsSetup:true});S.selectedBrand=key;S.editForm={name:name.trim(),industry:'',audience:'',voice:'',positioning:'',keyMessages:[''],platformNotes:'',avoidWords:'',avoidTopics:'',visualMood:'',colorPalette:'',imageStyle:'',videoStyle:'',avoidVisuals:'',mjParams:''};renderBrandGrid();}
 
 function renderBrandEdit(key){
   const f=S.editForm;if(!f)return;
-  document.getElementById('brandEditArea').innerHTML=`
-    <div class="brand-edit">
-      <div class="be-title">${esc(f.name||key)}</div>
-      <div class="two-col">
-        <div class="field"><label>Brand Name</label><input value="${esc(f.name)}" placeholder="As it appears in briefs" oninput="S.editForm.name=this.value"/></div>
-        <div class="field"><label>Industry / Category</label><input value="${esc(f.industry)}" placeholder="e.g. SaaS / Business Automation" oninput="S.editForm.industry=this.value"/></div>
-      </div>
-      <div class="field"><label>Target Audience</label><textarea rows="2" oninput="S.editForm.audience=this.value" placeholder="Who they are — age, mindset, situation.">${esc(f.audience)}</textarea></div>
-      <div class="field"><label>Brand Voice</label><textarea rows="2" oninput="S.editForm.voice=this.value" placeholder="How this brand speaks — adjectives and behavioral description.">${esc(f.voice)}</textarea></div>
-      <div class="field"><label>Positioning</label><textarea rows="3" oninput="S.editForm.positioning=this.value" placeholder="What this brand owns in the mind. The truth that makes it different.">${esc(f.positioning)}</textarea></div>
-      <div class="field">
-        <label>Key Messages</label>
-        <div class="msg-list" id="msgList">${(f.keyMessages||['']).map((m,i)=>`<div class="msg-row"><input value="${esc(m)}" placeholder="Message ${i+1}" oninput="S.editForm.keyMessages[${i}]=this.value"/>${(f.keyMessages||['']).length>1?`<button class="btn-remove" onclick="removeMsg(${i})">×</button>`:''}</div>`).join('')}</div>
-        <button class="btn-add-msg" onclick="addMsg()">+ Add message</button>
-      </div>
-      <div class="field"><label>Platform Notes</label><textarea rows="2" oninput="S.editForm.platformNotes=this.value" placeholder="Per-platform nuances, if any.">${esc(f.platformNotes)}</textarea></div>
-      <div class="two-col">
-        <div class="field"><label>Words / Phrases to Avoid</label><textarea rows="2" oninput="S.editForm.avoidWords=this.value" placeholder="Comma-separated">${esc(f.avoidWords)}</textarea></div>
-        <div class="field"><label>Topics / Tones to Avoid</label><textarea rows="2" oninput="S.editForm.avoidTopics=this.value" placeholder="What this brand should never sound like">${esc(f.avoidTopics)}</textarea></div>
-      </div>
-      <div class="save-row"><button class="btn-primary" onclick="saveCurrentBrand()">Save Intelligence</button><span class="save-fb" id="saveFb"></span></div>
-    </div>`;
+  document.getElementById('brandEditArea').innerHTML='<div class="brand-edit"><div class="be-title">'+esc(f.name||key)+'</div><div class="two-col"><div class="field"><label>Brand Name</label><input value="'+esc(f.name)+'" placeholder="As it appears in briefs" oninput="S.editForm.name=this.value"/></div><div class="field"><label>Industry</label><input value="'+esc(f.industry)+'" oninput="S.editForm.industry=this.value"/></div></div><div class="field"><label>Target Audience</label><textarea rows="2" oninput="S.editForm.audience=this.value">'+esc(f.audience)+'</textarea></div><div class="field"><label>Brand Voice</label><textarea rows="2" oninput="S.editForm.voice=this.value">'+esc(f.voice)+'</textarea></div><div class="field"><label>Positioning</label><textarea rows="2" oninput="S.editForm.positioning=this.value">'+esc(f.positioning)+'</textarea></div><div class="field"><label>Key Messages</label><div class="msg-list" id="msgList">'+((f.keyMessages||['']).map((m,i)=>'<div class="msg-row"><input value="'+esc(m)+'" placeholder="Message '+(i+1)+'" oninput="S.editForm.keyMessages['+(i)+']=this.value"/>'+((f.keyMessages||['']).length>1?'<button class="btn-remove" onclick="removeMsg('+i+')">&#215;</button>':'')+'</div>')).join('')+'</div><button class="btn-add-msg" onclick="addMsg()">+ Add message</button></div><div class="field"><label>Platform Notes</label><textarea rows="2" oninput="S.editForm.platformNotes=this.value">'+esc(f.platformNotes)+'</textarea></div><div class="two-col"><div class="field"><label>Words to Avoid</label><textarea rows="2" oninput="S.editForm.avoidWords=this.value">'+esc(f.avoidWords)+'</textarea></div><div class="field"><label>Topics to Avoid</label><textarea rows="2" oninput="S.editForm.avoidTopics=this.value">'+esc(f.avoidTopics)+'</textarea></div></div><div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)"><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:14px">Visual Intelligence</div><div class="field"><label>Visual Mood</label><textarea rows="2" oninput="S.editForm.visualMood=this.value">'+esc(f.visualMood||'')+'</textarea></div><div class="two-col"><div class="field"><label>Colour Palette</label><input value="'+esc(f.colorPalette||'')+'" oninput="S.editForm.colorPalette=this.value"/></div><div class="field"><label>MJ Params</label><input value="'+esc(f.mjParams||'')+'" placeholder="--ar 4:5 --v 6" oninput="S.editForm.mjParams=this.value"/></div></div><div class="field"><label>Image Style</label><textarea rows="2" oninput="S.editForm.imageStyle=this.value">'+esc(f.imageStyle||'')+'</textarea></div><div class="field"><label>Video Style</label><textarea rows="2" oninput="S.editForm.videoStyle=this.value">'+esc(f.videoStyle||'')+'</textarea></div><div class="field"><label>Visuals to Avoid</label><textarea rows="2" oninput="S.editForm.avoidVisuals=this.value">'+esc(f.avoidVisuals||'')+'</textarea></div></div><div class="save-row"><button class="btn-primary" onclick="saveCurrentBrand()">Save Intelligence</button><span class="save-fb" id="saveFb"></span></div></div>';
 }
 
 function addMsg(){if(!S.editForm)return;if(!Array.isArray(S.editForm.keyMessages))S.editForm.keyMessages=[];S.editForm.keyMessages.push('');renderBrandEdit(S.selectedBrand);}
@@ -1257,15 +1129,37 @@ function removeMsg(i){if(!S.editForm)return;S.editForm.keyMessages.splice(i,1);r
 function saveCurrentBrand(){
   if(!S.editForm||!S.selectedBrand)return;
   saveBrandIntel(S.selectedBrand,{...S.editForm,keyMessages:(S.editForm.keyMessages||[]).filter(m=>m.trim()),needsSetup:false});
-  const fb=document.getElementById('saveFb');
-  if(fb){fb.textContent='Saved and locked.';setTimeout(()=>fb.textContent='',2500);}
+  const fb=document.getElementById('saveFb');if(fb){fb.textContent='Saved.';setTimeout(()=>fb.textContent='',2500);}
   renderBrandGrid();
 }
 
-// ── UTILS ─────────────────────────────────────────────────────────────────
+async function importFromMemoryFile(){
+  const text=document.getElementById('importTextarea').value.trim();
+  if(!text){alert('Paste a project memory file first.');return;}
+  if(!getApiKey()){showKeyModal();return;}
+  const btn=document.getElementById('importBtn');const status=document.getElementById('importStatus');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Parsing...';status.textContent='';
+  try{
+    const prompt='You are reading a project memory file. Extract brand intelligence and return ONLY a JSON object with these exact fields: name, industry, audience, voice, positioning, keyMessages (array), platformNotes, avoidWords, avoidTopics, visualMood, colorPalette, imageStyle, videoStyle, avoidVisuals, mjParams. No markdown, no explanation.\n\n'+text.substring(0,8000);
+    const raw=await callClaude(prompt);
+    const clean=raw.replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(clean);
+    if(!parsed.name)throw new Error('Could not extract brand name.');
+    const key=parsed.name.toLowerCase().replace(/\s+/g,' ').trim();
+    saveBrandIntel(key,{...parsed,needsSetup:false});
+    S.selectedBrand=key;S.editForm={...parsed,keyMessages:Array.isArray(parsed.keyMessages)?parsed.keyMessages:['']};
+    document.getElementById('importTextarea').value='';
+    status.textContent=parsed.name+' imported successfully.';status.style.color='var(--green)';
+    renderBrandGrid();
+    setTimeout(()=>{status.textContent='';},4000);
+  }catch(e){status.textContent='Parse failed: '+e.message;status.style.color='var(--err)';}
+  btn.disabled=false;btn.textContent='Parse and Import Brand';
+}
+
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 init();
+
 </script>
 </body>
 </html>
