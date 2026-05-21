@@ -194,7 +194,7 @@ tr:hover td{background:rgba(205,233,84,.025)}
   </div>
   <div class="hdr-right">
     <button class="hdr-btn" id="intelBtn" onclick="toggleIntel()">Brand Intelligence</button>
-    <button class="hdr-btn" onclick="showKeyModal()">API Key</button>
+    <button class="hdr-btn" id="apiKeyBtn" onclick="showKeyModal()">API Key</button>
     <span class="badge">Copy Engine v2</span>
   </div>
 </header>
@@ -355,19 +355,27 @@ const S={briefRows:[],results:[],brandIntel:{},showIntel:false,selectedBrand:nul
 function init(){
   const saved=localStorage.getItem('wdc_brand_intel_v3');
   const savedProfiles=saved?JSON.parse(saved):{};
-  // Merge: defaults first, then any saved overrides (saved takes precedence for edits)
   S.brandIntel={...BRAND_DEFAULTS};
-  // Apply saved overrides
   Object.keys(savedProfiles).forEach(k=>{S.brandIntel[k]=savedProfiles[k];});
   populateBrandDropdowns();
   updateBrandCountNote();
+  updateKeyStatus();
   if(!localStorage.getItem('wdc_api_key'))showKeyModal();
+}
+
+function updateKeyStatus(){
+  const btn=document.getElementById('apiKeyBtn');
+  if(!btn)return;
+  const hasKey=!!localStorage.getItem('wdc_api_key');
+  btn.textContent=hasKey?'API Key ✓':'API Key — Not Set';
+  btn.style.borderColor=hasKey?'rgba(127,232,154,.35)':'rgba(255,112,112,.5)';
+  btn.style.color=hasKey?'var(--green)':'var(--err)';
 }
 
 // ── API KEY ───────────────────────────────────────────────────────────────
 function showKeyModal(){const k=localStorage.getItem('wdc_api_key')||'';document.getElementById('apiKeyInput').value=k;document.getElementById('keyModal').classList.add('on');document.getElementById('closeKeyModalBtn').style.display=k?'':'none';}
+function saveApiKey(){const k=document.getElementById('apiKeyInput').value.trim();if(!k)return alert('Enter your API key');localStorage.setItem('wdc_api_key',k);closeModal();updateKeyStatus();}
 function closeModal(){document.getElementById('keyModal').classList.remove('on');}
-function saveApiKey(){const k=document.getElementById('apiKeyInput').value.trim();if(!k)return alert('Enter your API key');localStorage.setItem('wdc_api_key',k);closeModal();}
 function getApiKey(){return localStorage.getItem('wdc_api_key')||'';}
 
 // ── VIEWS ─────────────────────────────────────────────────────────────────
@@ -475,7 +483,18 @@ function parseExcel(buf){
     SLIDES:g(r,'NO. OF SLIDES','SLIDES'),AUDIENCE:g(r,'AUDIENCE FOCUS','TARGET AUDIENCE','AUDIENCE'),
     TONE:g(r,'CAMPAIGN TONE OVERRIDE','TONE / MOOD','TONE'),
     NOTES:g(r,'ADDITIONAL NOTES','NOTES'),ROW_ID:g(r,'ROW ID','ROWID'),
-  })).filter(r=>r.BRAND&&r.BRAND.toUpperCase()!=='BRAND NAME');
+  })).filter(r=>{
+    if(!r.BRAND)return false;
+    const b=r.BRAND.toUpperCase().trim();
+    // Exclude header repeats and legend rows
+    if(b==='BRAND NAME')return false;
+    if(b.includes('= MANDATORY')||b.includes('= OPTIONAL')||b.includes('= AUTO'))return false;
+    if(b.includes('BRAND VOICE')||b.includes('IN COPY ENGINE'))return false;
+    if(b.startsWith('ORANGE')||b.startsWith('YELLOW')||b.startsWith('GREEN'))return false;
+    // Must have at least talking points to be a valid brief row
+    if(!r.POINTS)return false;
+    return true;
+  });
 }
 
 // ── REVIEW ────────────────────────────────────────────────────────────────
@@ -703,9 +722,15 @@ function parseOutput(text){
 
 // ── CLAUDE API ────────────────────────────────────────────────────────────
 async function callClaude(prompt){
-  const key=getApiKey();if(!key)throw new Error('No API key. Click API Key in the header.');
+  const key=getApiKey();
+  if(!key)throw new Error('API key not set on this device. Click "API Key" in the header and paste your Anthropic key. localStorage is device and domain specific — you need to set it once on each device and URL you use the engine from.');
   const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
-  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||`API error ${res.status}`);}
+  if(!res.ok){
+    const e=await res.json().catch(()=>({}));
+    const msg=e.error?.message||`API error ${res.status}`;
+    if(res.status===401)throw new Error('API key invalid or expired. Click "API Key" in the header and re-enter your key from console.anthropic.com.');
+    throw new Error(msg);
+  }
   const data=await res.json();return data.content.map(b=>b.text||'').join('\n');
 }
 
