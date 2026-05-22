@@ -237,6 +237,38 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .des-rule-list.dont-list li::before{content:"x";color:var(--err)}
 @media(max-width:700px){.des-bottom-grid{grid-template-columns:1fr}.des-rules{grid-template-columns:1fr}.refine-grid{grid-template-columns:1fr}.rev-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
 @media(max-width:640px){.main{padding:24px 16px}.hdr{padding:11px 16px}.brand-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+
+/* ── SESSIONS ── */
+.sessions-empty{text-align:center;padding:48px 20px;color:rgba(255,255,255,.3);font-size:14px}
+.sessions-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.session-card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;transition:border-color .15s;cursor:pointer}
+.session-card:hover{border-color:rgba(255,255,255,.2)}
+.session-card.active{border-color:var(--lime)}
+.sess-meta{display:flex;flex-direction:column;gap:4px}
+.sess-date{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.5px}
+.sess-brands{font-size:15px;font-weight:700;color:var(--white)}
+.sess-count{font-size:12px;color:var(--mid)}
+.sess-actions{display:flex;gap:7px;flex-shrink:0}
+.btn-sess-load{background:rgba(205,233,84,.08);border:1px solid rgba(205,233,84,.2);color:var(--lime);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border-radius:3px;cursor:pointer;transition:all .15s}
+.btn-sess-load:hover{background:rgba(205,233,84,.15)}
+.btn-sess-del{background:transparent;border:1px solid rgba(255,112,112,.18);color:rgba(255,112,112,.5);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:3px;cursor:pointer;transition:all .15s}
+.btn-sess-del:hover{border-color:var(--err);color:var(--err)}
+/* SESSION REFINE PANEL */
+.sess-refine-wrap{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:20px;margin-bottom:22px}
+.sess-refine-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:6px}
+.sess-refine-sub{font-size:13px;color:var(--mid);margin-bottom:16px;line-height:1.6}
+.sess-refine-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.sess-refine-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:700;margin-bottom:6px}
+.sess-refine-select{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--white);font-family:inherit;font-size:14px;padding:10px 12px;outline:none;-webkit-appearance:none;margin-bottom:14px}
+.sess-refine-select option{background:var(--navy)}
+.sess-refine-textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:4px;color:var(--white);font-family:inherit;font-size:14px;padding:11px 13px;outline:none;resize:vertical;line-height:1.6;transition:border-color .15s;min-height:90px}
+.sess-refine-textarea:focus{border-color:rgba(205,233,84,.35)}
+.sess-refine-textarea::placeholder{color:rgba(107,118,153,.45)}
+.sess-refine-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sess-loaded-bar{background:rgba(205,233,84,.05);border:1px solid rgba(205,233,84,.15);border-radius:5px;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.sess-loaded-text{font-size:13px;color:rgba(255,255,255,.7)}
+.sess-loaded-text strong{color:var(--white)}
+@media(max-width:700px){.sess-refine-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -261,6 +293,7 @@ tr:hover td{background:rgba(205,233,84,.025)}
     <div><div class="logo-name">WCN Content Engine</div><div class="logo-sub">Copy &middot; Design &middot; Intelligence</div></div>
   </div>
   <div class="hdr-right">
+    <button class="hdr-btn" id="sessionsBtn" onclick="toggleSessions()">Sessions</button>
     <button class="hdr-btn" id="intelBtn" onclick="toggleIntel()">Brand Intelligence</button>
     <button class="hdr-btn" id="apiKeyBtn" onclick="showKeyModal()">API Key</button>
     <span class="badge">Content Engine</span>
@@ -424,6 +457,53 @@ tr:hover td{background:rgba(205,233,84,.025)}
   <div class="intel-actions"><button class="btn-add-brand" onclick="addBrandManually()">+ Add Brand Manually</button></div>
   <div class="brand-grid" id="brandGrid"></div>
   <div id="brandEditArea"></div>
+</div>
+
+<!-- SESSIONS -->
+<div class="main" id="viewSessions" style="display:none">
+  <div class="sec-hdr">
+    <div><div class="sec-label">Session History</div><div class="sec-title">Previous runs on this device</div></div>
+    <button class="btn-ghost" onclick="clearAllSessions()" style="font-size:10px">Clear All</button>
+  </div>
+  <div id="sessionsGrid"></div>
+
+  <!-- LOADED SESSION OUTPUT -->
+  <div id="loadedSessionArea" style="display:none">
+    <div class="sess-loaded-bar">
+      <div class="sess-loaded-text" id="sessLoadedLabel"></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-ghost" style="font-size:10px" onclick="unloadSession()">Close Session</button>
+        <button class="btn-ghost" style="font-size:10px" onclick="exportExcel()">Export .xlsx</button>
+      </div>
+    </div>
+
+    <!-- SESSION-LEVEL REFINE -->
+    <div class="sess-refine-wrap">
+      <div class="sess-refine-title">Refine</div>
+      <div class="sess-refine-sub">Client shared feedback on this content. Add what needs to change — the engine refines the original copy without regenerating from scratch.</div>
+      <div class="sess-refine-label">Apply to</div>
+      <select class="sess-refine-select" id="sess-refine-scope">
+        <option value="all">All pieces in this session</option>
+      </select>
+      <div class="sess-refine-grid">
+        <div>
+          <div class="sess-refine-label">What needs to change</div>
+          <textarea class="sess-refine-textarea" id="sess-refine-change" placeholder="e.g.&#10;Client wants a stronger hook on all pieces.&#10;The CTA across all posts should be softer — not direct.&#10;KeySoul piece feels too generic, needs more community warmth.&#10;Raj Petro caption is too long, cut by 40 words."></textarea>
+        </div>
+        <div>
+          <div class="sess-refine-label">Additional context</div>
+          <textarea class="sess-refine-textarea" id="sess-refine-ctx" placeholder="e.g.&#10;Client is launching a new product next week.&#10;Tone should shift slightly festive for the upcoming weekend.&#10;New guideline: avoid the word 'growth' across all brands."></textarea>
+        </div>
+      </div>
+      <div class="sess-refine-actions">
+        <button class="btn-primary" id="sessRefineBtn" onclick="runSessionRefine()">Generate Refinements</button>
+        <span style="font-size:12px;color:var(--mid)" id="sessRefineStatus"></span>
+      </div>
+    </div>
+
+    <!-- OUTPUT TABLE -->
+    <div id="sessOutputTable"></div>
+  </div>
 </div>
 
 </div>
@@ -651,6 +731,7 @@ function init(){
   populateBrandDropdowns();
   updateBrandCountNote();
   updateKeyStatus();
+  updateSessionsBadge(loadAllSessions().length);
   if(!localStorage.getItem('wdc_api_key'))showKeyModal();
 }
 
@@ -665,9 +746,9 @@ function showKeyModal(){const k=localStorage.getItem('wdc_api_key')||'';document
 function closeModal(){document.getElementById('keyModal').classList.remove('on');}
 function saveApiKey(){const k=document.getElementById('apiKeyInput').value.trim();if(!k)return alert('Enter your API key');localStorage.setItem('wdc_api_key',k);closeModal();updateKeyStatus();}
 function getApiKey(){return localStorage.getItem('wdc_api_key')||'';}
-function showView(id){['viewHome','viewReview','viewGenerating','viewComplete','viewIntel'].forEach(v=>document.getElementById(v).style.display=v===id?'':'none');}
-function goHome(){S.briefRows=[];S.results=[];S.showIntel=false;document.getElementById('intelBtn').classList.remove('on');showView('viewHome');}
-function toggleIntel(){S.showIntel=!S.showIntel;document.getElementById('intelBtn').classList.toggle('on',S.showIntel);if(S.showIntel){renderBrandGrid();showView('viewIntel');}else{showView(S.results.length>0?'viewComplete':'viewHome');}}
+function showView(id){['viewHome','viewReview','viewGenerating','viewComplete','viewIntel','viewSessions'].forEach(v=>document.getElementById(v).style.display=v===id?'':'none');}
+function goHome(){S.briefRows=[];S.results=[];S.showIntel=false;document.getElementById('intelBtn').classList.remove('on');document.getElementById('sessionsBtn').classList.remove('on');showView('viewHome');}
+function toggleIntel(){S.showIntel=!S.showIntel;document.getElementById('intelBtn').classList.toggle('on',S.showIntel);document.getElementById('sessionsBtn').classList.remove('on');if(S.showIntel){renderBrandGrid();showView('viewIntel');}else{showView(S.results.length>0?'viewComplete':'viewHome');}}
 function setMode(m){
   S.mode=m;
   ['Bulk','Quick','Design'].forEach(n=>{
@@ -830,6 +911,8 @@ function renderComplete(){
   document.getElementById('completeText').innerHTML='<strong>'+ok+' piece'+(ok!==1?'s':'')+' generated</strong> from '+S.results.length+' row'+(S.results.length!==1?'s:':'.')+'. Copy + visual prompts. Writer checks copy, share visuals to design.';
   renderOutputTable();
   showView('viewComplete');
+  // AUTO-SAVE session — every generation is preserved
+  saveSession(S.results, S.briefRows);
 }
 
 function renderOutputTable(){
@@ -1118,14 +1201,366 @@ function renderDesignOutput(raw,meta){
 }
 function copyDesignPrompt(key,btn){const el=document.getElementById('desp-'+key);if(!el)return;navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy Prompt';btn.classList.remove('copied');},1800);});}
 
+
+// ── CREATIVE DIRECTOR SKILL ───────────────────────────────────────────────
+// This system prompt is mandatory on every API call.
+// Without it, no generation runs. It defines how the engine thinks, writes,
+// and directs art. Not a helpful assistant. A creative director with standards.
+
+const CREATIVE_DIRECTOR_SKILL = `You are the Creative Director at White Digital CANVAS (WCN).
+
+You have 15 years behind you. You started as a mainline copywriter — print, outdoor, TV, radio. You learned to write in formats where every word cost real money and a bad headline meant a wasted crore. You understand what it means to fight for a single word in a room full of suits. You have written taglines that lived on hoardings for five years and TVCs that people still remember the jingle of. That is where your craft was built.
+
+Then digital happened. And you did not fight it — you fell in love with it. Because digital gave you something mainline never could: immediate proof of whether the idea actually worked. You watched what people stopped for, what they skipped, what they shared at midnight. You unlearned some things. You sharpened others. You are now someone who thinks in three-second windows and writes for the thumb, not the eye.
+
+This is who you are when you open this brief. Not a copywriting assistant. A creative director with scar tissue and standards.
+
+THE THREE-SECOND RULE — YOUR OPERATING LAW:
+You have three seconds. Not five. Not seven. Three. That is how long the thumb takes to decide whether to stop or scroll. Every piece of copy you produce is in a war with a thousand other pieces of content on the same feed at the same moment. If the first line does not win that war, the rest of the copy does not exist. Write accordingly.
+
+HOW YOU BUILD A HOOK:
+The hook is not a clever sentence. It is a transaction. You give the reader something — a feeling, a question, a fact that disturbs their assumption — and in return they give you the next three seconds. Then you earn the three after that.
+
+The best hooks do one of six things:
+1. Contradict something the reader believes to be true
+2. Name a pain so precisely that it feels personal
+3. Make a bold claim that demands proof
+4. Open a loop the reader cannot close without reading on
+5. Drop a number or fact that the reader did not expect
+6. Speak directly to an identity the reader holds about themselves
+
+Do not start a caption with the brand name. Do not start with a question unless the question is genuinely uncomfortable. Do not start with "Did you know". Do not start with "In today's world". These are creative white flags.
+
+HOW YOU BUILD CURIOSITY:
+Curiosity is a gap between what the reader knows and what they want to know. Your job is to open that gap in line one and control how fast it closes. If you close it too fast, there is no reason to keep reading. If you never close it, the reader feels cheated. The architecture of a great caption is: open the gap, widen it slightly, then close it in a way that feels earned.
+
+The middle of the copy — the body — is where most writers lose the reader. Do not fill it with features. Do not fill it with adjectives. Fill it with the movement of an idea. Each sentence should make the next one feel necessary.
+
+HOW YOU THINK ABOUT MAINLINE vs DIGITAL:
+From mainline you kept: economy of language, the power of a single idea taken all the way, the discipline of the brief, the understanding that creative work must make someone feel something before it can make them do something.
+
+From digital you learned: hooks are everything, context is everything, format is not decoration, brevity is not dumbing down, and the scroll is the most honest creative director in the world because it has no agenda and no mercy.
+
+You bring both to every brief. The discipline of print. The instinct of digital.
+
+HOW YOU WRITE COPY:
+- One idea per piece. If there are two ideas, there is no piece — there are two briefs. Pick one.
+- The hook earns line two. Line two earns line three. Every line justifies its own existence.
+- Short sentences hit harder than long ones. Use length deliberately — a longer sentence after several short ones creates rhythm and makes the reader lean in.
+- Write in the brand's voice, not yours. Your ego does not belong in this copy. The brand's truth does.
+- The CTA is not a closer. It is the natural completion of the idea. If it feels bolted on, rewrite the body until the CTA feels inevitable.
+- Read it out loud before you submit it. If you stumble, the reader will stumble. Rewrite until it flows.
+- If it could have been written by anyone, it was written by no one. Start again.
+
+HOW YOU WRITE SLIDE COPY:
+Slides are a story in chapters. Each slide must move the reader forward. Slide 1 is the hook — it earns the swipe. Every slide after that earns the next swipe. The last slide is the landing — where you convert the attention you have been borrowing.
+
+Never write slide headlines that are the same sentence as the caption broken up. The slides are a different medium. Treat them differently. Shorter headlines. More visual. More punchy.
+
+HOW YOU DIRECT ART:
+You think in images as naturally as you think in words. When you write a visual prompt, you are not describing a picture — you are writing a shot brief for a director who has no judgment of their own.
+
+Be specific about: the subject, their position in frame, what they are doing, the light source and quality (golden hour backlight, overcast diffused, hard practical light), the camera distance (extreme close-up, mid-shot, wide establishing), the mood, the colour temperature, the texture and grain, and what is intentionally absent from the frame. Absence is art direction too.
+
+For video: you are writing the opening three seconds first. If the first frame does not earn the fourth second, the video has failed. Give the director the opening frame, the first camera movement, the subject's first action, and the emotional register you want to establish before any dialogue or text lands.
+
+For the art direction note: you are talking to a designer who will have to choose between twenty AI outputs that all look plausible. Tell them exactly what to reject. "Reject anything that looks like stock photography" is not enough. Tell them: "Reject any output where the light looks studio-perfect rather than found. Reject any output where the subject is smiling for the camera. The authenticity of the image is the whole point."
+
+WHAT YOU NEVER PRODUCE:
+- Copy that could run for any brand in the category — if it could be a competitor's ad, it is wrong
+- Openers like "In today's fast-paced world", "Are you tired of", "Did you know", "Introducing" — these are the creative equivalent of a white flag
+- Captions that bury the idea in the third paragraph
+- Slide headlines that are just the caption fragmented
+- Hashtags stuffed for volume with no relevance
+- Visual prompts that describe a concept instead of a scene
+- Refinements that are small edits — a refinement is a better version, not a light revision
+- Work that passes a brief but fails a human being
+
+YOUR STANDARD:
+The three-second test applies to your own work too. Read the first line of what you have produced. Would you stop scrolling for it? If the honest answer is no — you already know what to do. The work that leaves this engine should make a senior creative proud to have their name on it and a junior creative want to learn from it. Anything less does not leave.`;
+
 // API
 async function callClaude(prompt){
+  // CREATIVE DIRECTOR SKILL IS MANDATORY ON EVERY CALL.
+  // Do not remove or bypass. Without it, output has no creative standard.
+  if(!CREATIVE_DIRECTOR_SKILL || CREATIVE_DIRECTOR_SKILL.length < 100){
+    throw new Error('Creative Director skill not loaded. Cannot generate without it.');
+  }
   const key=getApiKey();
   if(!key)throw new Error('API key not set on this device. Click API Key in the header and paste your Anthropic key.');
-  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
+  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({
+    model:'claude-sonnet-4-6',
+    max_tokens:1500,
+    system: CREATIVE_DIRECTOR_SKILL,
+    messages:[{role:'user',content:prompt}]
+  })});
   if(!res.ok){const e=await res.json().catch(()=>({}));const msg=e.error?.message||'API error '+res.status;if(res.status===401)throw new Error('API key invalid or expired. Re-enter from console.anthropic.com.');throw new Error(msg);}
   const data=await res.json();return data.content.map(b=>b.text||'').join('\n');
 }
+
+
+// ── SESSIONS ──────────────────────────────────────────────────────────────
+const SESS_KEY = 'wcn_sessions_v1';
+const MAX_SESSIONS = 30;
+
+function saveSession(results, briefRows){
+  if(!results||!results.length)return;
+  const sessions = loadAllSessions();
+  const brands = [...new Set(results.map(r=>r.row.BRAND))];
+  const session = {
+    id: Date.now(),
+    date: new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    brands: brands,
+    count: results.length,
+    results: results,
+    briefRows: briefRows||[]
+  };
+  sessions.unshift(session);
+  // Keep only MAX_SESSIONS
+  const trimmed = sessions.slice(0, MAX_SESSIONS);
+  try{
+    localStorage.setItem(SESS_KEY, JSON.stringify(trimmed));
+    updateSessionsBadge(trimmed.length);
+  }catch(e){
+    // Storage full — remove oldest and retry
+    const smaller = sessions.slice(0, Math.floor(MAX_SESSIONS/2));
+    try{localStorage.setItem(SESS_KEY, JSON.stringify(smaller));}catch(e2){}
+  }
+}
+
+function loadAllSessions(){
+  try{
+    const raw = localStorage.getItem(SESS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+
+function updateSessionsBadge(count){
+  const btn = document.getElementById('sessionsBtn');
+  if(!btn)return;
+  btn.textContent = count > 0 ? 'Sessions ('+count+')' : 'Sessions';
+}
+
+function toggleSessions(){
+  const isShowing = document.getElementById('viewSessions').style.display !== 'none';
+  if(isShowing){
+    document.getElementById('viewSessions').style.display = 'none';
+    document.getElementById('sessionsBtn').classList.remove('on');
+    showView(S.results.length > 0 ? 'viewComplete' : 'viewHome');
+  } else {
+    // Hide everything else
+    ['viewHome','viewReview','viewGenerating','viewComplete','viewIntel'].forEach(v=>document.getElementById(v).style.display='none');
+    document.getElementById('intelBtn').classList.remove('on');
+    document.getElementById('sessionsBtn').classList.add('on');
+    document.getElementById('viewSessions').style.display = '';
+    renderSessionsPanel();
+  }
+}
+
+function renderSessionsPanel(){
+  const sessions = loadAllSessions();
+  const grid = document.getElementById('sessionsGrid');
+  if(!sessions.length){
+    grid.innerHTML = '<div class="sessions-empty">No sessions saved yet.<br>Every time you generate content, it is automatically saved here.</div>';
+    return;
+  }
+  grid.innerHTML = sessions.map(s => `
+    <div class="session-card" id="sess-card-${s.id}">
+      <div class="sess-meta">
+        <div class="sess-date">${esc(s.date)}</div>
+        <div class="sess-brands">${esc(s.brands.join(' \u00b7 '))}</div>
+        <div class="sess-count">${s.count} piece${s.count!==1?'s':''} generated</div>
+      </div>
+      <div class="sess-actions">
+        <button class="btn-sess-load" onclick="loadSession(${s.id})">Load Session</button>
+        <button class="btn-sess-del" onclick="deleteSession(${s.id},event)">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+function loadSession(id){
+  const sessions = loadAllSessions();
+  const session = sessions.find(s=>s.id===id);
+  if(!session)return;
+
+  // Load into engine state
+  S.results = session.results || [];
+  S.briefRows = session.briefRows || [];
+  S._loadedSession = session;
+
+  // Update session card to show active
+  document.querySelectorAll('.session-card').forEach(el=>el.classList.remove('active'));
+  const card = document.getElementById('sess-card-'+id);
+  if(card)card.classList.add('active');
+
+  // Show loaded bar
+  const label = document.getElementById('sessLoadedLabel');
+  if(label) label.innerHTML = '<strong>'+esc(session.brands.join(' \u00b7 '))+'</strong> \u2014 '+esc(session.date)+' \u2014 '+session.count+' pieces';
+
+  // Populate refine scope dropdown
+  const scopeSel = document.getElementById('sess-refine-scope');
+  if(scopeSel){
+    const brands = [...new Set(S.results.map(r=>r.row.BRAND))];
+    scopeSel.innerHTML = '<option value="all">All pieces in this session</option>' +
+      brands.map(b=>'<option value="'+esc(b)+'">'+esc(b)+' only</option>').join('');
+  }
+
+  // Render the output table into sessions area
+  const sessTable = document.getElementById('sessOutputTable');
+  if(sessTable){
+    // Temporarily point outputTable to sessOutputTable
+    const origCont = document.getElementById('outputTable');
+    const orig = origCont ? origCont.innerHTML : '';
+    renderOutputTableInto(sessTable);
+  }
+
+  document.getElementById('loadedSessionArea').style.display = '';
+
+  // Scroll to loaded session
+  setTimeout(()=>document.getElementById('loadedSessionArea').scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+function renderOutputTableInto(container){
+  // Same as renderOutputTable but targets a specific container
+  if(!container)return;
+  const COPY_COLS=[['caption','Caption'],['slides','Slides'],['hashtags','Hashtags'],['variation','Alt Caption']];
+  const VIS_COLS=(r)=>r.visual?[['mj','Midjourney'],[(r.visual.isVideo?'video':'image'),(r.visual.isVideo?'Video Prompt':'DALL-E / Firefly')],['artNote','Art Direction']]:[];
+  container.innerHTML='<div class="out-table-wrap"><table class="out-table"><thead><tr><th style="width:32px">#</th><th style="min-width:130px">Brand</th><th class="th-content">Caption</th><th class="th-content">Slides</th><th style="min-width:160px">Hashtags</th><th class="th-content">Alt Caption</th><th class="th-content th-visual">Midjourney</th><th class="th-content th-visual">AI / Video</th><th style="min-width:180px" class="th-visual">Art Direction</th><th style="width:90px">Actions</th></tr></thead><tbody id="sessOutputTbody"></tbody></table></div>';
+  const tbody=document.getElementById('sessOutputTbody');
+  S.results.forEach((r,i)=>{
+    const tr=document.createElement('tr');
+    tr.className=r.status==='err'?'row-err':'';tr.id='srow-'+i;
+    if(r.status==='err'){
+      tr.innerHTML='<td class="td-num">'+(i+1)+'</td><td class="td-meta"><div class="td-brand-name">'+esc(r.row.BRAND)+'</div></td><td colspan="8" style="padding:10px 12px;color:var(--err);font-size:13px">Error: '+esc(r.error||'')+'</td>';
+    } else {
+      const allCols=[...COPY_COLS,...VIS_COLS(r)];
+      const cellsHtml=allCols.map(([key,label])=>{
+        const isVis=['mj','image','video','artNote'].includes(key);
+        const text=isVis?(r.visual?.[key]||''):(r.output?.[key]||'');
+        const badge=key==='mj'?'MJ':key==='artNote'?'ART':isVis?'AI':'';
+        return '<td class="content-cell'+(isVis?' vis-cell':'')+'" id="scell-'+i+'-'+key+'" onclick="toggleSessCell('+i+',\''+key+'\')">'+'<div class="cc-inner">'+(badge?'<div class="cc-vis-badge">'+badge+'</div>':'')+'<div class="cc-preview'+(text?'':' empty')+'">'+esc(text||'(empty)')+'</div><div class="cc-actions"><button class="cc-btn" onclick="event.stopPropagation();copySessCell('+i+',\''+key+'\',this)">Copy</button></div></div></td>';
+      }).join('');
+      tr.innerHTML='<td class="td-num">'+(i+1)+'</td><td class="td-meta"><div class="td-brand-name">'+esc(r.row.BRAND)+'</div><div class="td-tags"><span class="td-tag">'+esc(r.row.PLATFORM||'')+'</span><span class="td-tag">'+esc(r.row.FORMAT||'')+'</span></div></td>'+cellsHtml+'<td class="td-meta" style="text-align:center"><button class="cc-btn" onclick="copyAllForRow('+i+',this)" style="display:block;width:100%">Copy All</button></td>';
+    }
+    tbody.appendChild(tr);
+  });
+}
+
+function toggleSessCell(rowIdx,key){
+  const cell=document.getElementById('scell-'+rowIdx+'-'+key);if(!cell)return;
+  const was=cell.classList.contains('expanded');
+  ['caption','slides','hashtags','variation','mj','image','video','artNote'].forEach(k=>{const c2=document.getElementById('scell-'+rowIdx+'-'+k);if(c2)c2.classList.remove('expanded');});
+  if(!was)cell.classList.add('expanded');
+}
+
+function copySessCell(rowIdx,key,btn){
+  const result=S.results[rowIdx];if(!result)return;
+  const isVis=['mj','image','video','artNote'].includes(key);
+  const text=isVis?(result.visual?.[key]||''):(result.output?.[key]||'');
+  navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});
+}
+
+function unloadSession(){
+  document.getElementById('loadedSessionArea').style.display='none';
+  document.getElementById('sessOutputTable').innerHTML='';
+  S._loadedSession=null;
+  document.querySelectorAll('.session-card').forEach(el=>el.classList.remove('active'));
+}
+
+function deleteSession(id, e){
+  e.stopPropagation();
+  const sessions=loadAllSessions().filter(s=>s.id!==id);
+  localStorage.setItem(SESS_KEY,JSON.stringify(sessions));
+  updateSessionsBadge(sessions.length);
+  if(S._loadedSession?.id===id)unloadSession();
+  renderSessionsPanel();
+}
+
+function clearAllSessions(){
+  if(!confirm('Clear all saved sessions from this device?'))return;
+  localStorage.removeItem(SESS_KEY);
+  updateSessionsBadge(0);
+  S._loadedSession=null;
+  document.getElementById('loadedSessionArea').style.display='none';
+  renderSessionsPanel();
+}
+
+// SESSION-LEVEL REFINE
+async function runSessionRefine(){
+  if(!getApiKey()){showKeyModal();return;}
+  const change=document.getElementById('sess-refine-change')?.value?.trim()||'';
+  const ctx=document.getElementById('sess-refine-ctx')?.value?.trim()||'';
+  const scope=document.getElementById('sess-refine-scope')?.value||'all';
+  if(!change){alert('Tell the engine what needs to change first.');return;}
+
+  const btn=document.getElementById('sessRefineBtn');
+  const status=document.getElementById('sessRefineStatus');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>Refining...';
+  status.textContent='';
+
+  // Find which results to refine
+  const targets=scope==='all'?S.results:S.results.filter(r=>r.row.BRAND===scope);
+  let done=0;
+
+  for(const result of targets){
+    if(result.status==='err')continue;
+    status.textContent='Refining '+result.row.BRAND+'... ('+(done+1)+' of '+targets.filter(r=>r.status!=='err').length+')';
+    try{
+      const prompt=buildSessionRefinePrompt(result,change,ctx);
+      const raw=await callClaude(prompt);
+      const parsed=parseOutput(raw);
+      if(parsed.caption||parsed.slides){
+        result.output=parsed;
+        // If visual feedback applies, also refine visual
+        if(ctx&&(ctx.toLowerCase().includes('visual')||ctx.toLowerCase().includes('prompt')||ctx.toLowerCase().includes('image'))){
+          try{
+            const vprompt=buildSessionVisualRefinePrompt(result,change,ctx);
+            const vraw=await callClaude(vprompt);
+            const vparsed=parseVisualOutput(vraw);
+            if(vparsed.mj&&result.visual)result.visual=vparsed;
+          }catch(ve){/* visual refine optional, don't block */}
+        }
+      }
+    }catch(e){
+      status.textContent='Error on '+result.row.BRAND+': '+e.message;
+    }
+    done++;
+  }
+
+  // Re-render the session table
+  const sessTable=document.getElementById('sessOutputTable');
+  if(sessTable)renderOutputTableInto(sessTable);
+
+  // Auto-save the refined session
+  if(S._loadedSession){
+    S._loadedSession.results=S.results;
+    S._loadedSession.date=S._loadedSession.date+' (refined '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})+')';
+    const sessions=loadAllSessions().map(s=>s.id===S._loadedSession.id?S._loadedSession:s);
+    localStorage.setItem(SESS_KEY,JSON.stringify(sessions));
+  }
+
+  btn.disabled=false;btn.textContent='Generate Refinements';
+  status.textContent='Done. '+done+' piece'+(done!==1?'s':'')+' refined.';
+  status.style.color='var(--green)';
+}
+
+function buildSessionRefinePrompt(result,change,ctx){
+  const p=getProfile(result.row.BRAND)||getProfile(result.row._brandKey||'');
+  const o=result.output||{};
+  const brandCtx=p?'Brand: '+p.name+'\nVoice: '+p.voice+'\nPositioning: '+p.positioning+'\nAvoid: '+p.avoidWords:'';
+  const currentCopy='CAPTION:\n'+(o.caption||'')+'\n\nSLIDES:\n'+(o.slides||'')+'\n\nHASHTAGS:\n'+(o.hashtags||'')+'\n\nALT CAPTION:\n'+(o.variation||'');
+  return 'You are a creative director at WCN refining content for '+result.row.BRAND+'.\n\n'+(brandCtx?'BRAND CONTEXT:\n'+brandCtx+'\n\n':'')+'ORIGINAL BRIEF CONTEXT:\nPlatform: '+result.row.PLATFORM+'\nFormat: '+result.row.FORMAT+'\nTalking Points: '+result.row.POINTS+'\n\nCURRENT COPY:\n'+currentCopy+'\n\nCLIENT FEEDBACK — WHAT NEEDS TO CHANGE:\n'+change+(ctx?'\n\nADDITIONAL CONTEXT:\n'+ctx:'')+'\n\nRefine this copy based on the feedback above. Keep what is working. Change what the feedback addresses. Stay in brand voice.\n\nReturn EXACTLY:\n## 1. MAIN CAPTION\n[refined caption]\n\n## 2. SLIDE COPY\n[refined slides]\n\n## 3. HASHTAGS\n[refined hashtags]\n\n## 4. ALTERNATIVE CAPTION\n[refined alt]';
+}
+
+function buildSessionVisualRefinePrompt(result,change,ctx){
+  const p=getProfile(result.row.BRAND)||getProfile(result.row._brandKey||'');
+  const v=result.visual||{};
+  const vCtx=p&&p.visualMood?'Visual Mood: '+p.visualMood+'\nColour Palette: '+p.colorPalette+'\nImage Style: '+p.imageStyle:'';
+  const currentVisual='MJ PROMPT:\n'+(v.mj||'')+'\n\nAI/VIDEO PROMPT:\n'+(v.video||v.image||'')+'\n\nART DIRECTION:\n'+(v.artNote||'');
+  return 'You are a creative director at WCN refining visual prompts for '+result.row.BRAND+'.\n\n'+(vCtx?'VISUAL BRAND CONTEXT:\n'+vCtx+'\n\n':'')+'CURRENT VISUAL PROMPTS:\n'+currentVisual+'\n\nFEEDBACK:\n'+change+(ctx?'\n\nCONTEXT:\n'+ctx:'')+'\n\nReturn EXACTLY:\n## MJ PROMPT\n[refined prompt]\n\n## DALLE PROMPT\n[refined prompt]\n\n## ART DIRECTION\n[refined note]';
+}
+
 
 // EXPORT
 function exportExcel(){
