@@ -444,7 +444,7 @@ tr:hover td{background:rgba(205,233,84,.025)}
 <!-- INTEL -->
 <div class="main" id="viewIntel" style="display:none">
   <div class="sec-hdr"><div><div class="sec-label">Brand Intelligence</div><div class="sec-title">Locked voice and positioning</div></div></div>
-  <div class="intel-note"><strong>Not for the team.</strong> Brand voice, positioning, visual intelligence, and message pillars are set here and fed silently into every generation — copy and design prompts both. AMs fill the brief. This defines how.</div>
+  <div class="intel-note"><strong>Not for the team.</strong> Brand voice, positioning, visual intelligence, and message pillars are set here and fed silently into every generation — copy and design prompts both. AMs fill the brief. This defines how. <span id="brandCountNote" style="color:rgba(255,255,255,.4)"></span></div>
   <div class="import-section">
     <div class="import-title">Add Brand from Project Memory File</div>
     <div class="import-sub">Paste the full contents of any project memory file. The engine reads it, extracts all brand intelligence, and auto-populates a new profile.</div>
@@ -721,7 +721,7 @@ const BRAND_DEFAULTS={
 };
 
 
-const S={briefRows:[],results:[],brandIntel:{},showIntel:false,selectedBrand:null,editForm:null,mode:'bulk',showSecond:false};
+const S={briefRows:[],results:[],brandIntel:{},showIntel:false,selectedBrand:null,editForm:null,mode:'bulk',showSecond:false,_loadedSession:null,_refinedOutput:null,_refinedSection:null};
 
 function init(){
   const saved=localStorage.getItem('wdc_brand_intel_v3');
