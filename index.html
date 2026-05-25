@@ -221,6 +221,8 @@ tr:hover td{background:rgba(205,233,84,.025)}
 .des-bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .des-card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:6px;overflow:hidden}
 .des-card.des-na{opacity:.45}
+.des-card.refined-flash{border-color:var(--lime);transition:border-color .3s}
+@keyframes refinedPulse{0%{border-color:var(--lime)}100%{border-color:rgba(255,255,255,.07)}}
 .des-card-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px;gap:10px;border-bottom:1px solid rgba(255,255,255,.06)}
 .des-icon{width:32px;height:32px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:rgba(255,255,255,.5);letter-spacing:.5px;flex-shrink:0}
 .des-card-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:2px}
@@ -1176,7 +1178,9 @@ async function runDesignBrief(){
   try{
     const prompt=buildStandaloneDesignPrompt({brand:pName,brandKey:brand,asset,platform,tool,concept,mood:document.getElementById('dp-mood')?.value||'',ratio:document.getElementById('dp-ratio')?.value||'',ref:document.getElementById('dp-ref')?.value||'',notes:document.getElementById('dp-notes')?.value||''},p);
     const raw=await callClaude(prompt);
-    renderDesignOutput(raw,{brand:pName,asset,platform,tool});
+    const meta={brand:pName,brandKey:brand,asset,platform,tool,concept:document.getElementById('dp-concept')?.value?.trim()||'',mood:document.getElementById('dp-mood')?.value||'',ratio:document.getElementById('dp-ratio')?.value||'',ref:document.getElementById('dp-ref')?.value||'',notes:document.getElementById('dp-notes')?.value||''};
+    S._designMeta=meta;
+    renderDesignOutput(raw,meta);
   }catch(e){document.getElementById('dpError').innerHTML='<div class="alert-err">Generation failed: '+esc(e.message)+'</div>';}
   btn.disabled=false;btn.textContent='Generate Design Prompts';
 }
@@ -1192,13 +1196,78 @@ function buildStandaloneDesignPrompt(brief,profile){
 function renderDesignOutput(raw,meta){
   const sec=(h)=>{const m=raw.match(new RegExp('## '+h+'\\n([\\s\\S]*?)(?=## |$)','m'));return m?m[1].trim():'';};
   const out={midjourney:sec('MIDJOURNEY PROMPT'),dalle:sec('DALLE FIREFLY PROMPT'),video:sec('VIDEO PROMPT'),artNote:sec('ART DIRECTION NOTE'),doList:sec('DO'),dontList:sec('DONT'),raw};
+  S._designOut=out;
+  if(S._designMeta) saveDesignSession(S._designMeta,out);
   const area=document.getElementById('designOutputArea');if(!area)return;
   const PROMPTS=[{key:'midjourney',label:'Midjourney',icon:'MJ',desc:'Paste into Midjourney /imagine'},{key:'dalle',label:'DALL-E 3 / Adobe Firefly',icon:'AI',desc:'Paste into DALL-E 3 or Firefly'},{key:'video',label:'Runway / Kling / Pika',icon:'VD',desc:'Paste into video generation tool'}];
-  const cards=PROMPTS.map(p=>{const t=out[p.key]||'';const na=!t||t.toLowerCase().includes('n/a');return '<div class="des-card'+(na?' des-na':'')+'"><div class="des-card-hdr"><div style="display:flex;align-items:center;gap:10px"><div class="des-icon">'+p.icon+'</div><div><div class="des-card-title">'+p.label+'</div><div class="des-card-desc">'+p.desc+'</div></div></div>'+(na?'<span style="font-size:11px;color:var(--mid)">Not requested</span>':'<button class="cc-btn" onclick="copyDesignPrompt(\''+p.key+'\',this)">Copy Prompt</button>')+'</div>'+(na?'':'<div class="des-prompt-text" id="desp-'+p.key+'">'+esc(t)+'</div>')+'</div>';}).join('');
+  const cards=PROMPTS.map(p=>{
+    const t=out[p.key]||'';
+    const na=!t||t.toLowerCase().includes('n/a');
+    return '<div class="des-card'+(na?' des-na':'')+'">'
+      +'<div class="des-card-hdr"><div style="display:flex;align-items:center;gap:10px">'
+      +'<div class="des-icon">'+p.icon+'</div>'
+      +'<div><div class="des-card-title">'+p.label+'</div><div class="des-card-desc">'+p.desc+'</div></div>'
+      +'</div>'+(na?'<span style="font-size:11px;color:var(--mid)">Not requested</span>':'<button class="cc-btn" onclick="copyDesignPrompt(\''+p.key+'\',this)">Copy Prompt</button>')+'</div>'
+      +(na?'':'<div class="des-prompt-text" id="desp-'+p.key+'">'+esc(t)+'</div>')
+      +'</div>';
+  }).join('');
   const doLines=(out.doList||'').split('\n').filter(l=>l.trim().startsWith('-')).map(l=>'<li>'+esc(l.replace(/^-\s*/,''))+'</li>').join('');
   const dontLines=(out.dontList||'').split('\n').filter(l=>l.trim().startsWith('-')).map(l=>'<li>'+esc(l.replace(/^-\s*/,''))+'</li>').join('');
-  area.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px"><div><div class="sec-label">Design Output</div><div class="sec-title">'+esc(meta.brand)+' \u2014 '+esc(meta.asset)+'</div></div><button class="btn-ghost" onclick="document.getElementById(\'designOutputArea\').innerHTML=\'\'">Clear</button></div><div class="des-grid">'+cards+'</div><div class="des-bottom-grid"><div class="des-card"><div class="des-card-hdr" style="margin-bottom:10px"><div class="des-card-title">Art Direction Note</div><button class="cc-btn" onclick="navigator.clipboard.writeText(document.getElementById(\'des-art-txt\').textContent)">Copy</button></div><div class="des-art-text" id="des-art-txt">'+esc(out.artNote||'')+'</div></div><div class="des-card"><div class="des-card-title" style="padding:14px 16px 10px">Brand Visual Rules</div><div class="des-rules"><div><div class="des-rule-head do">DO</div><ul class="des-rule-list">'+doLines+'</ul></div><div><div class="des-rule-head dont">DON\'T</div><ul class="des-rule-list dont-list">'+dontLines+'</ul></div></div></div></div>';
+  area.innerHTML=
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">'
+    +'<div><div class="sec-label">Design Output</div><div class="sec-title">'+esc(meta.brand)+' \u2014 '+esc(meta.asset)+'</div></div>'
+    +'<button class="btn-ghost" onclick="document.getElementById(\'designOutputArea\').innerHTML=\'\'">Clear</button></div>'
+    +'<div class="des-grid">'+cards+'</div>'
+    +'<div class="des-bottom-grid">'
+      +'<div class="des-card">'
+        +'<div class="des-card-hdr" style="margin-bottom:10px">'
+          +'<div class="des-card-title">Art Direction Note</div>'
+          +'<button class="cc-btn" onclick="navigator.clipboard.writeText(document.getElementById(\'des-art-txt\').textContent)">Copy</button>'
+        +'</div>'
+        +'<div class="des-art-text" id="des-art-txt">'+esc(out.artNote||'')+'</div>'
+      +'</div>'
+      +'<div class="des-card">'
+        +'<div class="des-card-title" style="padding:14px 16px 10px">Brand Visual Rules</div>'
+        +'<div class="des-rules">'
+          +'<div><div class="des-rule-head do">DO</div><ul class="des-rule-list">'+doLines+'</ul></div>'
+          +'<div><div class="des-rule-head dont">DON\'T</div><ul class="des-rule-list dont-list">'+dontLines+'</ul></div>'
+        +'</div>'
+      +'</div>'
+    +'</div>'
+    // Refine panel
+    +'<div class="sess-refine-wrap" style="margin-top:28px">'
+      +'<div class="sess-refine-title">Refine This Output</div>'
+      +'<div class="sess-refine-sub">Share client feedback or creative direction. The engine refines the specific section — everything else stays untouched.</div>'
+      +'<div class="sess-refine-grid">'
+        +'<div>'
+          +'<div class="sess-refine-label" style="margin-bottom:6px">Section to refine</div>'
+          +'<select class="sess-refine-select" id="des-refine-section" style="width:100%;margin-bottom:14px">'
+            +'<option value="all">All sections</option>'
+            +'<option value="midjourney">Midjourney prompt only</option>'
+            +'<option value="dalle">DALL-E / Firefly prompt only</option>'
+            +'<option value="video">Video prompt only</option>'
+            +'<option value="artNote">Art Direction Note only</option>'
+          +'</select>'
+          +'<div class="sess-refine-label" style="margin-bottom:6px">Feedback or direction</div>'
+          +'<textarea class="sess-refine-textarea" id="des-refine-feedback" rows="4" placeholder="e.g.&#10;Client wants warmer, less clinical mood.&#10;Remove the corporate building.&#10;MJ prompt needs --ar 9:16 for Reels.&#10;Reference golden hour lighting."></textarea>'
+        +'</div>'
+      +'</div>'
+      +'<div class="btn-row" style="margin-top:14px">'
+        +'<button class="btn-primary" id="desRefineBtn" onclick="runDesignRefine()">Apply Refinement</button>'
+        +'<span id="desRefineStatus" style="font-size:12px;color:var(--mid);margin-left:12px"></span>'
+      +'</div>'
+    +'</div>'
+    // Session history
+    +'<div style="margin-top:32px">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">'
+        +'<div class="sec-label">Session History <span id="desSessionsBadge" style="background:var(--lime);color:#0A1645;border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:6px"></span></div>'
+        +'<button class="btn-ghost" onclick="clearAllDesignSessions()" style="font-size:10px">Clear All</button>'
+      +'</div>'
+      +'<div id="desSessionHistory"></div>'
+    +'</div>';
+  renderDesignHistory();
 }
+
 function copyDesignPrompt(key,btn){const el=document.getElementById('desp-'+key);if(!el)return;navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy Prompt';btn.classList.remove('copied');},1800);});}
 
 
@@ -1302,6 +1371,232 @@ async function callClaude(prompt){
 // ── SESSIONS ──────────────────────────────────────────────────────────────
 const SESS_KEY = 'wcn_sessions_v1';
 const MAX_SESSIONS = 30;
+const DESIGN_SESS_KEY = 'wcn_design_sessions_v1';
+const MAX_DESIGN_SESSIONS = 20;
+
+// ── DESIGN SESSION STORAGE ────────────────────────────────────────────────
+
+function saveDesignSession(meta, out){
+  try{
+    const sessions = loadAllDesignSessions();
+    const entry = {
+      id: Date.now(),
+      date: new Date().toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+      brand: meta.brand,
+      asset: meta.asset,
+      platform: meta.platform,
+      tool: meta.tool,
+      meta,
+      out
+    };
+    sessions.unshift(entry);
+    if(sessions.length > MAX_DESIGN_SESSIONS) sessions.splice(MAX_DESIGN_SESSIONS);
+    localStorage.setItem(DESIGN_SESS_KEY, JSON.stringify(sessions));
+    updateDesignSessionsBadge(sessions.length);
+  }catch(e){}
+}
+
+function loadAllDesignSessions(){
+  try{return JSON.parse(localStorage.getItem(DESIGN_SESS_KEY)||'[]');}catch(e){return [];}
+}
+
+function deleteDesignSession(id, ev){
+  if(ev){ev.stopPropagation();}
+  const sessions = loadAllDesignSessions().filter(s=>s.id!==id);
+  localStorage.setItem(DESIGN_SESS_KEY, JSON.stringify(sessions));
+  updateDesignSessionsBadge(sessions.length);
+  renderDesignHistory();
+}
+
+function clearAllDesignSessions(){
+  if(!confirm('Clear all design session history on this device?'))return;
+  localStorage.removeItem(DESIGN_SESS_KEY);
+  updateDesignSessionsBadge(0);
+  renderDesignHistory();
+}
+
+function updateDesignSessionsBadge(count){
+  const el = document.getElementById('desSessionsBadge');
+  if(el) el.textContent = count > 0 ? count : '';
+}
+
+function renderDesignHistory(){
+  const hist = document.getElementById('desSessionHistory');
+  if(!hist) return;
+  const sessions = loadAllDesignSessions();
+  updateDesignSessionsBadge(sessions.length);
+  if(!sessions.length){
+    hist.innerHTML='<div style="font-size:13px;color:var(--mid);padding:12px 0">No sessions saved yet. Run a brief to start building history.</div>';
+    return;
+  }
+  hist.innerHTML = sessions.map(s=>`
+    <div class="session-card" id="des-sess-card-${s.id}">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:3px">${esc(s.brand)} — ${esc(s.asset)}</div>
+        <div style="font-size:12px;color:var(--mid)">${esc(s.platform)} · ${esc(s.tool==='all'?'All Tools':s.tool==='midjourney'?'Midjourney':s.tool==='dalle'?'DALL-E / Firefly':'Runway / Video')} · ${esc(s.date)}</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn-sess-load" onclick="loadDesignSession(${s.id})">Load</button>
+        <button class="btn-sess-del" onclick="deleteDesignSession(${s.id},event)">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+function loadDesignSession(id){
+  const sessions = loadAllDesignSessions();
+  const s = sessions.find(x=>x.id===id);
+  if(!s) return;
+  S._designMeta = s.meta;
+  S._designOut = s.out;
+  // Mark active card
+  document.querySelectorAll('[id^="des-sess-card-"]').forEach(el=>el.classList.remove('active'));
+  const card = document.getElementById('des-sess-card-'+id);
+  if(card) card.classList.add('active');
+  // Re-render the output area with this session's raw output
+  renderDesignOutput(s.out.raw, s.meta);
+  document.getElementById('designOutputArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── DESIGN REFINE ─────────────────────────────────────────────────────────
+
+async function runDesignRefine(){
+  if(!getApiKey()){showKeyModal();return;}
+  const section = document.getElementById('des-refine-section')?.value || 'all';
+  const feedback = document.getElementById('des-refine-feedback')?.value?.trim() || '';
+  if(!feedback){alert('Add your feedback or direction first.');return;}
+  if(!S._designMeta || !S._designOut){alert('No design output loaded. Generate a brief first.');return;}
+
+  const btn = document.getElementById('desRefineBtn');
+  const status = document.getElementById('desRefineStatus');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>Refining...';
+  status.textContent='';
+
+  try{
+    const prompt = buildDesignRefinePrompt(S._designMeta, S._designOut, section, feedback);
+    const raw = await callClaude(prompt);
+    const sec=(h)=>{const m=raw.match(new RegExp('## '+h+'\\n([\\s\\S]*?)(?=## |$)','m'));return m?m[1].trim():'';};
+    const refined={
+      midjourney: sec('MIDJOURNEY PROMPT'),
+      dalle: sec('DALLE FIREFLY PROMPT'),
+      video: sec('VIDEO PROMPT'),
+      artNote: sec('ART DIRECTION NOTE'),
+      doList: sec('DO'),
+      dontList: sec('DONT')
+    };
+
+    // Merge refined sections back into S._designOut
+    if(section==='all'){
+      if(refined.midjourney) S._designOut.midjourney = refined.midjourney;
+      if(refined.dalle) S._designOut.dalle = refined.dalle;
+      if(refined.video) S._designOut.video = refined.video;
+      if(refined.artNote) S._designOut.artNote = refined.artNote;
+      if(refined.doList) S._designOut.doList = refined.doList;
+      if(refined.dontList) S._designOut.dontList = refined.dontList;
+    } else {
+      if(section==='midjourney' && refined.midjourney) S._designOut.midjourney = refined.midjourney;
+      if(section==='dalle' && refined.dalle) S._designOut.dalle = refined.dalle;
+      if(section==='video' && refined.video) S._designOut.video = refined.video;
+      if(section==='artNote' && refined.artNote) S._designOut.artNote = refined.artNote;
+    }
+
+    // Update inline without full re-render
+    const sectionMap = {
+      midjourney: 'desp-midjourney',
+      dalle: 'desp-dalle',
+      video: 'desp-video',
+      artNote: 'des-art-txt'
+    };
+    const toUpdate = section==='all' ? Object.keys(sectionMap) : [section];
+    let updated = 0;
+    toUpdate.forEach(k=>{
+      const el = document.getElementById(sectionMap[k]);
+      if(el && S._designOut[k]){
+        el.textContent = S._designOut[k];
+        el.closest('.des-card')?.classList.add('refined-flash');
+        setTimeout(()=>el.closest('.des-card')?.classList.remove('refined-flash'),1200);
+        updated++;
+      }
+    });
+
+    // Auto-save the refined session
+    if(S._designMeta) saveDesignSession(S._designMeta, S._designOut);
+    renderDesignHistory();
+
+    status.textContent = updated + ' section'+(updated!==1?'s':'')+' refined.';
+    status.style.color = 'var(--green)';
+    document.getElementById('des-refine-feedback').value='';
+  }catch(e){
+    status.textContent = 'Refine failed: '+e.message;
+    status.style.color = 'var(--red, #f66)';
+  }
+  btn.disabled=false;
+  btn.textContent='Apply Refinement';
+}
+
+function buildDesignRefinePrompt(meta, out, section, feedback){
+  const p = getProfile(meta.brandKey || meta.brand);
+  const v = p || {};
+  const vBlock = v.visualMood
+    ? '\nVISUAL BRAND INTELLIGENCE:\nBrand: '+v.name+'\nVisual Mood: '+v.visualMood+'\nColour Palette: '+v.colorPalette+'\nImage Style: '+v.imageStyle+(v.videoStyle?'\nVideo Style: '+v.videoStyle:'')+'\nNEVER show: '+v.avoidVisuals+'\nMJ params: '+(v.mjParams||'--ar 4:5 --v 6')+'\n'
+    : '';
+
+  const existing = [
+    out.midjourney ? '## MIDJOURNEY PROMPT\n'+out.midjourney : '',
+    out.dalle ? '## DALLE FIREFLY PROMPT\n'+out.dalle : '',
+    out.video ? '## VIDEO PROMPT\n'+out.video : '',
+    out.artNote ? '## ART DIRECTION NOTE\n'+out.artNote : '',
+  ].filter(Boolean).join('\n\n');
+
+  const sectionInstr = {
+    all: 'Refine ALL sections based on the feedback below. Return every section.',
+    midjourney: 'Refine ONLY the Midjourney prompt. Return only ## MIDJOURNEY PROMPT.',
+    dalle: 'Refine ONLY the DALL-E / Firefly prompt. Return only ## DALLE FIREFLY PROMPT.',
+    video: 'Refine ONLY the video generation prompt. Return only ## VIDEO PROMPT.',
+    artNote: 'Refine ONLY the Art Direction Note. Return only ## ART DIRECTION NOTE.'
+  }[section] || 'Refine ALL sections.';
+
+  return `You are a senior creative director at WCN. You are refining a design brief output for ${meta.brand}.
+${vBlock}
+ORIGINAL BRIEF:
+Asset: ${meta.asset}
+Platform: ${meta.platform}
+What this visual communicates: ${meta.concept || ''}${meta.mood?'\nMood: '+meta.mood:''}${meta.ref?'\nReference: '+meta.ref:''}${meta.notes?'\nArt direction: '+meta.notes:''}
+
+EXISTING OUTPUT:
+${existing}
+
+CLIENT / CREATIVE FEEDBACK:
+${feedback}
+
+TASK: ${sectionInstr}
+
+Preserve everything not being refined. Apply the feedback precisely. Keep all brand guardrails intact.
+
+Respond using EXACTLY these section headers (only include sections you were asked to refine):
+
+## MIDJOURNEY PROMPT
+[refined or original]
+
+## DALLE FIREFLY PROMPT
+[refined or original]
+
+## VIDEO PROMPT
+[refined or original]
+
+## ART DIRECTION NOTE
+[refined or original]
+
+## DO
+- [point]
+- [point]
+- [point]
+
+## DONT
+- [point]
+- [point]
+- [point]`;
+}
 
 function saveSession(results, briefRows){
   if(!results||!results.length)return;
