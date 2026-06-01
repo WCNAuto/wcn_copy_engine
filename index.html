@@ -56,6 +56,9 @@ body{background:var(--deep);color:var(--white);font-family:'Segoe UI',Calibri,sy
 .dz-title{font-size:17px;font-weight:600;margin-bottom:6px}
 .dz-sub{font-size:14px;color:var(--mid);margin-bottom:16px}
 .qb-form{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:28px}
+.doc-drop-zone{border:1.5px dashed rgba(255,255,255,.18);border-radius:6px;padding:20px 16px;cursor:pointer;transition:border-color .15s,background .15s;display:flex;align-items:center;justify-content:center;min-height:90px}
+.doc-drop-zone:hover,.doc-drop-hover{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.03)}
+.doc-drop-zone.doc-attached{border-color:var(--lime);border-style:solid;background:rgba(205,233,84,.05);justify-content:flex-start;padding:14px 16px}
 .qb-title{font-family:Georgia,serif;font-size:22px;margin-bottom:8px;color:var(--white)}
 .qb-sub{font-size:14px;color:var(--mid);margin-bottom:22px;line-height:1.6}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -278,12 +281,33 @@ tr:hover td{background:rgba(205,233,84,.025)}
 <!-- API KEY MODAL -->
 <div class="modal-overlay" id="keyModal">
   <div class="modal">
-    <div class="modal-title">Anthropic API Key</div>
-    <div class="modal-sub">Stored locally in your browser. Never sent anywhere except directly to Anthropic. Starts with <code style="color:var(--lime)">sk-ant-</code></div>
-    <div class="field"><label>API Key</label><input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..."/></div>
-    <div style="font-size:12px;color:var(--mid);line-height:1.5;margin-bottom:16px">Get your key at <strong>console.anthropic.com</strong>.</div>
+    <div class="modal-title">Connection Settings</div>
+    <div class="modal-sub">Stored locally in this browser only. Never sent anywhere except directly to Anthropic and your own Vercel endpoint.</div>
+
+    <div class="field" style="margin-bottom:14px">
+      <label>Anthropic API Key</label>
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..."/>
+      <div style="font-size:11px;color:var(--mid);margin-top:5px">Get your key at <strong>console.anthropic.com</strong>. Starts with <code style="color:var(--lime)">sk-ant-</code></div>
+    </div>
+
+    <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:16px;margin-bottom:16px">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:12px">Brand Memory (Notion via Vercel)</div>
+      <div class="field" style="margin-bottom:10px">
+        <label>Vercel API URL</label>
+        <input type="text" id="memoryUrlInput" placeholder="https://your-project.vercel.app"/>
+        <div style="font-size:11px;color:var(--mid);margin-top:5px">Your Vercel deployment URL. No trailing slash.</div>
+      </div>
+      <div class="field">
+        <label>Memory Secret</label>
+        <input type="password" id="memorySecretInput" placeholder="WCN_API_SECRET value from Vercel"/>
+        <div style="font-size:11px;color:var(--mid);margin-top:5px">Must match the <code style="color:var(--lime)">WCN_API_SECRET</code> env var set in Vercel.</div>
+      </div>
+      <div id="memoryTestResult" style="font-size:12px;margin-top:10px;min-height:16px"></div>
+      <button class="btn-ghost" style="font-size:11px;margin-top:8px" onclick="testMemoryConnection()">Test Connection</button>
+    </div>
+
     <div style="display:flex;gap:10px">
-      <button class="btn-primary" onclick="saveApiKey()">Save Key</button>
+      <button class="btn-primary" onclick="saveApiKey()">Save Settings</button>
       <button class="btn-ghost" id="closeKeyModalBtn" onclick="closeModal()">Cancel</button>
     </div>
   </div>
@@ -297,6 +321,7 @@ tr:hover td{background:rgba(205,233,84,.025)}
   <div class="hdr-right">
     <button class="hdr-btn" id="sessionsBtn" onclick="toggleSessions()">Sessions</button>
     <button class="hdr-btn" id="intelBtn" onclick="toggleIntel()">Brand Intelligence</button>
+    <button class="hdr-btn" id="memoryBtn" onclick="showKeyModal()" title="Brand Memory connection status">Memory</button>
     <button class="hdr-btn" id="apiKeyBtn" onclick="showKeyModal()">API Key</button>
     <span class="badge">Content Engine</span>
   </div>
@@ -375,6 +400,31 @@ tr:hover td{background:rgba(205,233,84,.025)}
           </div>
           <div class="field"><label>Additional Notes (optional)</label><textarea id="qb2-notes" rows="2"></textarea></div>
         </div>
+      </div>
+      <!-- REFERENCE DOCUMENT UPLOAD -->
+      <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:18px;margin-top:4px">
+        <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700;margin-bottom:10px">Reference Document (Optional)</div>
+        <div style="font-size:13px;color:var(--mid);margin-bottom:12px;line-height:1.5">Upload a client deck, research doc, or product brief. The engine reads it and uses it as context for the copy — without replacing your brief.</div>
+        <div id="qbDocDropZone" class="doc-drop-zone" onclick="document.getElementById('qbDocInput').click()" ondragover="event.preventDefault();this.classList.add('doc-drop-hover')" ondragleave="this.classList.remove('doc-drop-hover')" ondrop="handleDocDrop(event)">
+          <div id="qbDocDropLabel" style="display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none">
+            <div style="font-size:22px;opacity:.4">📄</div>
+            <div style="font-size:13px;color:var(--mid)">Drop PDF or Word doc here, or <span style="color:#fff;text-decoration:underline">browse</span></div>
+            <div style="font-size:11px;color:rgba(255,255,255,.3)">PDF · DOCX · Max 10MB</div>
+          </div>
+          <div id="qbDocAttached" style="display:none;width:100%">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="font-size:20px">📎</div>
+                <div>
+                  <div id="qbDocFileName" style="font-size:13px;font-weight:600;color:#fff"></div>
+                  <div id="qbDocFileStatus" style="font-size:11px;color:var(--mid);margin-top:2px"></div>
+                </div>
+              </div>
+              <button class="btn-ghost" style="font-size:10px;flex-shrink:0" onclick="event.stopPropagation();clearQbDoc()">Remove</button>
+            </div>
+          </div>
+        </div>
+        <input type="file" id="qbDocInput" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none" onchange="handleDocSelect(this)"/>
       </div>
       <div class="btn-row" style="margin-top:18px">
         <button class="btn-primary" id="qbGenerateBtn" onclick="runQuickBrief()">Generate Copy + Visual Prompts</button>
@@ -723,7 +773,7 @@ const BRAND_DEFAULTS={
 };
 
 
-const S={briefRows:[],results:[],brandIntel:{},showIntel:false,selectedBrand:null,editForm:null,mode:'bulk',showSecond:false,_loadedSession:null,_refinedOutput:null,_refinedSection:null};
+const S={briefRows:[],results:[],brandIntel:{},showIntel:false,selectedBrand:null,editForm:null,mode:'bulk',showSecond:false,_loadedSession:null,_refinedOutput:null,_refinedSection:null,_designMeta:null,_designOut:null,qbDocText:'',qbDocName:'',qbDocBase64:'',qbDocType:'',_memoryCache:{}};
 
 function init(){
   const saved=localStorage.getItem('wdc_brand_intel_v3');
@@ -746,8 +796,120 @@ function updateKeyStatus(){
 }
 function showKeyModal(){const k=localStorage.getItem('wdc_api_key')||'';document.getElementById('apiKeyInput').value=k;document.getElementById('keyModal').classList.add('on');document.getElementById('closeKeyModalBtn').style.display=k?'':'none';}
 function closeModal(){document.getElementById('keyModal').classList.remove('on');}
-function saveApiKey(){const k=document.getElementById('apiKeyInput').value.trim();if(!k)return alert('Enter your API key');localStorage.setItem('wdc_api_key',k);closeModal();updateKeyStatus();}
+function saveApiKey(){
+  const k=document.getElementById('apiKeyInput').value.trim();
+  if(!k)return alert('Enter your Anthropic API key');
+  localStorage.setItem('wdc_api_key',k);
+  const url=(document.getElementById('memoryUrlInput')?.value||'').trim().replace(/\/$/,'');
+  const secret=(document.getElementById('memorySecretInput')?.value||'').trim();
+  if(url) localStorage.setItem('wcn_memory_url',url);
+  if(secret) localStorage.setItem('wcn_memory_secret',secret);
+  closeModal();
+  updateKeyStatus();
+}
 function getApiKey(){return localStorage.getItem('wdc_api_key')||'';}
+function getMemoryUrl(){return localStorage.getItem('wcn_memory_url')||'';}
+function getMemorySecret(){return localStorage.getItem('wcn_memory_secret')||'';}
+function hasMemory(){return !!(getMemoryUrl()&&getMemorySecret());}
+
+function showKeyModal(){
+  document.getElementById('keyModal').style.display='flex';
+  const input=document.getElementById('apiKeyInput');
+  if(input) input.value=getApiKey();
+  const urlInput=document.getElementById('memoryUrlInput');
+  if(urlInput) urlInput.value=getMemoryUrl();
+  const secInput=document.getElementById('memorySecretInput');
+  if(secInput) secInput.value=getMemorySecret();
+  document.getElementById('memoryTestResult').textContent='';
+}
+
+async function testMemoryConnection(){
+  const url=document.getElementById('memoryUrlInput')?.value?.trim().replace(/\/$/,'');
+  const secret=document.getElementById('memorySecretInput')?.value?.trim();
+  const el=document.getElementById('memoryTestResult');
+  if(!url||!secret){el.textContent='Enter URL and secret first.';el.style.color='var(--err,#f66)';return;}
+  el.textContent='Testing...';el.style.color='var(--mid)';
+  try{
+    const res=await fetch(url+'/api/brand-memory?brand=__test__',{headers:{'x-wcn-secret':secret}});
+    if(res.status===401){el.textContent='Wrong secret — check WCN_API_SECRET in Vercel.';el.style.color='var(--err,#f66)';return;}
+    if(res.status===500){el.textContent='Connected but Notion error — check NOTION_TOKEN and NOTION_DB_ID.';el.style.color='orange';return;}
+    if(res.ok){el.textContent='Connected successfully.';el.style.color='var(--lime)';}
+    else{el.textContent='Unexpected response: '+res.status;el.style.color='orange';}
+  }catch(e){el.textContent='Could not reach endpoint: '+e.message;el.style.color='var(--err,#f66)';}
+}
+
+// ── BRAND MEMORY ──────────────────────────────────────────────────────────
+
+async function fetchBrandMemory(brandKey){
+  if(!hasMemory()) return [];
+  if(S._memoryCache[brandKey]) return S._memoryCache[brandKey];
+  try{
+    const res=await fetch(getMemoryUrl()+'/api/brand-memory?brand='+encodeURIComponent(brandKey),{
+      headers:{'x-wcn-secret':getMemorySecret()}
+    });
+    if(!res.ok) return [];
+    const data=await res.json();
+    const examples=data.examples||[];
+    S._memoryCache[brandKey]=examples;
+    return examples;
+  }catch(e){
+    console.warn('[memory] fetch failed:',e.message);
+    return [];
+  }
+}
+
+async function approveOutput(index){
+  if(!hasMemory()){
+    alert('Memory not connected. Go to API Key settings and add your Vercel URL and secret.');
+    return;
+  }
+  const result=S.results[index];
+  if(!result||result.status!=='ok') return;
+  const btn=document.getElementById('approve-btn-'+index);
+  if(btn){btn.disabled=true;btn.textContent='Saving...';}
+  try{
+    const {row,output}=result;
+    const body={
+      brand: row._brandKey||row.BRAND,
+      platform: row.PLATFORM,
+      format: row.FORMAT,
+      caption: output.caption||'',
+      slides: output.slides||'',
+      hashtags: output.hashtags||'',
+      altCaption: output.variation||'',
+      notes: row.POINTS?'Brief: '+row.POINTS.slice(0,300):''
+    };
+    const res=await fetch(getMemoryUrl()+'/api/brand-memory',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-wcn-secret':getMemorySecret()},
+      body:JSON.stringify(body)
+    });
+    if(!res.ok) throw new Error('Save failed: '+res.status);
+    // Clear cache for this brand so next fetch is fresh
+    delete S._memoryCache[row._brandKey||row.BRAND];
+    if(btn){btn.textContent='Approved ✓';btn.style.color='var(--lime)';btn.style.borderColor='var(--lime)';}
+  }catch(e){
+    if(btn){btn.disabled=false;btn.textContent='Approve';}
+    alert('Could not save to memory: '+e.message);
+  }
+}
+
+function updateKeyStatus(){
+  const btn=document.getElementById('apiKeyBtn');
+  if(btn) btn.textContent=getApiKey()?'API Key \u2713':'API Key \u2014 Not Set';
+  const memBtn=document.getElementById('memoryBtn');
+  if(memBtn){
+    if(hasMemory()){
+      memBtn.textContent='Memory \u2713';
+      memBtn.style.borderColor='var(--lime)';
+      memBtn.style.color='var(--lime)';
+    } else {
+      memBtn.textContent='Memory';
+      memBtn.style.borderColor='';
+      memBtn.style.color='';
+    }
+  }
+}
 function showView(id){['viewHome','viewReview','viewGenerating','viewComplete','viewIntel','viewSessions'].forEach(v=>document.getElementById(v).style.display=v===id?'':'none');}
 function goHome(){S.briefRows=[];S.results=[];S.showIntel=false;document.getElementById('intelBtn').classList.remove('on');document.getElementById('sessionsBtn').classList.remove('on');showView('viewHome');}
 function toggleIntel(){S.showIntel=!S.showIntel;document.getElementById('intelBtn').classList.toggle('on',S.showIntel);document.getElementById('sessionsBtn').classList.remove('on');if(S.showIntel){renderBrandGrid();showView('viewIntel');}else{showView(S.results.length>0?'viewComplete':'viewHome');}}
@@ -878,13 +1040,22 @@ function getQbRow(n){
 }
 
 async function runGeneration(rows){
+  // Prefetch brand memory for all unique brands in this batch
+  const uniqueBrands=[...new Set(rows.map(r=>r._brandKey||r.BRAND))];
+  if(hasMemory()){
+    await Promise.all(uniqueBrands.map(b=>fetchBrandMemory(b)));
+  }
   for(let i=0;i<rows.length;i++){
     const row=rows[i];
     updateProgress(i+1,rows.length,row.BRAND);
     let result;
     try{
+      const hasPdf = S.qbDocType==='pdf' && S.qbDocBase64;
+      const docText = S.qbDocType==='docx' ? S.qbDocText : '';
+      const examples = S._memoryCache[row._brandKey||row.BRAND] || [];
+      const copyPrompt = buildPrompt(row, docText, examples);
       const [copyRaw,visualRaw]=await Promise.all([
-        callClaude(buildPrompt(row)),
+        hasPdf ? callClaudeWithPdf(copyPrompt, S.qbDocBase64) : callClaude(copyPrompt),
         callClaude(buildVisualPromptFromRow(row))
       ]);
       result={row,output:parseOutput(copyRaw),visual:parseVisualOutput(visualRaw),status:'ok'};
@@ -1037,7 +1208,7 @@ function buildCard(result,index){
 function buildCardBody(result,index){
   const{output,visual}=result;const id='c'+index;
   const copyTabs=[['caption','Caption'],['slides','Slides'],['hashtags','Hashtags'],['variation','Alt']];
-  const visTabs=visual?[['mj','Midjourney'],[(visual.isVideo?'video':'image'),(visual.isVideo?'Video':'DALL-E')],['artNote','Art Dir']]:[]; 
+  const visTabs=visual?[['mj','Midjourney'],[(visual.isVideo?'video':'image'),(visual.isVideo?'Video':'DALL-E')],['artNote','Art Dir']]:[];
   const allTabs=[...copyTabs,...visTabs];
   const tabHtml=allTabs.map(([k,l],i)=>'<div class="tab'+(i===0?' on':'')+'" onclick="switchTab(\''+id+'\',\''+k+'\')">'+l+'</div>').join('');
   const panelHtml=allTabs.map(([k,l],i)=>{
@@ -1045,8 +1216,12 @@ function buildCardBody(result,index){
     const text=isVis?(visual?.[k]||''):(output?.[k]||'');
     return '<div class="tab-panel'+(i===0?' on':'')+'" id="pnl-'+id+'-'+k+'"><div class="copy-wrap"><pre class="copy-pre">'+esc(text||'(empty)')+'</pre><button class="copy-btn" onclick="doCopy(\''+id+'\',\''+k+'\',this,'+index+')">Copy</button></div></div>';
   }).join('');
-  return '<div class="tabs" id="tabs-'+id+'">'+tabHtml+'</div>'+panelHtml;
+  const approveBtn=hasMemory()
+    ?'<button class="btn-ghost" id="approve-btn-'+index+'" onclick="approveOutput('+index+')" style="font-size:11px;padding:5px 12px">Approve \u2714 Memory</button>'
+    :'';
+  return '<div style="display:flex;align-items:center;padding:10px 14px 2px;border-bottom:1px solid rgba(255,255,255,.06)"><div class="tabs" id="tabs-'+id+'" style="flex:1;border:none;padding:0;margin:0">'+tabHtml+'</div>'+approveBtn+'</div>'+panelHtml;
 }
+
 function toggleCard(id){const b=document.getElementById('body-'+id);const c=document.getElementById('chev-'+id);const open=b.style.display==='';b.style.display=open?'none':'';c.classList.toggle('open',!open);}
 function switchTab(cardId,tab){const allKeys=['caption','slides','hashtags','variation','mj','image','video','artNote'];allKeys.forEach(k=>{const p=document.getElementById('pnl-'+cardId+'-'+k);if(p)p.classList.toggle('on',k===tab);});const tabs=document.querySelectorAll('#tabs-'+cardId+' .tab');const keys=[];tabs.forEach(t=>keys.push(t.textContent));tabs.forEach((t,i)=>{const k=allKeys.find(k=>t.textContent.toLowerCase().includes(k.substring(0,3).toLowerCase()));t.classList.toggle('on',document.getElementById('pnl-'+cardId+'-'+tab)&&document.getElementById('pnl-'+cardId+'-'+tab)&&false);});document.querySelectorAll('#tabs-'+cardId+' .tab').forEach(t=>t.classList.remove('on'));const tabsEl=document.getElementById('tabs-'+cardId);if(tabsEl){tabsEl.querySelectorAll('.tab').forEach((t,i)=>{if(allKeys[i]===tab)t.classList.add('on');});}}
 function doCopy(cardId,tab,btn,rowIdx){
@@ -1064,10 +1239,12 @@ function getProfile(brandName){
   return found?S.brandIntel[found]:null;
 }
 
-function buildPrompt(row){
+function buildPrompt(row, docText, examples){
   const p=getProfile(row.BRAND)||getProfile(row._brandKey||'');
   const brandBlock=p&&p.voice?'\nBRAND INTELLIGENCE:\nBrand: '+p.name+'\nIndustry: '+p.industry+'\nAudience: '+p.audience+'\nVoice: '+p.voice+'\nPositioning: '+p.positioning+'\nKey Messages (weave naturally):\n'+(p.keyMessages||[]).filter(m=>m.trim()).map((m,i)=>'  '+(i+1)+'. '+m).join('\n')+(p.platformNotes?'\nPlatform Notes: '+p.platformNotes:'')+'\nWords NEVER to use: '+p.avoidWords+'\nTopics NEVER to adopt: '+p.avoidTopics+'\n':'\n// No brand profile for "'+row.BRAND+'". Use professional copywriter judgment.\n';
-  return 'You are a senior social media copywriter at WCN. Writing for '+row.BRAND+'.\n'+brandBlock+'\nBRIEF:\nPlatform: '+row.PLATFORM+'\nFormat: '+row.FORMAT+(row.BUCKET?'\nContent Bucket: '+row.BUCKET:'')+(row.TONE?'\nTone Override: '+row.TONE:'')+(row.CTA?'\nCTA: '+row.CTA:'')+(row.SLIDES?'\nSlides: '+row.SLIDES:'')+(row.CAMPAIGN?'\nCampaign: '+row.CAMPAIGN:'')+(row.AUDIENCE?'\nAudience Focus: '+row.AUDIENCE:'')+'\n\nTALKING POINTS:\n'+row.POINTS+(row.NOTES?'\n\nAdditional Context: '+row.NOTES:'')+'\n\nDELIVERABLES:\n1. Main caption (hook + body + CTA)\n2. All slide headlines and supporting copy\n3. 15-20 relevant hashtags\n4. One alternative caption variation\n\nRULES: Hook is line one. Caption max 150 words unless LinkedIn. Write in brand voice.\n\nRespond EXACTLY:\n## 1. MAIN CAPTION\n[caption]\n\n## 2. SLIDE COPY\n[slides]\n\n## 3. HASHTAGS\n[hashtags]\n\n## 4. ALTERNATIVE CAPTION\n[variation]';
+  const docBlock=docText?'\nREFERENCE DOCUMENT:\nThe following is extracted from a client or research document. Use it to add depth, accuracy, and specificity to the copy. Treat it as background intelligence — not a script to copy from:\n'+docText.slice(0,4000)+'\n':'';
+  const examplesBlock=(examples&&examples.length)?'\nAPPROVED EXAMPLES — copy this client has already signed off on for this brand. Use these as taste and quality anchors. Do NOT copy them. Write the new brief in the same spirit:\n'+examples.map((e,i)=>'\nExample '+(i+1)+' ['+e.platform+' · '+e.format+']:\n'+e.caption+(e.slides?'\n[Slides]\n'+e.slides.slice(0,300):'')).join('\n')+'\n':'';
+  return 'You are a senior social media copywriter at WCN. Writing for '+row.BRAND+'.\n'+brandBlock+docBlock+examplesBlock+'\nBRIEF:\nPlatform: '+row.PLATFORM+'\nFormat: '+row.FORMAT+(row.BUCKET?'\nContent Bucket: '+row.BUCKET:'')+(row.TONE?'\nTone Override: '+row.TONE:'')+(row.CTA?'\nCTA: '+row.CTA:'')+(row.SLIDES?'\nSlides: '+row.SLIDES:'')+(row.CAMPAIGN?'\nCampaign: '+row.CAMPAIGN:'')+(row.AUDIENCE?'\nAudience Focus: '+row.AUDIENCE:'')+'\n\nTALKING POINTS:\n'+row.POINTS+(row.NOTES?'\n\nAdditional Context: '+row.NOTES:'')+'\n\nDELIVERABLES:\n1. Main caption (hook + body + CTA)\n2. All slide headlines and supporting copy\n3. 15-20 relevant hashtags\n4. One alternative caption variation\n\nRULES: Hook is line one. Caption max 150 words unless LinkedIn. Write in brand voice.\n\nRespond EXACTLY:\n## 1. MAIN CAPTION\n[caption]\n\n## 2. SLIDE COPY\n[slides]\n\n## 3. HASHTAGS\n[hashtags]\n\n## 4. ALTERNATIVE CAPTION\n[variation]';
 }
 
 function buildVisualPromptFromRow(row){
@@ -1349,6 +1526,180 @@ YOUR STANDARD:
 The three-second test applies to your own work too. Read the first line of what you have produced. Would you stop scrolling for it? If the honest answer is no — you already know what to do. The work that leaves this engine should make a senior creative proud to have their name on it and a junior creative want to learn from it. Anything less does not leave.`;
 
 // API
+async // ── DOCUMENT UPLOAD (QUICK BRIEF) ─────────────────────────────────────────
+
+function handleDocSelect(input){
+  const file = input.files[0];
+  if(file) processDocFile(file);
+  input.value='';
+}
+
+function handleDocDrop(ev){
+  ev.preventDefault();
+  document.getElementById('qbDocDropZone').classList.remove('doc-drop-hover');
+  const file = ev.dataTransfer.files[0];
+  if(file) processDocFile(file);
+}
+
+async function processDocFile(file){
+  const maxBytes = 10 * 1024 * 1024;
+  if(file.size > maxBytes){
+    showDocError('File too large. Max 10MB.');
+    return;
+  }
+  const isPdf = file.type==='application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+  const isDocx = file.type==='application/vnd.openxmlformats-officedocument.wordprocessingml.document' || file.name.toLowerCase().endsWith('.docx');
+  if(!isPdf && !isDocx){
+    showDocError('Only PDF and DOCX files are supported.');
+    return;
+  }
+  setDocAttached(file.name, 'Reading...');
+  try{
+    if(isPdf){
+      // Store as base64 for native Anthropic document block
+      const b64 = await fileToBase64(file);
+      S.qbDocBase64 = b64;
+      S.qbDocType = 'pdf';
+      S.qbDocText = '';
+      S.qbDocName = file.name;
+      setDocAttached(file.name, 'PDF ready — will be read by the engine');
+    } else {
+      // DOCX: extract text from word/document.xml inside the zip
+      const text = await extractDocxText(file);
+      S.qbDocText = text;
+      S.qbDocBase64 = '';
+      S.qbDocType = 'docx';
+      S.qbDocName = file.name;
+      const wordCount = text.trim().split(/\s+/).length;
+      setDocAttached(file.name, wordCount + ' words extracted');
+    }
+  }catch(e){
+    showDocError('Could not read file: ' + e.message);
+    clearQbDoc();
+  }
+}
+
+function fileToBase64(file){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = () => rej(new Error('Read failed'));
+    r.readAsDataURL(file);
+  });
+}
+
+async function extractDocxText(file){
+  // DOCX is a ZIP. Read the ZIP, find word/document.xml, strip XML tags.
+  const buf = await file.arrayBuffer();
+  const bytes = new Uint8Array(buf);
+  // Find word/document.xml inside the ZIP using basic ZIP parsing
+  const xmlText = await findFileInZip(bytes, 'word/document.xml');
+  if(!xmlText) throw new Error('Could not find document content');
+  // Strip XML tags, decode XML entities, collapse whitespace
+  return xmlText
+    .replace(/<w:p[ >]/g, '\n<w:p ')  // paragraph breaks
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&apos;/g,"'").replace(/&quot;/g,'"')
+    .replace(/\s{2,}/g,' ').replace(/\n +/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+}
+
+function findFileInZip(bytes, targetPath){
+  return new Promise((res,rej)=>{
+    // Simple ZIP local file header scan: signature 0x504B0304
+    const sig = [0x50,0x4B,0x03,0x04];
+    let i = 0;
+    while(i < bytes.length - 30){
+      if(bytes[i]===sig[0]&&bytes[i+1]===sig[1]&&bytes[i+2]===sig[2]&&bytes[i+3]===sig[3]){
+        const fnLen = bytes[i+26] | (bytes[i+27]<<8);
+        const extraLen = bytes[i+28] | (bytes[i+29]<<8);
+        const fnBytes = bytes.slice(i+30, i+30+fnLen);
+        const fn = new TextDecoder().decode(fnBytes);
+        const dataStart = i+30+fnLen+extraLen;
+        const compSize = bytes[i+18]|(bytes[i+19]<<8)|(bytes[i+20]<<16)|(bytes[i+21]<<24);
+        if(fn === targetPath){
+          // Compression method: 0=stored, 8=deflate
+          const method = bytes[i+8] | (bytes[i+9]<<8);
+          const compData = bytes.slice(dataStart, dataStart+compSize);
+          if(method===0){
+            res(new TextDecoder().decode(compData));
+          } else if(method===8){
+            // Use DecompressionStream if available
+            if(typeof DecompressionStream !== 'undefined'){
+              const ds = new DecompressionStream('deflate-raw');
+              const writer = ds.writable.getWriter();
+              const reader = ds.readable.getReader();
+              writer.write(compData);
+              writer.close();
+              const chunks = [];
+              const pump = ()=>reader.read().then(({done,value})=>{
+                if(done){
+                  const all = new Uint8Array(chunks.reduce((a,c)=>a+c.length,0));
+                  let off=0; chunks.forEach(c=>{all.set(c,off);off+=c.length;});
+                  res(new TextDecoder().decode(all));
+                } else { chunks.push(value); return pump(); }
+              });
+              pump().catch(rej);
+            } else {
+              rej(new Error('DecompressionStream not available in this browser'));
+            }
+          }
+          return;
+        }
+        i = dataStart + compSize;
+      } else { i++; }
+    }
+    rej(new Error('File not found in ZIP: '+targetPath));
+  });
+}
+
+function setDocAttached(name, status){
+  const zone = document.getElementById('qbDocDropZone');
+  const drop = document.getElementById('qbDocDropLabel');
+  const attached = document.getElementById('qbDocAttached');
+  const nameEl = document.getElementById('qbDocFileName');
+  const statusEl = document.getElementById('qbDocFileStatus');
+  if(zone) zone.classList.add('doc-attached');
+  if(drop) drop.style.display='none';
+  if(attached) attached.style.display='';
+  if(nameEl) nameEl.textContent = name;
+  if(statusEl) statusEl.textContent = status;
+}
+
+function showDocError(msg){
+  const statusEl = document.getElementById('qbDocFileStatus');
+  if(statusEl){ statusEl.textContent = msg; statusEl.style.color='var(--err,#f66)'; }
+}
+
+function clearQbDoc(){
+  S.qbDocText=''; S.qbDocBase64=''; S.qbDocType=''; S.qbDocName='';
+  const zone = document.getElementById('qbDocDropZone');
+  const drop = document.getElementById('qbDocDropLabel');
+  const attached = document.getElementById('qbDocAttached');
+  if(zone) zone.classList.remove('doc-attached');
+  if(drop) drop.style.display='';
+  if(attached) attached.style.display='none';
+}
+
+// Variant of callClaude that attaches a PDF document block
+async function callClaudeWithPdf(prompt, base64Pdf){
+  if(!CREATIVE_DIRECTOR_SKILL || CREATIVE_DIRECTOR_SKILL.length < 100){
+    throw new Error('Creative Director skill not loaded. Cannot generate without it.');
+  }
+  const key=getApiKey();
+  if(!key)throw new Error('API key not set on this device.');
+  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({
+    model:'claude-sonnet-4-6',
+    max_tokens:1500,
+    system: CREATIVE_DIRECTOR_SKILL,
+    messages:[{role:'user',content:[
+      {type:'document',source:{type:'base64',media_type:'application/pdf',data:base64Pdf}},
+      {type:'text',text:prompt}
+    ]}]
+  })});
+  if(!res.ok){const e=await res.json().catch(()=>({}));const msg=e.error?.message||'API error '+res.status;if(res.status===401)throw new Error('API key invalid or expired.');throw new Error(msg);}
+  const data=await res.json();return data.content.map(b=>b.text||'').join('\n');
+}
+
 async function callClaude(prompt){
   // CREATIVE DIRECTOR SKILL IS MANDATORY ON EVERY CALL.
   // Do not remove or bypass. Without it, output has no creative standard.
