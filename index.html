@@ -776,10 +776,17 @@ const BRAND_DEFAULTS={
 const S={briefRows:[],results:[],brandIntel:{},showIntel:false,selectedBrand:null,editForm:null,mode:'bulk',showSecond:false,_loadedSession:null,_refinedOutput:null,_refinedSection:null,_designMeta:null,_designOut:null,qbDocText:'',qbDocName:'',qbDocBase64:'',qbDocType:'',_memoryCache:{}};
 
 function init(){
-  const saved=localStorage.getItem('wdc_brand_intel_v3');
-  const savedProfiles=saved?JSON.parse(saved):{};
   S.brandIntel={...BRAND_DEFAULTS};
-  Object.keys(savedProfiles).forEach(k=>{S.brandIntel[k]=savedProfiles[k];});
+  try{
+    const saved=localStorage.getItem('wdc_brand_intel_v3');
+    if(saved){
+      const savedProfiles=JSON.parse(saved);
+      Object.keys(savedProfiles).forEach(k=>{S.brandIntel[k]=savedProfiles[k];});
+    }
+  }catch(e){
+    console.warn('Brand intel localStorage was corrupt - reset to locked defaults:',e);
+    localStorage.removeItem('wdc_brand_intel_v3');
+  }
   populateBrandDropdowns();
   updateBrandCountNote();
   updateKeyStatus();
@@ -926,7 +933,7 @@ function setMode(m){
 function toggleSecond(){S.showSecond=!S.showSecond;document.getElementById('secondBriefArea').style.display=S.showSecond?'':'none';document.getElementById('addSecondBtn').textContent=S.showSecond?'\u2014 Remove Second Brief':'+ Add Second Brief';}
 
 function populateBrandDropdowns(){
-  const brands=Object.keys(S.brandIntel).sort((a,b)=>S.brandIntel[a].name.localeCompare(S.brandIntel[b].name));
+  const brands=Object.keys(S.brandIntel).sort((a,b)=>(S.brandIntel[a].name||a).localeCompare(S.brandIntel[b].name||b));
   ['qb-brand','qb2-brand','dp-brand'].forEach(id=>{
     const el=document.getElementById(id);if(!el)return;
     const cur=el.value;
@@ -1526,7 +1533,7 @@ YOUR STANDARD:
 The three-second test applies to your own work too. Read the first line of what you have produced. Would you stop scrolling for it? If the honest answer is no — you already know what to do. The work that leaves this engine should make a senior creative proud to have their name on it and a junior creative want to learn from it. Anything less does not leave.`;
 
 // API
-async // ── DOCUMENT UPLOAD (QUICK BRIEF) ─────────────────────────────────────────
+// ── DOCUMENT UPLOAD (QUICK BRIEF) ─────────────────────────────────────────
 
 function handleDocSelect(input){
   const file = input.files[0];
